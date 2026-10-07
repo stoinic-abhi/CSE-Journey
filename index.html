@@ -1,960 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <title>CSE OS — Command Center</title>
+  <title>ABHI'S CSE OS — Software Engineer Roadmap</title>
 
-    <meta
-        name="description"
-        content="Abhi's personal CSE learning command center."
-    >
+  <meta
+    name="description"
+    content="Abhi's personal CSE learning operating system."
+  />
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="noise"></div>
+  <!-- BACKGROUND -->
+  <div class="noise"></div>
+  <div class="grid-bg"></div>
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
 
-    <!-- ================= SIDEBAR ================= -->
+  <!-- MOBILE HEADER -->
+  <header class="mobile-header">
+    <button class="icon-btn" id="mobileMenuBtn" aria-label="Open menu">
+      ☰
+    </button>
 
-    <aside class="sidebar">
+    <div class="mobile-brand">
+      <span class="brand-dot"></span>
+      <span>CSE OS</span>
+    </div>
 
-        <div class="brand">
-            <div class="brand-logo">
-                <span>&lt;/&gt;</span>
-            </div>
+    <button class="icon-btn" id="mobileSearchBtn" aria-label="Search">
+      ⌕
+    </button>
+  </header>
 
-            <div>
-                <div class="brand-name">CSE<span>OS</span></div>
-                <div class="brand-sub">COMMAND CENTER</div>
-            </div>
-        </div>
 
-        <div class="side-label">WORKSPACE</div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-        <nav class="nav">
+    <div class="brand">
+      <div class="brand-mark">
+        <span></span>
+        <span></span>
+      </div>
 
-            <button class="nav-btn active" data-section="overview">
-                <span>◈</span>
-                Overview
-            </button>
+      <div>
+        <div class="brand-name">ABHI'S</div>
+        <div class="brand-sub">CSE OPERATING SYSTEM</div>
+      </div>
+    </div>
 
-            <button class="nav-btn" data-section="roadmap">
-                <span>⌁</span>
-                Roadmap
-            </button>
+    <div class="profile-mini">
+      <div class="avatar">A</div>
 
-            <button class="nav-btn" data-section="activity">
-                <span>◷</span>
-                Activity
-            </button>
+      <div class="profile-copy">
+        <strong>Abhishek</strong>
+        <span>Software Engineer Mode</span>
+      </div>
 
-            <button class="nav-btn" data-section="portfolio">
-                <span>◇</span>
-                Portfolio
-            </button>
+      <div class="status-dot"></div>
+    </div>
 
-        </nav>
 
-        <div class="side-label side-label-gap">SYSTEM</div>
+    <nav class="side-nav">
 
-        <button class="nav-btn" id="settingsOpen">
-            <span>⚙</span>
-            Settings
+      <button class="nav-item active" data-scroll="dashboard">
+        <span class="nav-icon">⌂</span>
+        <span>Command Center</span>
+      </button>
+
+      <button class="nav-item" data-scroll="roadmap">
+        <span class="nav-icon">◈</span>
+        <span>Roadmap</span>
+      </button>
+
+      <button class="nav-item" data-scroll="projects">
+        <span class="nav-icon">◫</span>
+        <span>Project Lab</span>
+      </button>
+
+      <button class="nav-item" data-scroll="social">
+        <span class="nav-icon">◎</span>
+        <span>Public Progress</span>
+      </button>
+
+      <button class="nav-item" data-scroll="system">
+        <span class="nav-icon">⚙</span>
+        <span>System</span>
+      </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+      <div class="start-card">
+        <span class="tiny-label">MISSION START</span>
+        <strong>08 OCT 2026</strong>
+        <span>Zero → Software Engineer</span>
+      </div>
+
+      <button class="sidebar-reset" id="resetBtn">
+        ↻ Reset Progress
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+  <main class="main" id="dashboard">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+      <div class="breadcrumbs">
+        <span>ABHI'S CSE OS</span>
+        <b>/</b>
+        <span id="currentSection">COMMAND CENTER</span>
+      </div>
+
+      <div class="top-actions">
+
+        <button class="top-btn" id="exportBtn">
+          ↓ Export
         </button>
 
-        <div class="sidebar-bottom">
+        <button class="top-btn" id="importBtn">
+          ↑ Import
+        </button>
 
-            <div class="profile-mini">
+        <input
+          type="file"
+          id="importInput"
+          accept=".json"
+          hidden
+        />
 
-                <div class="profile-avatar">A</div>
+        <button class="top-btn primary" id="searchFocusBtn">
+          ⌕ Search
+        </button>
 
-                <div>
-                    <strong>Abhi</strong>
-                    <span>Software Engineer Journey</span>
-                </div>
+      </div>
+    </div>
 
-            </div>
 
-            <div class="system-status">
-                <span class="status-light"></span>
-                JOURNEY ACTIVE
-            </div>
+    <!-- HERO -->
+    <section class="hero-section">
 
+      <div class="hero-left">
+
+        <div class="eyebrow">
+          <span class="pulse"></span>
+          PERSONAL ENGINEERING OS
         </div>
 
-    </aside>
+        <h1>
+          ZERO
+          <span>→</span>
+          SOFTWARE
+          <em>ENGINEER</em>
+        </h1>
+
+        <p class="hero-description">
+          A complete CSE progression system built around programming,
+          DSA, web, backend, systems, AI, cloud, cybersecurity and real
+          project building.
+        </p>
+
+        <div class="hero-meta">
+          <div>
+            <span>MISSION START</span>
+            <strong>08 OCT 2026</strong>
+          </div>
+
+          <div class="meta-divider"></div>
+
+          <div>
+            <span>TODAY</span>
+            <strong id="todayDate">--</strong>
+          </div>
+
+          <div class="meta-divider"></div>
+
+          <div>
+            <span>MODE</span>
+            <strong>BUILD > WATCH</strong>
+          </div>
+        </div>
+
+      </div>
 
 
-    <!-- ================= MAIN ================= -->
+      <!-- DAY COUNTER -->
+      <div class="day-card">
 
-    <main class="main">
+        <div class="day-top">
+          <span>MISSION CLOCK</span>
+          <span class="live-pill">
+            <i></i> LIVE
+          </span>
+        </div>
 
-        <!-- TOPBAR -->
+        <div class="day-number" id="dayNumber">
+          T−1
+        </div>
 
-        <header class="topbar">
+        <div class="day-label" id="dayLabel">
+          STARTS TOMORROW
+        </div>
+
+        <div class="day-line">
+          <span id="dayProgressText">08 OCT 2026</span>
+          <span id="dayPercent">0%</span>
+        </div>
+
+        <div class="day-progress">
+          <div id="dayProgressBar"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- METRICS -->
+    <section class="metrics-grid">
+
+      <article class="metric-card accent-card">
+
+        <div class="metric-head">
+          <span>OVERALL PROGRESS</span>
+          <span>01</span>
+        </div>
+
+        <div class="metric-main">
+          <strong id="overallPercent">0%</strong>
+          <div class="circular-progress">
+            <svg viewBox="0 0 100 100">
+              <circle class="circle-bg" cx="50" cy="50" r="42"></circle>
+              <circle
+                class="circle-value"
+                id="circleProgress"
+                cx="50"
+                cy="50"
+                r="42"
+              ></circle>
+            </svg>
+
+            <span id="circleText">0%</span>
+          </div>
+        </div>
+
+        <div class="metric-foot">
+          <span id="completedText">0 completed</span>
+          <span id="remainingText">0 remaining</span>
+        </div>
+
+      </article>
+
+
+      <article class="metric-card">
+
+        <div class="metric-head">
+          <span>ACTIVE STREAK</span>
+          <span>02</span>
+        </div>
+
+        <div class="streak-number">
+          <strong id="streakNumber">0</strong>
+          <span>DAYS</span>
+        </div>
+
+        <div class="streak-dots" id="streakDots"></div>
+
+        <div class="metric-foot">
+          <span id="streakMessage">Start your first mission.</span>
+        </div>
+
+      </article>
+
+
+      <article class="metric-card">
+
+        <div class="metric-head">
+          <span>CURRENT PHASE</span>
+          <span>03</span>
+        </div>
+
+        <div class="phase-number" id="currentPhaseNumber">
+          PHASE 01
+        </div>
+
+        <strong class="phase-name" id="currentPhaseName">
+          Foundations
+        </strong>
+
+        <div class="mini-progress">
+          <div id="phaseMiniBar"></div>
+        </div>
+
+        <div class="metric-foot">
+          <span id="phaseProgressText">0 / 0</span>
+          <span id="phaseProgressPercent">0%</span>
+        </div>
+
+      </article>
+
+
+      <article class="metric-card">
+
+        <div class="metric-head">
+          <span>NEXT MISSION</span>
+          <span>04</span>
+        </div>
+
+        <div class="next-mission">
+          <span class="next-tag" id="nextTag">READY</span>
+          <strong id="nextMission">
+            Start your roadmap
+          </strong>
+
+          <button id="continueBtn">
+            Continue →
+          </button>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- TODAY -->
+    <section class="section-block today-section">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-kicker">TODAY'S CONTROL PANEL</span>
+          <h2>What should you do next?</h2>
+        </div>
+
+        <div class="section-actions">
+          <button class="filter-btn active" data-filter="all">
+            ALL
+          </button>
+
+          <button class="filter-btn" data-filter="active">
+            ACTIVE
+          </button>
+
+          <button class="filter-btn" data-filter="completed">
+            COMPLETED
+          </button>
+        </div>
+
+      </div>
+
+
+      <div class="today-grid">
+
+        <div class="mission-card">
+
+          <div class="mission-top">
+            <div class="mission-icon">01</div>
 
             <div>
-
-                <div class="crumb">
-                    CSE JOURNEY
-                    <span>/</span>
-                    <strong id="crumbCurrent">OVERVIEW</strong>
-                </div>
-
-                <h1 id="pageTitle">Mission Control</h1>
-
+              <span class="mission-label">NEXT IN LINE</span>
+              <h3 id="todayMissionTitle">
+                No mission selected
+              </h3>
             </div>
-
-            <div class="top-actions">
-
-                <div class="live-date">
-                    <span class="live-dot"></span>
-                    <span id="todayDate">Loading...</span>
-                </div>
-
-                <button
-                    class="square-btn"
-                    id="exportBtn"
-                    title="Export progress"
-                >
-                    ↓
-                </button>
-
-                <label
-                    class="square-btn"
-                    title="Import progress"
-                >
-                    ↑
-                    <input
-                        id="importInput"
-                        type="file"
-                        accept=".json"
-                        hidden
-                    >
-                </label>
-
-            </div>
-
-        </header>
-
-
-        <!-- ==================================================
-             OVERVIEW
-        ================================================== -->
-
-        <section
-            class="section active"
-            id="overview"
-        >
-
-            <!-- HERO -->
-
-            <div class="hero">
-
-                <div class="hero-content">
-
-                    <div class="eyebrow">
-                        <span class="pulse"></span>
-                        PERSONAL CSE OPERATING SYSTEM
-                    </div>
-
-                    <h2>
-                        Build skills.
-                        <em>Ship proof.</em>
-                        Become undeniable.
-                    </h2>
-
-                    <p>
-                        Your complete journey from zero programming knowledge
-                        to a serious software engineering skill stack.
-                    </p>
-
-                    <div class="hero-buttons">
-
-                        <button
-                            class="btn primary"
-                            id="continueBtn"
-                        >
-                            Continue Mission
-                            <span>→</span>
-                        </button>
-
-                        <button
-                            class="btn secondary"
-                            id="heroRoadmap"
-                        >
-                            Open Roadmap
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <div class="day-module">
-
-                    <div class="day-caption">
-                        CURRENT MISSION DAY
-                    </div>
-
-                    <div
-                        class="big-day"
-                        id="dayNumber"
-                    >
-                        01
-                    </div>
-
-                    <div
-                        class="day-since"
-                        id="daySince"
-                    >
-                        Since 08 Oct 2026
-                    </div>
-
-                    <div class="day-divider"></div>
-
-                    <div class="day-live">
-                        <span></span>
-                        JOURNEY ACTIVE
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- STATS -->
-
-            <div class="stats">
-
-                <div class="stat stat-wide">
-
-                    <div class="stat-head">
-                        <span>OVERALL PROGRESS</span>
-                        <b>◉</b>
-                    </div>
-
-                    <div class="stat-number">
-                        <span id="overallPercent">0</span><small>%</small>
-                    </div>
-
-                    <div class="progress">
-                        <div
-                            id="overallProgress"
-                            class="progress-bar"
-                        ></div>
-                    </div>
-
-                    <div class="stat-bottom">
-                        <span id="completedCount">0 completed</span>
-                        <span id="totalCount">0 tasks</span>
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-head">
-                        <span>STREAK</span>
-                        <b>✦</b>
-                    </div>
-
-                    <div class="stat-number">
-                        <span id="streakCount">0</span>
-                        <small>days</small>
-                    </div>
-
-                    <div class="muted-text">
-                        Consistency compounds.
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-head">
-                        <span>XP</span>
-                        <b>✧</b>
-                    </div>
-
-                    <div class="stat-number">
-                        <span id="xpCount">0</span>
-                    </div>
-
-                    <div class="muted-text">
-                        Level <strong id="levelNumber">1</strong>
-                        · <span id="xpNext">100</span> XP to next
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-head">
-                        <span>MISSION STATUS</span>
-                        <b>◆</b>
-                    </div>
-
-                    <div class="mission">
-
-                        <div class="mission-ring">
-                            <span></span>
-                        </div>
-
-                        <div>
-                            <strong>IN PROGRESS</strong>
-                            <small>Keep building.</small>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- DAILY COMMAND -->
-
-            <div class="section-title">
-
-                <div>
-                    <label>TODAY'S COMMAND</label>
-                    <h3>Focus without noise.</h3>
-                </div>
-
-                <div
-                    class="day-chip"
-                    id="todayChip"
-                >
-                    DAY 01
-                </div>
-
-            </div>
-
-
-            <div class="command-grid">
-
-                <div class="focus-card">
-
-                    <div class="card-top">
-
-                        <div>
-                            <label>DAILY FOCUS</label>
-
-                            <h3 id="dailyFocusTitle">
-                                Start your journey.
-                            </h3>
-                        </div>
-
-                        <div class="card-icon">
-                            ⌁
-                        </div>
-
-                    </div>
-
-                    <p id="dailyFocusText">
-                        Your daily focus will automatically adapt to your
-                        roadmap progress.
-                    </p>
-
-                    <div class="focus-tags">
-
-                        <span id="focusPriority">
-                            ⚡ Priority
-                        </span>
-
-                        <span id="focusPhase">
-                            PHASE 01
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="next-card">
-
-                    <label>NEXT UNLOCK</label>
-
-                    <h3 id="nextTaskTitle">
-                        Your next task
-                    </h3>
-
-                    <p id="nextTaskDescription">
-                        Open the roadmap to begin.
-                    </p>
-
-                    <button
-                        class="link-btn"
-                        id="nextTaskBtn"
-                    >
-                        Go to task →
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASES -->
-
-            <div class="section-title phase-title">
-
-                <div>
-                    <label>ROADMAP ARCHITECTURE</label>
-                    <h3>Zero → Advanced.</h3>
-                </div>
-
-                <button
-                    class="ghost-btn"
-                    id="viewRoadmap"
-                >
-                    View full roadmap
-                </button>
-
-            </div>
-
-            <div
-                class="phase-grid"
-                id="phaseGrid"
-            ></div>
-
-
-            <!-- RECENT ACTIVITY -->
-
-            <div class="section-title">
-
-                <div>
-                    <label>RECENT ACTIVITY</label>
-                    <h3>Proof that you're moving.</h3>
-                </div>
-
-            </div>
-
-            <div
-                class="recent-card"
-                id="recentActivity"
-            ></div>
-
-        </section>
-
-
-        <!-- ==================================================
-             ROADMAP
-        ================================================== -->
-
-        <section
-            class="section"
-            id="roadmap"
-        >
-
-            <div class="roadmap-top">
-
-                <div>
-                    <label>THE ROADMAP</label>
-                    <h2>Zero → Advanced</h2>
-
-                    <p>
-                        Learn → practice → build → push → document.
-                    </p>
-                </div>
-
-                <div class="roadmap-progress">
-                    <strong id="roadmapPercent">0%</strong>
-                    <span>roadmap complete</span>
-                </div>
-
-            </div>
-
-
-            <div class="roadmap-tools">
-
-                <div class="search">
-
-                    <span>⌕</span>
-
-                    <input
-                        id="searchInput"
-                        type="text"
-                        placeholder="Search C++, DSA, React, SQL..."
-                    >
-
-                </div>
-
-                <div class="filters">
-
-                    <button
-                        class="filter active"
-                        data-filter="all"
-                    >
-                        All
-                    </button>
-
-                    <button
-                        class="filter"
-                        data-filter="active"
-                    >
-                        Active
-                    </button>
-
-                    <button
-                        class="filter"
-                        data-filter="completed"
-                    >
-                        Completed
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div
-                id="roadmapContainer"
-                class="roadmap-container"
-            ></div>
-
-        </section>
-
-
-        <!-- ==================================================
-             ACTIVITY
-        ================================================== -->
-
-        <section
-            class="section"
-            id="activity"
-        >
-
-            <div class="section-intro">
-
-                <div>
-                    <label>ACTIVITY CENTER</label>
-                    <h2>Your progress history.</h2>
-
-                    <p>
-                        Every completed task becomes proof of growth.
-                    </p>
-                </div>
-
-                <button
-                    class="danger-btn"
-                    id="resetBtn"
-                >
-                    Reset Progress
-                </button>
-
-            </div>
-
-
-            <div class="activity-stats">
-
-                <div>
-                    <span>TASKS COMPLETED</span>
-                    <strong id="activityCompleted">0</strong>
-                </div>
-
-                <div>
-                    <span>GITHUB ACTIONS</span>
-                    <strong id="githubCount">0</strong>
-                </div>
-
-                <div>
-                    <span>LINKEDIN ACTIONS</span>
-                    <strong id="linkedinCount">0</strong>
-                </div>
-
-                <div>
-                    <span>PROJECTS</span>
-                    <strong id="projectCount">0</strong>
-                </div>
-
-            </div>
-
-
-            <div
-                class="timeline"
-                id="activityTimeline"
-            ></div>
-
-        </section>
-
-
-        <!-- ==================================================
-             PORTFOLIO
-        ================================================== -->
-
-        <section
-            class="section"
-            id="portfolio"
-        >
-
-            <div class="section-intro">
-
-                <div>
-                    <label>PUBLIC PROOF</label>
-                    <h2>Build → Push → Show.</h2>
-
-                    <p>
-                        Don't fake expertise. Document actual work.
-                    </p>
-                </div>
-
-            </div>
-
-
-            <div class="proof-grid">
-
-                <!-- GITHUB -->
-
-                <article class="proof-card">
-
-                    <div class="proof-logo">
-                        GH
-                    </div>
-
-                    <div class="proof-body">
-
-                        <label>GITHUB</label>
-
-                        <h3>
-                            Build your public code history.
-                        </h3>
-
-                        <p>
-                            Repositories, README files, meaningful commits,
-                            projects and eventually open-source contributions.
-                        </p>
-
-                        <div class="check-list">
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="github"
-                                    id="githubProfile"
-                                >
-                                <span>
-                                    GitHub profile cleaned
-                                </span>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="github"
-                                    id="githubRepo"
-                                >
-                                <span>
-                                    First serious repository pushed
-                                </span>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="github"
-                                    id="githubReadme"
-                                >
-                                <span>
-                                    README completed
-                                </span>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="github"
-                                    id="githubProject"
-                                >
-                                <span>
-                                    Project deployed + linked
-                                </span>
-                            </label>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-
-                <!-- LINKEDIN -->
-
-                <article class="proof-card">
-
-                    <div class="proof-logo linkedin">
-                        in
-                    </div>
-
-                    <div class="proof-body">
-
-                        <label>LINKEDIN</label>
-
-                        <h3>
-                            Document the journey.
-                        </h3>
-
-                        <p>
-                            Share what you actually learned, built and shipped.
-                            No fake expertise.
-                        </p>
-
-                        <div class="check-list">
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="linkedin"
-                                    id="linkedinProfile"
-                                >
-                                <span>
-                                    Profile optimized
-                                </span>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="linkedin"
-                                    id="linkedinPost"
-                                >
-                                <span>
-                                    First learning post
-                                </span>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="linkedin"
-                                    id="linkedinProject"
-                                >
-                                <span>
-                                    First project showcased
-                                </span>
-                            </label>
-
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    data-special="linkedin"
-                                    id="linkedinJourney"
-                                >
-                                <span>
-                                    Journey update published
-                                </span>
-                            </label>
-
-                        </div>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-
-            <div class="rules">
-
-                <label>PORTFOLIO RULES</label>
-
-                <div class="rules-grid">
-
-                    <div>
-                        <small>01</small>
-                        <strong>No fake skills.</strong>
-                        <p>
-                            Claim only what you can demonstrate.
-                        </p>
-                    </div>
-
-                    <div>
-                        <small>02</small>
-                        <strong>Projects > certificates.</strong>
-                        <p>
-                            Build things people can inspect.
-                        </p>
-                    </div>
-
-                    <div>
-                        <small>03</small>
-                        <strong>Consistency > motivation.</strong>
-                        <p>
-                            Small progress compounds.
-                        </p>
-                    </div>
-
-                    <div>
-                        <small>04</small>
-                        <strong>Ship publicly.</strong>
-                        <p>
-                            GitHub + LinkedIn become proof.
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- ================= TASK MODAL ================= -->
-
-    <div
-        class="modal"
-        id="taskModal"
-    >
-
-        <div class="modal-box">
-
-            <button
-                class="modal-close"
-                id="modalClose"
-            >
-                ×
+          </div>
+
+          <p id="todayMissionDescription">
+            Your next incomplete roadmap task will appear here.
+          </p>
+
+          <div class="mission-actions">
+            <button class="complete-large" id="todayCompleteBtn">
+              ✓ Mark Complete
             </button>
 
-            <label id="modalPhase">
-                PHASE 01
-            </label>
+            <button class="resource-large" id="todayResourceBtn">
+              ▶ Watch Resource
+            </button>
+          </div>
 
-            <h2 id="modalTitle">
-                Task
-            </h2>
+        </div>
 
-            <p id="modalDescription">
-                Description
+
+        <div class="command-card">
+
+          <div class="command-row">
+            <span>COMPLETED</span>
+            <strong id="quickCompleted">0</strong>
+          </div>
+
+          <div class="command-row">
+            <span>REMAINING</span>
+            <strong id="quickRemaining">0</strong>
+          </div>
+
+          <div class="command-row">
+            <span>PHASES</span>
+            <strong id="quickPhases">7</strong>
+          </div>
+
+          <div class="command-row">
+            <span>PROJECTS</span>
+            <strong id="quickProjects">0 / 8</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ROADMAP -->
+    <section class="section-block" id="roadmap">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-kicker">THE ENGINEERING PATH</span>
+          <h2>Complete CSE Roadmap</h2>
+          <p>
+            Don't just consume tutorials. Learn → code → build → document.
+          </p>
+        </div>
+
+        <div class="roadmap-controls">
+
+          <div class="search-box">
+            <span>⌕</span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search C++, React, SQL..."
+            />
+            <kbd>CTRL K</kbd>
+          </div>
+
+          <select id="phaseSelect">
+            <option value="all">All Phases</option>
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="roadmap-list" id="roadmapList">
+        <!-- JS -->
+      </div>
+
+    </section>
+
+
+    <!-- PROJECT LAB -->
+    <section class="section-block" id="projects">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-kicker">PROOF OF SKILL</span>
+          <h2>Project Lab</h2>
+          <p>
+            Skills become valuable when you can prove you built something.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="projects-grid" id="projectsGrid">
+        <!-- JS -->
+      </div>
+
+    </section>
+
+
+    <!-- PUBLIC PROGRESS -->
+    <section class="section-block" id="social">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-kicker">BUILD IN PUBLIC</span>
+          <h2>GitHub + LinkedIn</h2>
+          <p>
+            Build a public trail of genuine work. No fake experience.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="social-grid">
+
+        <!-- GITHUB -->
+        <article class="social-card github-card">
+
+          <div class="social-header">
+            <div class="social-logo">GH</div>
+
+            <div>
+              <span>GITHUB</span>
+              <h3>Engineering Evidence</h3>
+            </div>
+          </div>
+
+          <div class="social-progress">
+            <div class="social-progress-top">
+              <span id="githubProgressText">0 / 6</span>
+              <strong id="githubPercent">0%</strong>
+            </div>
+
+            <div class="progress-track">
+              <div id="githubProgressBar"></div>
+            </div>
+          </div>
+
+          <div class="check-list" id="githubList">
+            <!-- JS -->
+          </div>
+
+        </article>
+
+
+        <!-- LINKEDIN -->
+        <article class="social-card linkedin-card">
+
+          <div class="social-header">
+            <div class="social-logo">in</div>
+
+            <div>
+              <span>LINKEDIN</span>
+              <h3>Public Learning Trail</h3>
+            </div>
+          </div>
+
+          <div class="social-progress">
+            <div class="social-progress-top">
+              <span id="linkedinProgressText">0 / 6</span>
+              <strong id="linkedinPercent">0%</strong>
+            </div>
+
+            <div class="progress-track">
+              <div id="linkedinProgressBar"></div>
+            </div>
+          </div>
+
+          <div class="check-list" id="linkedinList">
+            <!-- JS -->
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- SYSTEM -->
+    <section class="section-block" id="system">
+
+      <div class="section-heading">
+
+        <div>
+          <span class="section-kicker">LOCAL SYSTEM</span>
+          <h2>Progress Control</h2>
+        </div>
+
+      </div>
+
+
+      <div class="system-grid">
+
+        <div class="system-card">
+
+          <div class="system-icon">▣</div>
+
+          <div>
+            <strong>Local Progress</strong>
+            <p>
+              Your completion data is stored in this browser using
+              localStorage.
             </p>
+          </div>
 
-            <div class="modal-info">
-
-                <div>
-                    <span>XP</span>
-                    <strong id="modalXP">20</strong>
-                </div>
-
-                <div>
-                    <span>STATUS</span>
-                    <strong id="modalStatus">ACTIVE</strong>
-                </div>
-
-            </div>
-
-            <a
-                id="modalResource"
-                class="resource-big"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Open Learning Resource ↗
-            </a>
-
-            <button
-                class="btn primary full"
-                id="modalComplete"
-            >
-                Mark Complete ✓
-            </button>
+          <span class="system-status">ACTIVE</span>
 
         </div>
 
-    </div>
 
+        <div class="system-card">
 
-    <!-- ================= SETTINGS MODAL ================= -->
+          <div class="system-icon">↓</div>
 
-    <div
-        class="modal"
-        id="settingsModal"
-    >
+          <div>
+            <strong>Export Backup</strong>
+            <p>
+              Download your roadmap progress as a JSON backup.
+            </p>
+          </div>
 
-        <div class="modal-box settings-box">
-
-            <button
-                class="modal-close"
-                id="settingsClose"
-            >
-                ×
-            </button>
-
-            <label>SYSTEM SETTINGS</label>
-
-            <h2>Command Center</h2>
-
-            <div class="setting">
-
-                <div>
-                    <strong>Mission Start Date</strong>
-                    <span>
-                        Day counter starts from this date.
-                    </span>
-                </div>
-
-                <input
-                    type="date"
-                    id="startDateInput"
-                >
-
-            </div>
-
-            <div class="setting">
-
-                <div>
-                    <strong>Animations</strong>
-                    <span>
-                        Keep enabled for the full experience.
-                    </span>
-                </div>
-
-                <label class="switch">
-                    <input
-                        type="checkbox"
-                        id="animationToggle"
-                        checked
-                    >
-                    <span></span>
-                </label>
-
-            </div>
-
-            <button
-                class="btn primary full"
-                id="saveSettings"
-            >
-                Save Settings
-            </button>
+          <button class="system-btn" id="systemExport">
+            Export
+          </button>
 
         </div>
 
+
+        <div class="system-card">
+
+          <div class="system-icon">↑</div>
+
+          <div>
+            <strong>Import Backup</strong>
+            <p>
+              Restore progress from a previous backup file.
+            </p>
+          </div>
+
+          <button class="system-btn" id="systemImport">
+            Import
+          </button>
+
+        </div>
+
+
+        <div class="system-card danger-card">
+
+          <div class="system-icon">!</div>
+
+          <div>
+            <strong>Reset Everything</strong>
+            <p>
+              Clears all completed tasks, notes and progress.
+            </p>
+          </div>
+
+          <button class="system-btn danger" id="systemReset">
+            Reset
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <footer class="footer">
+      <div>
+        ABHI'S CSE OS
+      </div>
+
+      <span>
+        Built for the journey from zero → software engineer.
+      </span>
+
+      <strong>
+        START: 08.10.2026
+      </strong>
+    </footer>
+
+  </main>
+
+
+  <!-- TASK MODAL -->
+  <div class="modal-backdrop" id="taskModal">
+
+    <div class="task-modal">
+
+      <button class="modal-close" id="modalClose">
+        ×
+      </button>
+
+      <div class="modal-kicker">
+        TASK DETAILS
+      </div>
+
+      <h2 id="modalTitle">
+        Task
+      </h2>
+
+      <div class="modal-meta">
+        <span id="modalPhase">PHASE</span>
+        <span id="modalLevel">LEVEL</span>
+        <span id="modalCreator">CREATOR</span>
+      </div>
+
+      <p id="modalDescription">
+        Description
+      </p>
+
+      <div class="notes-title">
+        PERSONAL NOTES
+      </div>
+
+      <textarea
+        id="modalNotes"
+        placeholder="Write what you learned, what confused you, project ideas..."
+      ></textarea>
+
+      <div class="modal-actions">
+
+        <button class="complete-large" id="modalComplete">
+          ✓ Mark Complete
+        </button>
+
+        <button class="resource-large" id="modalResource">
+          ▶ Watch Resource
+        </button>
+
+      </div>
+
     </div>
 
-
-    <!-- TOAST -->
-
-    <div
-        class="toast"
-        id="toast"
-    >
-        <span>✓</span>
-        <p>Saved</p>
-    </div>
+  </div>
 
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>
