@@ -1,2872 +1,1088 @@
-/* =========================================================
-   ABHI'S CSE MASTER ROADMAP
-   script.js
+/* =========================================
+   ABHI'S CSE ROADMAP TRACKER
    Start Date: 08 October 2026
-   ========================================================= */
+========================================= */
 
-"use strict";
-
-/* =========================================================
-   CONFIG
-   ========================================================= */
-
-const CONFIG = {
-    startDate: "2026-10-08",
-    storageKey: "abhis-cse-roadmap-v1",
-
-    selectors: {
-        dayNumber: ".day-number",
-        dayLabel: ".day-label",
-        progressFill: ".progress-fill",
-        progressPercent: ".progress-percent",
-        totalCompleted: "[data-total-completed]",
-        totalTasks: "[data-total-tasks]",
-        currentStreak: "[data-current-streak]",
-        bestStreak: "[data-best-streak]",
-        completionRate: "[data-completion-rate]",
-        searchInput: "[data-search]",
-        phaseCard: ".phase-card",
-        taskCard: ".task-card",
-        taskComplete: ".task-complete",
-        resourceButton: ".resource-btn",
-        resourceModal: ".modal-backdrop",
-        sidebar: ".sidebar",
-        mobileMenu: "[data-mobile-menu]",
-        sidebarClose: "[data-sidebar-close]",
-        phaseToggle: "[data-phase-toggle]",
-        toastContainer: ".toast-container"
-    }
-};
-
-
-/* =========================================================
-   RESOURCE DATABASE
-   =========================================================
-   Replace/add URLs anytime you want.
-   Resources are intentionally grouped by skill.
-   ========================================================= */
-
-const RESOURCES = {
-
-    "computer-basics": {
-        title: "Computer Fundamentals",
-        description: "Windows, files, folders, extensions, software installation, terminal and troubleshooting.",
-        resources: [
-            {
-                title: "Computer Fundamentals — Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+computer+fundamentals+hindi"
-            },
-            {
-                title: "Windows & Computer Basics",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+computer+fundamentals+hindi"
-            }
-        ]
-    },
-
-    "command-line": {
-        title: "Command Line / Terminal",
-        description: "Learn CMD, PowerShell, terminal navigation and basic commands.",
-        resources: [
-            {
-                title: "Windows Command Prompt Tutorial",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+CMD+commands+hindi"
-            },
-            {
-                title: "Linux Terminal Basics",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Linux+commands+hindi"
-            }
-        ]
-    },
-
-    "cpp": {
-        title: "C++ Programming",
-        description: "Complete C++ fundamentals from absolute beginner level.",
-        resources: [
-            {
-                title: "C++ Complete Course in Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+C%2B%2B+complete+course+hindi"
-            },
-            {
-                title: "C++ Programming in Hindi",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+C%2B%2B+course+hindi"
-            }
-        ]
-    },
-
-    "cpp-oop": {
-        title: "C++ OOP",
-        description: "Classes, objects, constructors, inheritance, polymorphism and encapsulation.",
-        resources: [
-            {
-                title: "OOPs in C++ Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+OOP+C%2B%2B+hindi"
-            },
-            {
-                title: "C++ OOP Concepts",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+OOP+C%2B%2B+hindi"
-            }
-        ]
-    },
-
-    "stl": {
-        title: "C++ STL",
-        description: "Vector, pair, map, set, stack, queue, priority queue and algorithms.",
-        resources: [
-            {
-                title: "C++ STL in Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+C%2B%2B+STL+hindi"
-            },
-            {
-                title: "C++ STL for DSA",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+C%2B%2B+STL+DSA"
-            }
-        ]
-    },
-
-    "dsa": {
-        title: "Data Structures & Algorithms",
-        description: "Core DSA roadmap from arrays to graphs and dynamic programming.",
-        resources: [
-            {
-                title: "DSA in C++ Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+DSA+C%2B%2B+hindi"
-            },
-            {
-                title: "DSA Supreme / C++",
-                creator: "Love Babbar",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Love+Babbar+DSA+Supreme+C%2B%2B"
-            },
-            {
-                title: "DSA in C++",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+DSA+C%2B%2B+hindi"
-            }
-        ]
-    },
-
-    "git": {
-        title: "Git & GitHub",
-        description: "Version control, repositories, commits, branches and collaboration.",
-        resources: [
-            {
-                title: "Git & GitHub Complete Course",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Git+GitHub+course+hindi"
-            },
-            {
-                title: "Git & GitHub in Hindi",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+Git+GitHub+hindi"
-            }
-        ]
-    },
-
-    "html": {
-        title: "HTML",
-        description: "Semantic HTML, forms, tables, accessibility and modern structure.",
-        resources: [
-            {
-                title: "HTML Complete Course",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+HTML+complete+course+hindi"
-            },
-            {
-                title: "HTML Tutorial",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+HTML+Hindi"
-            }
-        ]
-    },
-
-    "css": {
-        title: "CSS",
-        description: "Modern CSS, layouts, responsive design, animations and UI architecture.",
-        resources: [
-            {
-                title: "CSS Complete Course",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+CSS+complete+course+hindi"
-            },
-            {
-                title: "CSS Tutorial Hindi",
-                creator: "Thapa Technical",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Thapa+Technical+CSS+Hindi"
-            }
-        ]
-    },
-
-    "javascript": {
-        title: "JavaScript",
-        description: "Modern JavaScript from fundamentals to asynchronous programming and APIs.",
-        resources: [
-            {
-                title: "JavaScript Complete Course",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+JavaScript+complete+course+hindi"
-            },
-            {
-                title: "JavaScript Course",
-                creator: "Thapa Technical",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Thapa+Technical+JavaScript+course+hindi"
-            },
-            {
-                title: "JavaScript Hindi",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+JavaScript+hindi"
-            }
-        ]
-    },
-
-    "dom": {
-        title: "DOM & Browser APIs",
-        description: "DOM manipulation, events, forms, localStorage and browser APIs.",
-        resources: [
-            {
-                title: "JavaScript DOM Tutorial",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+DOM+JavaScript+hindi"
-            },
-            {
-                title: "DOM Manipulation",
-                creator: "Thapa Technical",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Thapa+Technical+DOM+JavaScript"
-            }
-        ]
-    },
-
-    "react": {
-        title: "React.js",
-        description: "Components, props, state, hooks, routing, APIs and production patterns.",
-        resources: [
-            {
-                title: "React JS Course Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+React+JS+course+hindi"
-            },
-            {
-                title: "React JS Hindi",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+React+JS+hindi"
-            },
-            {
-                title: "React Tutorial Hindi",
-                creator: "Thapa Technical",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Thapa+Technical+React+JS+hindi"
-            }
-        ]
-    },
-
-    "node": {
-        title: "Node.js",
-        description: "Backend JavaScript, modules, filesystem, HTTP and server fundamentals.",
-        resources: [
-            {
-                title: "Node.js Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Node.js+Hindi"
-            },
-            {
-                title: "Node.js Backend",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Node.js+hindi"
-            }
-        ]
-    },
-
-    "express": {
-        title: "Express.js",
-        description: "REST APIs, routing, middleware and backend architecture.",
-        resources: [
-            {
-                title: "Express.js Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Express.js+Hindi"
-            },
-            {
-                title: "Express JS Backend",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Express+JS+hindi"
-            }
-        ]
-    },
-
-    "sql": {
-        title: "SQL & PostgreSQL",
-        description: "Queries, joins, indexes, constraints, transactions and database design.",
-        resources: [
-            {
-                title: "SQL Complete Course Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+SQL+complete+course+hindi"
-            },
-            {
-                title: "SQL Database Hindi",
-                creator: "Gate Smashers",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Gate+Smashers+SQL+DBMS+hindi"
-            }
-        ]
-    },
-
-    "mongodb": {
-        title: "MongoDB",
-        description: "NoSQL concepts, collections, documents, queries and application integration.",
-        resources: [
-            {
-                title: "MongoDB Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+MongoDB+Hindi"
-            },
-            {
-                title: "MongoDB Course Hindi",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+MongoDB+hindi"
-            }
-        ]
-    },
-
-    "auth": {
-        title: "Authentication & Authorization",
-        description: "JWT, sessions, cookies, password hashing, OAuth and authorization.",
-        resources: [
-            {
-                title: "JWT Authentication Node.js",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+JWT+authentication+nodejs"
-            },
-            {
-                title: "Authentication Node.js Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+authentication+nodejs+hindi"
-            }
-        ]
-    },
-
-    "python": {
-        title: "Python",
-        description: "Python fundamentals for automation, data, AI and backend development.",
-        resources: [
-            {
-                title: "Python Complete Course Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Python+complete+course+hindi"
-            },
-            {
-                title: "Python Hindi",
-                creator: "Apna College",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Apna+College+Python+hindi"
-            }
-        ]
-    },
-
-    "linux": {
-        title: "Linux",
-        description: "Linux commands, permissions, processes, SSH and package management.",
-        resources: [
-            {
-                title: "Linux Complete Course Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Linux+course+hindi"
-            },
-            {
-                title: "Linux for Beginners",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Linux+Hindi"
-            }
-        ]
-    },
-
-    "os": {
-        title: "Operating Systems",
-        description: "Processes, threads, memory, scheduling, deadlocks and file systems.",
-        resources: [
-            {
-                title: "Operating System Hindi",
-                creator: "Gate Smashers",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Gate+Smashers+Operating+System+Hindi"
-            },
-            {
-                title: "OS Concepts",
-                creator: "Knowledge Gate",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Knowledge+Gate+Operating+System+Hindi"
-            }
-        ]
-    },
-
-    "dbms": {
-        title: "DBMS",
-        description: "Transactions, ACID, normalization, indexing and concurrency.",
-        resources: [
-            {
-                title: "DBMS Complete Course Hindi",
-                creator: "Gate Smashers",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Gate+Smashers+DBMS+complete+course+hindi"
-            },
-            {
-                title: "DBMS Hindi",
-                creator: "Knowledge Gate",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Knowledge+Gate+DBMS+Hindi"
-            }
-        ]
-    },
-
-    "networking": {
-        title: "Computer Networks",
-        description: "IP, DNS, HTTP, HTTPS, TCP, UDP, ports, REST, WebSockets and CORS.",
-        resources: [
-            {
-                title: "Computer Networks Hindi",
-                creator: "Gate Smashers",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Gate+Smashers+Computer+Networks+Hindi"
-            },
-            {
-                title: "Networking Basics Hindi",
-                creator: "Knowledge Gate",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Knowledge+Gate+Computer+Networks+Hindi"
-            }
-        ]
-    },
-
-    "excel": {
-        title: "Excel",
-        description: "Formulas, lookups, pivots, data cleaning and charts.",
-        resources: [
-            {
-                title: "Excel Complete Course Hindi",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Excel+complete+course+hindi"
-            },
-            {
-                title: "Excel Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Excel+Hindi+course+India"
-            }
-        ]
-    },
-
-    "docker": {
-        title: "Docker",
-        description: "Images, containers, Dockerfiles, volumes, networks and Compose.",
-        resources: [
-            {
-                title: "Docker Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Docker+hindi"
-            },
-            {
-                title: "Docker Course Hindi",
-                creator: "Chai aur Code",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Docker+hindi"
-            }
-        ]
-    },
-
-    "aws": {
-        title: "AWS",
-        description: "EC2, S3, IAM, RDS, Lambda and cloud fundamentals.",
-        resources: [
-            {
-                title: "AWS Cloud Hindi",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+AWS+cloud+hindi"
-            },
-            {
-                title: "AWS for Beginners Hindi",
-                creator: "Technical Guftgu",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=AWS+beginners+hindi+India"
-            }
-        ]
-    },
-
-    "ai": {
-        title: "AI / LLM",
-        description: "LLMs, prompting, APIs, embeddings, RAG, agents and evaluation.",
-        resources: [
-            {
-                title: "Generative AI Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Generative+AI+hindi"
-            },
-            {
-                title: "Generative AI / LLM",
-                creator: "Krish Naik",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Krish+Naik+Generative+AI+LLM"
-            },
-            {
-                title: "AI Engineering",
-                creator: "CampusX",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CampusX+Generative+AI+Hindi"
-            }
-        ]
-    },
-
-    "cybersecurity": {
-        title: "Cybersecurity",
-        description: "Networking, Linux, HTTP, authentication, OWASP and secure coding.",
-        resources: [
-            {
-                title: "Cyber Security Hindi",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Cyber+Security+Hindi"
-            },
-            {
-                title: "Ethical Hacking Fundamentals",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+ethical+hacking+hindi"
-            }
-        ]
-    },
-
-    "react-native": {
-        title: "React Native + Expo",
-        description: "Cross-platform mobile app development using React Native and Expo.",
-        resources: [
-            {
-                title: "React Native Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+React+Native+hindi"
-            },
-            {
-                title: "React Native Expo",
-                creator: "Thapa Technical",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Thapa+Technical+React+Native+Expo"
-            }
-        ]
-    },
-
-    "system-design": {
-        title: "System Design",
-        description: "Scalability, caching, load balancing, queues, databases and distributed systems.",
-        resources: [
-            {
-                title: "System Design Hindi",
-                creator: "CodeWithHarry",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=CodeWithHarry+system+design+hindi"
-            },
-            {
-                title: "System Design for Beginners",
-                creator: "Concept && Coding",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=Concept+and+Coding+system+design"
-            }
-        ]
-    },
-
-    "uiux": {
-        title: "UI / UX",
-        description: "Typography, spacing, visual hierarchy, responsive design and Figma.",
-        resources: [
-            {
-                title: "UI UX Design Hindi",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+UI+UX+Hindi"
-            },
-            {
-                title: "Figma Hindi",
-                creator: "WsCube Tech",
-                type: "YouTube",
-                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Figma+Hindi"
-            }
-        ]
-    }
-};
-
-
-/* =========================================================
-   STATE
-   ========================================================= */
+const START_DATE = new Date("2026-10-08T00:00:00");
+const STORAGE_KEY = "abhis_cse_tracker_v1";
 
 const defaultState = {
-    completedTasks: {},
-    completedProjects: {},
-    githubChecklist: {},
-    linkedinChecklist: {},
-    activity: {},
-    settings: {
-        sound: true,
-        compactMode: false
-    },
-    lastVisit: null,
-    createdAt: new Date().toISOString()
+  completedTasks: [],
+  careerChecks: [],
+  activityDates: []
 };
 
 let state = loadState();
 
+/* =========================================
+   RESOURCE DATA
+========================================= */
 
-/* =========================================================
-   DOM HELPERS
-   ========================================================= */
+const resources = {
+  computer: {
+    title: "Computer Fundamentals",
+    description:
+      "Computer basics, hardware, software, operating systems, files, memory and how a computer actually works.",
+    links: [
+      {
+        title: "Computer Fundamentals — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+computer+fundamentals+hindi"
+      },
+      {
+        title: "Computer Fundamentals — WsCube Tech",
+        url: "https://www.youtube.com/results?search_query=WsCube+Tech+computer+fundamentals+hindi"
+      }
+    ]
+  },
 
-const $ = (selector, parent = document) => {
-    return parent.querySelector(selector);
+  terminal: {
+    title: "Command Line / Terminal",
+    description:
+      "Learn Windows terminal, commands, paths, files, folders and basic command-line workflow.",
+    links: [
+      {
+        title: "Windows CMD / Terminal — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+CMD+terminal+hindi"
+      },
+      {
+        title: "Linux Terminal — WsCube Tech",
+        url: "https://www.youtube.com/results?search_query=WsCube+Tech+Linux+terminal+hindi"
+      }
+    ]
+  },
+
+  cpp: {
+    title: "C++ Programming",
+    description:
+      "Build your programming foundation with variables, conditions, loops, functions, arrays, strings and problem solving.",
+    links: [
+      {
+        title: "C++ Full Course Hindi — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+C%2B%2B+full+course+hindi"
+      },
+      {
+        title: "C++ — Apna College",
+        url: "https://www.youtube.com/results?search_query=Apna+College+C%2B%2B+hindi"
+      }
+    ]
+  },
+
+  "cpp-oop": {
+    title: "C++ OOP",
+    description:
+      "Learn classes, objects, constructors, inheritance, polymorphism, encapsulation and abstraction.",
+    links: [
+      {
+        title: "OOP in C++ — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+OOP+C%2B%2B+hindi"
+      },
+      {
+        title: "C++ OOP — Apna College",
+        url: "https://www.youtube.com/results?search_query=Apna+College+C%2B%2B+OOP+hindi"
+      }
+    ]
+  },
+
+  git: {
+    title: "Git & GitHub",
+    description:
+      "Version control, repositories, commits, branches, pushing code and building a proper GitHub profile.",
+    links: [
+      {
+        title: "Git & GitHub — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+Git+GitHub+hindi"
+      },
+      {
+        title: "Git & GitHub — Apna College",
+        url: "https://www.youtube.com/results?search_query=Apna+College+Git+GitHub+hindi"
+      }
+    ]
+  },
+
+  dsa: {
+    title: "Data Structures & Algorithms",
+    description:
+      "Arrays, strings, linked lists, stacks, queues, trees, graphs, recursion, sorting, searching and complexity.",
+    links: [
+      {
+        title: "DSA — Apna College",
+        url: "https://www.youtube.com/results?search_query=Apna+College+DSA+hindi"
+      },
+      {
+        title: "DSA — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+DSA+hindi"
+      }
+    ]
+  },
+
+  html: {
+    title: "HTML",
+    description:
+      "Learn semantic HTML, forms, links, images, tables, accessibility and modern page structure.",
+    links: [
+      {
+        title: "HTML — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+HTML+course+hindi"
+      },
+      {
+        title: "HTML — Thapa Technical",
+        url: "https://www.youtube.com/results?search_query=Thapa+Technical+HTML+hindi"
+      }
+    ]
+  },
+
+  css: {
+    title: "CSS",
+    description:
+      "Master layouts, Flexbox, Grid, responsive design, animations, transitions and modern UI styling.",
+    links: [
+      {
+        title: "CSS — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+CSS+course+hindi"
+      },
+      {
+        title: "CSS — Thapa Technical",
+        url: "https://www.youtube.com/results?search_query=Thapa+Technical+CSS+hindi"
+      }
+    ]
+  },
+
+  javascript: {
+    title: "JavaScript",
+    description:
+      "Variables, functions, arrays, objects, DOM, events, async JavaScript, APIs and modern ES6+.",
+    links: [
+      {
+        title: "JavaScript — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+JavaScript+hindi"
+      },
+      {
+        title: "JavaScript — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+JavaScript+course+hindi"
+      }
+    ]
+  },
+
+  react: {
+    title: "React",
+    description:
+      "Components, props, state, hooks, routing, API calls and building real frontend applications.",
+    links: [
+      {
+        title: "React — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+React+hindi"
+      },
+      {
+        title: "React — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+React+hindi"
+      }
+    ]
+  },
+
+  node: {
+    title: "Node.js",
+    description:
+      "Learn backend JavaScript, modules, HTTP, APIs, npm and server-side application development.",
+    links: [
+      {
+        title: "Node.js — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+Node.js+hindi"
+      },
+      {
+        title: "Node.js — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Node.js+hindi"
+      }
+    ]
+  },
+
+  express: {
+    title: "Express.js",
+    description:
+      "Build REST APIs, routes, middleware, controllers and backend applications using Express.",
+    links: [
+      {
+        title: "Express.js — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Express.js+hindi"
+      },
+      {
+        title: "Express.js — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+Express.js+hindi"
+      }
+    ]
+  },
+
+  sql: {
+    title: "SQL & Databases",
+    description:
+      "Tables, queries, relationships, joins, indexes, CRUD and database fundamentals.",
+    links: [
+      {
+        title: "SQL — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+SQL+course+hindi"
+      },
+      {
+        title: "SQL — Gate Smashers",
+        url: "https://www.youtube.com/results?search_query=Gate+Smashers+SQL+hindi"
+      }
+    ]
+  },
+
+  auth: {
+    title: "Authentication",
+    description:
+      "Understand login systems, sessions, tokens, cookies, password security and authorization.",
+    links: [
+      {
+        title: "Authentication — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+authentication+hindi"
+      },
+      {
+        title: "JWT Authentication — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+JWT+authentication+hindi"
+      }
+    ]
+  },
+
+  python: {
+    title: "Python",
+    description:
+      "Python syntax, functions, data structures, modules, files and the foundation for automation and AI.",
+    links: [
+      {
+        title: "Python — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+Python+course+hindi"
+      },
+      {
+        title: "Python — Apna College",
+        url: "https://www.youtube.com/results?search_query=Apna+College+Python+hindi"
+      }
+    ]
+  },
+
+  linux: {
+    title: "Linux",
+    description:
+      "Linux filesystem, commands, permissions, processes, packages and developer workflow.",
+    links: [
+      {
+        title: "Linux — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+Linux+hindi"
+      },
+      {
+        title: "Linux — WsCube Tech",
+        url: "https://www.youtube.com/results?search_query=WsCube+Tech+Linux+hindi"
+      }
+    ]
+  },
+
+  docker: {
+    title: "Docker",
+    description:
+      "Containers, images, Dockerfiles, volumes, networks and deploying applications consistently.",
+    links: [
+      {
+        title: "Docker — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+Docker+hindi"
+      },
+      {
+        title: "Docker — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Docker+hindi"
+      }
+    ]
+  },
+
+  aws: {
+    title: "AWS / Cloud",
+    description:
+      "Understand cloud computing, servers, storage, deployment and basic AWS services.",
+    links: [
+      {
+        title: "AWS — WsCube Tech",
+        url: "https://www.youtube.com/results?search_query=WsCube+Tech+AWS+hindi"
+      },
+      {
+        title: "AWS — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+AWS+hindi"
+      }
+    ]
+  },
+
+  ai: {
+    title: "AI & Machine Learning",
+    description:
+      "Python-based AI/ML foundations, datasets, models, training, evaluation and practical projects.",
+    links: [
+      {
+        title: "AI / ML — CampusX",
+        url: "https://www.youtube.com/results?search_query=CampusX+machine+learning+hindi"
+      },
+      {
+        title: "Machine Learning — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+machine+learning+hindi"
+      }
+    ]
+  },
+
+  os: {
+    title: "Operating Systems",
+    description:
+      "Processes, threads, memory management, scheduling, deadlocks, file systems and OS fundamentals.",
+    links: [
+      {
+        title: "Operating Systems — Gate Smashers",
+        url: "https://www.youtube.com/results?search_query=Gate+Smashers+Operating+System+hindi"
+      }
+    ]
+  },
+
+  dbms: {
+    title: "DBMS",
+    description:
+      "Database architecture, normalization, transactions, keys, SQL and database design.",
+    links: [
+      {
+        title: "DBMS — Gate Smashers",
+        url: "https://www.youtube.com/results?search_query=Gate+Smashers+DBMS+hindi"
+      }
+    ]
+  },
+
+  networking: {
+    title: "Computer Networks",
+    description:
+      "OSI/TCP-IP, IP addressing, DNS, HTTP, TCP, UDP, routing and networking fundamentals.",
+    links: [
+      {
+        title: "Computer Networks — Gate Smashers",
+        url: "https://www.youtube.com/results?search_query=Gate+Smashers+Computer+Networks+hindi"
+      },
+      {
+        title: "Networking — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+computer+networks+hindi"
+      }
+    ]
+  },
+
+  "react-native": {
+    title: "React Native",
+    description:
+      "Build Android/iOS applications with React Native, Expo, navigation, components and APIs.",
+    links: [
+      {
+        title: "React Native — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+React+Native+hindi"
+      },
+      {
+        title: "React Native — Chai aur Code",
+        url: "https://www.youtube.com/results?search_query=Chai+aur+Code+React+Native+hindi"
+      }
+    ]
+  },
+
+  cybersecurity: {
+    title: "Cybersecurity",
+    description:
+      "Learn defensive security fundamentals, networking, authentication, common vulnerabilities and secure development.",
+    links: [
+      {
+        title: "Cyber Security — WsCube Tech",
+        url: "https://www.youtube.com/results?search_query=WsCube+Tech+cyber+security+hindi"
+      },
+      {
+        title: "OWASP Web Security",
+        url: "https://owasp.org/www-project-top-ten/"
+      }
+    ]
+  },
+
+  "system-design": {
+    title: "System Design",
+    description:
+      "Learn how large applications are structured: APIs, databases, caching, queues, scaling and reliability.",
+    links: [
+      {
+        title: "System Design — CodeWithHarry",
+        url: "https://www.youtube.com/results?search_query=CodeWithHarry+system+design+hindi"
+      },
+      {
+        title: "System Design — Concept && Architecture",
+        url: "https://www.youtube.com/results?search_query=system+design+hindi+software+engineering"
+      }
+    ]
+  }
 };
 
-const $$ = (selector, parent = document) => {
-    return Array.from(parent.querySelectorAll(selector));
-};
 
-
-/* =========================================================
-   INITIALIZATION
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    initializeApplication();
-
-});
-
-
-function initializeApplication() {
-
-    updateDayCounter();
-    collectAndNormalizeTasks();
-    restoreTaskState();
-    restoreChecklistState();
-    restoreSettings();
-
-    setupTaskInteractions();
-    setupResourceButtons();
-    setupSearch();
-    setupPhaseToggles();
-    setupMobileNavigation();
-    setupSettings();
-    setupExportImport();
-
-    updateDashboard();
-    updateAllPhaseProgress();
-    updateAnalytics();
-
-    recordTodayVisit();
-
-    setupKeyboardShortcuts();
-
-}
-
-
-/* =========================================================
+/* =========================================
    LOCAL STORAGE
-   ========================================================= */
+========================================= */
 
 function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
 
-    try {
-
-        const saved = localStorage.getItem(CONFIG.storageKey);
-
-        if (!saved) {
-            return structuredClone(defaultState);
-        }
-
-        const parsed = JSON.parse(saved);
-
-        return {
-            ...structuredClone(defaultState),
-            ...parsed,
-            completedTasks: parsed.completedTasks || {},
-            completedProjects: parsed.completedProjects || {},
-            githubChecklist: parsed.githubChecklist || {},
-            linkedinChecklist: parsed.linkedinChecklist || {},
-            activity: parsed.activity || {},
-            settings: {
-                ...defaultState.settings,
-                ...(parsed.settings || {})
-            }
-        };
-
-    } catch (error) {
-
-        console.warn("Could not load saved roadmap state.", error);
-
-        return structuredClone(defaultState);
+    if (!saved) {
+      return { ...defaultState };
     }
+
+    const parsed = JSON.parse(saved);
+
+    return {
+      completedTasks: Array.isArray(parsed.completedTasks)
+        ? parsed.completedTasks
+        : [],
+      careerChecks: Array.isArray(parsed.careerChecks)
+        ? parsed.careerChecks
+        : [],
+      activityDates: Array.isArray(parsed.activityDates)
+        ? parsed.activityDates
+        : []
+    };
+  } catch (error) {
+    console.error("Could not load tracker:", error);
+    return { ...defaultState };
+  }
 }
 
 
 function saveState() {
-
-    try {
-
-        localStorage.setItem(
-            CONFIG.storageKey,
-            JSON.stringify(state)
-        );
-
-    } catch (error) {
-
-        console.warn("Could not save roadmap state.", error);
-    }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
 
-/* =========================================================
-   DAY COUNTER
-   ========================================================= */
+/* =========================================
+   DATE HELPERS
+========================================= */
 
-function getToday() {
+function getTodayKey() {
+  const now = new Date();
 
-    const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
 
-    return new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-    );
-
-}
-
-
-function getStartDate() {
-
-    const [year, month, day] = CONFIG.startDate
-        .split("-")
-        .map(Number);
-
-    return new Date(year, month - 1, day);
+  return `${year}-${month}-${day}`;
 }
 
 
 function getDayNumber() {
+  const now = new Date();
 
-    const start = getStartDate();
-    const today = getToday();
+  const today = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
 
-    const difference =
-        Math.floor(
-            (today.getTime() - start.getTime()) /
-            (1000 * 60 * 60 * 24)
-        );
+  const start = new Date(
+    START_DATE.getFullYear(),
+    START_DATE.getMonth(),
+    START_DATE.getDate()
+  );
 
-    return difference + 1;
+  const difference = Math.floor(
+    (today - start) / 86400000
+  );
+
+  return difference + 1;
 }
 
 
 function updateDayCounter() {
+  const dayNumber = document.getElementById("dayNumber");
+  const dayText = document.getElementById("dayText");
 
-    const dayNumberElement = $(
-        CONFIG.selectors.dayNumber
-    );
+  if (!dayNumber || !dayText) return;
 
-    const labelElement = $(
-        CONFIG.selectors.dayLabel
-    );
+  const day = getDayNumber();
 
-    if (!dayNumberElement) {
-        return;
+  if (day < 1) {
+    const daysLeft = Math.abs(day - 1);
+
+    dayNumber.textContent = `T-${daysLeft}`;
+    dayText.textContent = "STARTS SOON";
+    return;
+  }
+
+  dayNumber.textContent = String(day).padStart(2, "0");
+  dayText.textContent = "ROADMAP DAY";
+}
+
+
+/* =========================================
+   TASK SETUP
+========================================= */
+
+const tasks = Array.from(document.querySelectorAll(".task"));
+const totalCount = document.getElementById("totalCount");
+
+if (totalCount) {
+  totalCount.textContent = tasks.length;
+}
+
+
+function getTaskId(task, index) {
+  return task.dataset.resource || `task-${index}`;
+}
+
+
+function restoreTasks() {
+  tasks.forEach((task, index) => {
+    const id = getTaskId(task, index);
+
+    if (state.completedTasks.includes(id)) {
+      task.classList.add("completed");
     }
-
-    const day = getDayNumber();
-
-    if (day < 1) {
-
-        const daysUntilStart = Math.abs(day - 1);
-
-        dayNumberElement.textContent =
-            `T-${daysUntilStart}`;
-
-        if (labelElement) {
-            labelElement.textContent =
-                "Days Until Journey";
-        }
-
-        return;
-    }
-
-    dayNumberElement.textContent =
-        String(day).padStart(2, "0");
-
-    if (labelElement) {
-        labelElement.textContent =
-            "Journey Day";
-    }
+  });
 }
 
 
-/* =========================================================
-   TASK NORMALIZATION
-   ========================================================= */
+/* =========================================
+   CAREER CHECKBOXES
+========================================= */
 
-function collectAndNormalizeTasks() {
+const careerChecks = Array.from(
+  document.querySelectorAll(".career-check")
+);
 
-    const taskCards = $$(".task-card");
-
-    taskCards.forEach((card, index) => {
-
-        if (!card.dataset.taskId) {
-
-            const titleElement =
-                card.querySelector(
-                    ".task-title, h3, h4, [data-task-title]"
-                );
-
-            const title =
-                titleElement?.textContent?.trim()
-                || `task-${index + 1}`;
-
-            card.dataset.taskId =
-                slugify(`${title}-${index + 1}`);
-        }
-
-        const resourceButton =
-            card.querySelector(".resource-btn");
-
-        if (
-            resourceButton &&
-            !resourceButton.dataset.resource
-        ) {
-
-            const text =
-                card.textContent.toLowerCase();
-
-            const key = guessResourceKey(text);
-
-            if (key) {
-                resourceButton.dataset.resource = key;
-            }
-        }
-    });
+function restoreCareerChecks() {
+  careerChecks.forEach((checkbox, index) => {
+    checkbox.checked = state.careerChecks.includes(index);
+  });
 }
 
 
-function slugify(value) {
-
-    return value
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-}
-
-
-function guessResourceKey(text) {
-
-    const mappings = [
-        ["javascript", "javascript"],
-        ["react native", "react-native"],
-        ["react.js", "react"],
-        ["react", "react"],
-        ["node.js", "node"],
-        ["node js", "node"],
-        ["express", "express"],
-        ["postgres", "sql"],
-        ["sql", "sql"],
-        ["mongodb", "mongodb"],
-        ["authentication", "auth"],
-        ["authorization", "auth"],
-        ["python", "python"],
-        ["linux", "linux"],
-        ["docker", "docker"],
-        ["aws", "aws"],
-        ["cyber", "cybersecurity"],
-        ["security", "cybersecurity"],
-        ["system design", "system-design"],
-        ["network", "networking"],
-        ["dbms", "dbms"],
-        ["operating system", "os"],
-        ["excel", "excel"],
-        ["figma", "uiux"],
-        ["ui/ux", "uiux"],
-        ["ui ux", "uiux"],
-        ["stl", "stl"],
-        ["dsa", "dsa"],
-        ["data structure", "dsa"],
-        ["algorithm", "dsa"],
-        ["git", "git"],
-        ["github", "git"],
-        ["html", "html"],
-        ["css", "css"],
-        ["c++", "cpp"],
-        ["cpp", "cpp"],
-        ["oop", "cpp-oop"],
-        ["llm", "ai"],
-        ["generative ai", "ai"],
-        ["artificial intelligence", "ai"],
-        ["computer basics", "computer-basics"],
-        ["terminal", "command-line"],
-        ["command line", "command-line"]
-    ];
-
-    for (const [needle, key] of mappings) {
-
-        if (text.includes(needle)) {
-            return key;
-        }
-    }
-
-    return null;
-}
-
-
-/* =========================================================
-   TASK COMPLETION
-   ========================================================= */
-
-function setupTaskInteractions() {
-
-    const buttons = $$(CONFIG.selectors.taskComplete);
-
-    buttons.forEach(button => {
-
-        button.addEventListener("click", event => {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            const taskCard =
-                button.closest(".task-card");
-
-            if (!taskCard) {
-                return;
-            }
-
-            const taskId =
-                taskCard.dataset.taskId;
-
-            if (!taskId) {
-                return;
-            }
-
-            toggleTask(taskId, taskCard, button);
-        });
-
-    });
-}
-
-
-function toggleTask(taskId, taskCard, button) {
-
-    const wasCompleted =
-        Boolean(state.completedTasks[taskId]);
-
-    if (wasCompleted) {
-
-        delete state.completedTasks[taskId];
-
-        taskCard.classList.remove("is-completed");
-        button.classList.remove("completed");
-
-        showToast(
-            "Task marked incomplete",
-            "info"
-        );
-
+careerChecks.forEach((checkbox, index) => {
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+      if (!state.careerChecks.includes(index)) {
+        state.careerChecks.push(index);
+      }
     } else {
-
-        state.completedTasks[taskId] = {
-            completedAt: new Date().toISOString()
-        };
-
-        taskCard.classList.add("is-completed");
-        button.classList.add("completed");
-
-        playCompletionSound();
-
-        showToast(
-            "Task completed ✓",
-            "success"
-        );
+      state.careerChecks = state.careerChecks.filter(
+        item => item !== index
+      );
     }
 
-    recordActivity();
     saveState();
+    showToast(
+      checkbox.checked
+        ? "Career task completed"
+        : "Career task unchecked"
+    );
+  });
+});
 
-    updateDashboard();
-    updateAllPhaseProgress();
-    updateAnalytics();
+
+/* =========================================
+   STREAK
+========================================= */
+
+function recordActivity() {
+  const today = getTodayKey();
+
+  if (!state.activityDates.includes(today)) {
+    state.activityDates.push(today);
+  }
+
+  // Keep only last 365 days
+  state.activityDates = state.activityDates.slice(-365);
+
+  saveState();
 }
 
 
-function restoreTaskState() {
+function calculateStreak() {
+  const activity = new Set(state.activityDates);
 
-    const taskCards = $$(".task-card");
+  let streak = 0;
+  const date = new Date();
 
-    taskCards.forEach(card => {
+  date.setHours(0, 0, 0, 0);
 
-        const taskId = card.dataset.taskId;
+  while (true) {
+    const key =
+      `${date.getFullYear()}-` +
+      `${String(date.getMonth() + 1).padStart(2, "0")}-` +
+      `${String(date.getDate()).padStart(2, "0")}`;
 
-        if (!taskId) {
-            return;
-        }
-
-        const button =
-            card.querySelector(".task-complete");
-
-        if (
-            state.completedTasks[taskId]
-        ) {
-
-            card.classList.add("is-completed");
-
-            if (button) {
-                button.classList.add("completed");
-            }
-
-        } else {
-
-            card.classList.remove("is-completed");
-
-            if (button) {
-                button.classList.remove("completed");
-            }
-        }
-    });
-}
-
-
-/* =========================================================
-   DASHBOARD
-   ========================================================= */
-
-function getTaskCards() {
-
-    return $$(".task-card");
-}
-
-
-function getTotalTasks() {
-
-    return getTaskCards().length;
-}
-
-
-function getCompletedTasks() {
-
-    return getTaskCards()
-        .filter(card => {
-
-            const id = card.dataset.taskId;
-
-            return id &&
-                Boolean(state.completedTasks[id]);
-        })
-        .length;
-}
-
-
-function getCompletionPercentage() {
-
-    const total = getTotalTasks();
-
-    if (total === 0) {
-        return 0;
+    if (!activity.has(key)) {
+      break;
     }
 
-    return Math.round(
-        (getCompletedTasks() / total) * 100
-    );
+    streak++;
+
+    date.setDate(date.getDate() - 1);
+  }
+
+  return streak;
 }
 
 
-function updateDashboard() {
+/* =========================================
+   PROGRESS
+========================================= */
 
-    const completed =
-        getCompletedTasks();
+function updateProgress() {
+  const completed = tasks.filter(task =>
+    task.classList.contains("completed")
+  ).length;
 
-    const total =
-        getTotalTasks();
+  const total = tasks.length;
 
-    const percentage =
-        getCompletionPercentage();
+  const percent =
+    total === 0
+      ? 0
+      : Math.round((completed / total) * 100);
 
-    updateText(
-        "[data-total-completed]",
-        completed
-    );
+  const completedCount = document.getElementById(
+    "completedCount"
+  );
 
-    updateText(
-        "[data-total-tasks]",
-        total
-    );
+  const progressPercent = document.getElementById(
+    "progressPercent"
+  );
 
-    updateText(
-        "[data-completion-rate]",
-        `${percentage}%`
-    );
+  const progressLabel = document.getElementById(
+    "progressLabel"
+  );
 
-    updateText(
-        "[data-progress-percent]",
-        `${percentage}%`
-    );
+  const sidePercent = document.getElementById(
+    "sidePercent"
+  );
 
-    updateText(
-        ".progress-percent",
-        `${percentage}%`
-    );
+  const sideProgress = document.getElementById(
+    "sideProgress"
+  );
 
-    const fills = $$(
-        ".progress-fill"
-    );
+  const bigProgressBar = document.getElementById(
+    "bigProgressBar"
+  );
 
-    fills.forEach(fill => {
+  if (completedCount) {
+    completedCount.textContent = completed;
+  }
 
-        fill.style.width =
-            `${percentage}%`;
-    });
+  if (progressPercent) {
+    progressPercent.textContent = `${percent}%`;
+  }
 
-    document.documentElement
-        .style.setProperty(
-            "--roadmap-progress",
-            `${percentage}%`
-        );
+  if (progressLabel) {
+    progressLabel.textContent =
+      `${completed} of ${total} tasks completed`;
+  }
+
+  if (sidePercent) {
+    sidePercent.textContent = `${percent}%`;
+  }
+
+  if (sideProgress) {
+    sideProgress.style.width = `${percent}%`;
+  }
+
+  if (bigProgressBar) {
+    bigProgressBar.style.width = `${percent}%`;
+  }
+
+  const streak = document.getElementById("streak");
+
+  if (streak) {
+    streak.textContent = calculateStreak();
+  }
+
+  updatePhaseProgress();
 }
 
 
-function updateText(selector, value) {
-
-    $$(selector).forEach(element => {
-
-        element.textContent = value;
-    });
-}
-
-
-/* =========================================================
-   PHASE PROGRESS
-   ========================================================= */
-
-function updateAllPhaseProgress() {
-
-    const phases = $$(".phase-card");
-
-    phases.forEach(phase => {
-
-        const tasks =
-            $$(".task-card", phase);
-
-        if (!tasks.length) {
-            return;
-        }
-
-        const completed =
-            tasks.filter(task => {
-
-                const id =
-                    task.dataset.taskId;
-
-                return id &&
-                    state.completedTasks[id];
-
-            }).length;
-
-        const percentage =
-            Math.round(
-                (completed / tasks.length) * 100
-            );
-
-        const progressBar =
-            phase.querySelector(
-                ".phase-progress-fill"
-            );
-
-        const progressText =
-            phase.querySelector(
-                ".phase-progress-percent"
-            );
-
-        if (progressBar) {
-
-            progressBar.style.width =
-                `${percentage}%`;
-        }
-
-        if (progressText) {
-
-            progressText.textContent =
-                `${percentage}%`;
-        }
-
-        phase.dataset.progress =
-            percentage;
-    });
-}
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-function setupSearch() {
-
-    const inputs = $$(
-        CONFIG.selectors.searchInput
+function updatePhaseProgress() {
+  document.querySelectorAll(".phase").forEach(phase => {
+    const phaseTasks = Array.from(
+      phase.querySelectorAll(".task")
     );
 
-    inputs.forEach(input => {
+    const done = phaseTasks.filter(task =>
+      task.classList.contains("completed")
+    ).length;
 
-        input.addEventListener(
-            "input",
-            debounce(() => {
+    const total = phaseTasks.length;
 
-                performSearch(
-                    input.value.trim()
-                );
+    const percent =
+      total === 0
+        ? 0
+        : Math.round((done / total) * 100);
 
-            }, 120)
-        );
-    });
+    const percentElement = phase.querySelector(
+      ".phase-percent strong"
+    );
+
+    if (percentElement) {
+      percentElement.textContent = `${percent}%`;
+    }
+  });
 }
 
 
-function performSearch(query) {
+/* =========================================
+   TASK CLICK
+========================================= */
 
-    const normalized =
-        query.toLowerCase();
+tasks.forEach((task, index) => {
+  const check = task.querySelector(".check");
 
-    const phases = $$(".phase-card");
+  if (!check) return;
 
-    phases.forEach(phase => {
+  check.addEventListener("click", event => {
+    event.stopPropagation();
 
-        const tasks =
-            $$(".task-card", phase);
+    const id = getTaskId(task, index);
 
-        let phaseHasMatch = false;
+    const completed = task.classList.toggle(
+      "completed"
+    );
 
-        tasks.forEach(task => {
+    if (completed) {
+      if (!state.completedTasks.includes(id)) {
+        state.completedTasks.push(id);
+      }
 
-            const text =
-                task.textContent.toLowerCase();
+      recordActivity();
 
-            const matches =
-                !normalized ||
-                text.includes(normalized);
-
-            task.style.display =
-                matches ? "" : "none";
-
-            if (matches) {
-                phaseHasMatch = true;
-            }
-        });
-
-        phase.style.display =
-            phaseHasMatch || !normalized
-                ? ""
-                : "none";
-    });
-
-}
-
-
-/* =========================================================
-   PHASE ACCORDION
-   ========================================================= */
-
-function setupPhaseToggles() {
-
-    const phaseCards =
-        $$(".phase-card");
-
-    phaseCards.forEach(phase => {
-
-        const toggle =
-            phase.querySelector(
-                "[data-phase-toggle]"
-            );
-
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                phase.classList.toggle(
-                    "is-collapsed"
-                );
-
-                const collapsed =
-                    phase.classList.contains(
-                        "is-collapsed"
-                    );
-
-                toggle.setAttribute(
-                    "aria-expanded",
-                    String(!collapsed)
-                );
-            }
-        );
-    });
-}
-
-
-/* =========================================================
-   RESOURCE SYSTEM
-   ========================================================= */
-
-function setupResourceButtons() {
-
-    const buttons =
-        $$(CONFIG.selectors.resourceButton);
-
-    buttons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-                const key =
-                    button.dataset.resource;
-
-                if (!key) {
-
-                    const card =
-                        button.closest(
-                            ".task-card"
-                        );
-
-                    const guessed =
-                        guessResourceKey(
-                            card?.textContent
-                                ?.toLowerCase() || ""
-                        );
-
-                    if (guessed) {
-                        openResourceModal(
-                            guessed
-                        );
-                    } else {
-                        showToast(
-                            "Resources coming soon",
-                            "info"
-                        );
-                    }
-
-                    return;
-                }
-
-                openResourceModal(key);
-            }
-        );
-    });
-}
-
-
-function openResourceModal(resourceKey) {
-
-    const resource =
-        RESOURCES[resourceKey];
-
-    if (!resource) {
-
-        showToast(
-            "Resource not found",
-            "error"
+      showToast("Task completed ✓");
+    } else {
+      state.completedTasks =
+        state.completedTasks.filter(
+          item => item !== id
         );
 
-        return;
+      saveState();
+
+      showToast("Task marked incomplete");
     }
 
-    let modal =
-        $(".resource-modal");
-
-    if (!modal) {
-        modal = createResourceModal();
-    }
-
-    const title =
-        modal.querySelector(
-            "[data-resource-title]"
-        );
-
-    const description =
-        modal.querySelector(
-            "[data-resource-description]"
-        );
-
-    const list =
-        modal.querySelector(
-            "[data-resource-list]"
-        );
-
-    if (title) {
-        title.textContent =
-            resource.title;
-    }
-
-    if (description) {
-        description.textContent =
-            resource.description;
-    }
-
-    if (list) {
-
-        list.innerHTML = "";
-
-        resource.resources.forEach(item => {
-
-            const link =
-                document.createElement("a");
-
-            link.className =
-                "resource-modal-item";
-
-            link.href = item.url;
-            link.target = "_blank";
-            link.rel =
-                "noopener noreferrer";
-
-            link.innerHTML = `
-                <span class="resource-modal-icon">
-                    ${getResourceIcon(item.type)}
-                </span>
-
-                <span class="resource-modal-content">
-                    <strong>${escapeHTML(item.title)}</strong>
-                    <small>
-                        ${escapeHTML(item.creator)}
-                        ·
-                        ${escapeHTML(item.type)}
-                    </small>
-                </span>
-
-                <span class="resource-modal-arrow">
-                    ↗
-                </span>
-            `;
-
-            list.appendChild(link);
-        });
-    }
-
-    modal.classList.add("is-open");
-
-    document.body.classList.add(
-        "modal-open"
-    );
-}
+    saveState();
+    updateProgress();
+  });
+});
 
 
-function createResourceModal() {
+/* =========================================
+   RESOURCE MODAL
+========================================= */
 
-    const modal =
-        document.createElement("div");
+const resourceModal =
+  document.getElementById("resourceModal");
 
-    modal.className =
-        "modal-backdrop resource-modal";
+const closeModal =
+  document.getElementById("closeModal");
 
-    modal.innerHTML = `
-        <div class="resource-modal-window">
+const modalTitle =
+  document.getElementById("modalTitle");
 
-            <button
-                class="modal-close"
-                type="button"
-                aria-label="Close"
-                data-resource-close
-            >
-                ×
-            </button>
+const modalDescription =
+  document.getElementById("modalDescription");
 
-            <div class="modal-header">
+const resourceList =
+  document.getElementById("resourceList");
 
-                <span class="modal-eyebrow">
-                    LEARNING RESOURCES
-                </span>
 
-                <h2 data-resource-title>
-                    Resources
-                </h2>
+function openResource(resourceKey) {
+  const resource = resources[resourceKey];
 
-                <p data-resource-description>
-                    Select a resource to begin.
-                </p>
+  if (!resource || !resourceModal) {
+    showToast("Resource not available yet");
+    return;
+  }
 
-            </div>
+  if (modalTitle) {
+    modalTitle.textContent = resource.title;
+  }
 
-            <div
-                class="resource-modal-list"
-                data-resource-list
-            ></div>
+  if (modalDescription) {
+    modalDescription.textContent =
+      resource.description;
+  }
 
+  if (resourceList) {
+    resourceList.innerHTML = "";
+
+    resource.links.forEach(link => {
+      const item = document.createElement("a");
+
+      item.className = "resource-item";
+      item.href = link.url;
+      item.target = "_blank";
+      item.rel = "noopener noreferrer";
+
+      item.innerHTML = `
+        <div class="resource-info">
+          <strong>${escapeHTML(link.title)}</strong>
+          <span>Open resource ↗</span>
         </div>
-    `;
+        <span class="resource-arrow">→</span>
+      `;
 
-    document.body.appendChild(modal);
+      resourceList.appendChild(item);
+    });
+  }
 
-    const closeButton =
-        modal.querySelector(
-            "[data-resource-close]"
-        );
-
-    closeButton.addEventListener(
-        "click",
-        closeResourceModal
-    );
-
-    modal.addEventListener(
-        "click",
-        event => {
-
-            if (event.target === modal) {
-                closeResourceModal();
-            }
-        }
-    );
-
-    return modal;
+  resourceModal.classList.add("show");
+  document.body.style.overflow = "hidden";
 }
 
 
 function closeResourceModal() {
+  if (!resourceModal) return;
 
-    const modal =
-        $(".resource-modal");
-
-    if (!modal) {
-        return;
-    }
-
-    modal.classList.remove(
-        "is-open"
-    );
-
-    document.body.classList.remove(
-        "modal-open"
-    );
+  resourceModal.classList.remove("show");
+  document.body.style.overflow = "";
 }
 
 
-function getResourceIcon(type) {
+document.querySelectorAll(".resource").forEach(button => {
+  button.addEventListener("click", () => {
+    const task = button.closest(".task");
 
-    if (type === "YouTube") {
-        return "▶";
-    }
+    if (!task) return;
 
-    return "↗";
-}
+    const resourceKey = task.dataset.resource;
 
+    openResource(resourceKey);
+  });
+});
 
-/* =========================================================
-   MOBILE NAVIGATION
-   ========================================================= */
 
-function setupMobileNavigation() {
-
-    const sidebar =
-        $(".sidebar");
-
-    const openButton =
-        $("[data-mobile-menu]");
-
-    const closeButton =
-        $("[data-sidebar-close]");
-
-    if (!sidebar) {
-        return;
-    }
-
-    if (openButton) {
-
-        openButton.addEventListener(
-            "click",
-            () => {
-
-                sidebar.classList.add(
-                    "is-open"
-                );
-
-                document.body.classList.add(
-                    "sidebar-open"
-                );
-            }
-        );
-    }
-
-    if (closeButton) {
-
-        closeButton.addEventListener(
-            "click",
-            closeSidebar
-        );
-    }
-
-    document.addEventListener(
-        "click",
-        event => {
-
-            if (
-                !sidebar.classList.contains(
-                    "is-open"
-                )
-            ) {
-                return;
-            }
-
-            if (
-                sidebar.contains(event.target) ||
-                openButton?.contains(event.target)
-            ) {
-                return;
-            }
-
-            closeSidebar();
-        }
-    );
-}
-
-
-function closeSidebar() {
-
-    const sidebar =
-        $(".sidebar");
-
-    if (!sidebar) {
-        return;
-    }
-
-    sidebar.classList.remove(
-        "is-open"
-    );
-
-    document.body.classList.remove(
-        "sidebar-open"
-    );
-}
-
-
-/* =========================================================
-   ACTIVITY / STREAK
-   ========================================================= */
-
-function recordTodayVisit() {
-
-    const key =
-        formatDate(getToday());
-
-    if (!state.activity[key]) {
-
-        state.activity[key] = {
-            visits: 0,
-            tasksCompleted: 0
-        };
-    }
-
-    state.activity[key].visits += 1;
-
-    state.lastVisit =
-        new Date().toISOString();
-
-    saveState();
-}
-
-
-function recordActivity() {
-
-    const key =
-        formatDate(getToday());
-
-    if (!state.activity[key]) {
-
-        state.activity[key] = {
-            visits: 0,
-            tasksCompleted: 0
-        };
-    }
-
-    state.activity[key].tasksCompleted += 1;
-
-    saveState();
-}
-
-
-function formatDate(date) {
-
-    const year =
-        date.getFullYear();
-
-    const month =
-        String(date.getMonth() + 1)
-            .padStart(2, "0");
-
-    const day =
-        String(date.getDate())
-            .padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-}
-
-
-function calculateCurrentStreak() {
-
-    let streak = 0;
-
-    const date =
-        getToday();
-
-    while (true) {
-
-        const key =
-            formatDate(date);
-
-        const activity =
-            state.activity[key];
-
-        if (
-            !activity ||
-            (
-                activity.visits === 0 &&
-                activity.tasksCompleted === 0
-            )
-        ) {
-            break;
-        }
-
-        streak++;
-
-        date.setDate(
-            date.getDate() - 1
-        );
-    }
-
-    return streak;
-}
-
-
-function calculateBestStreak() {
-
-    const dates =
-        Object.keys(state.activity)
-            .sort();
-
-    if (!dates.length) {
-        return 0;
-    }
-
-    let best = 0;
-    let current = 0;
-    let previous = null;
-
-    dates.forEach(dateString => {
-
-        const activity =
-            state.activity[dateString];
-
-        if (
-            !activity ||
-            (
-                activity.visits === 0 &&
-                activity.tasksCompleted === 0
-            )
-        ) {
-            current = 0;
-            previous = null;
-            return;
-        }
-
-        const date =
-            new Date(
-                `${dateString}T00:00:00`
-            );
-
-        if (!previous) {
-
-            current = 1;
-
-        } else {
-
-            const difference =
-                Math.round(
-                    (
-                        date.getTime() -
-                        previous.getTime()
-                    ) /
-                    (1000 * 60 * 60 * 24)
-                );
-
-            if (difference === 1) {
-                current++;
-            } else {
-                current = 1;
-            }
-        }
-
-        best =
-            Math.max(best, current);
-
-        previous = date;
-    });
-
-    return best;
-}
-
-
-/* =========================================================
-   ANALYTICS
-   ========================================================= */
-
-function updateAnalytics() {
-
-    const current =
-        calculateCurrentStreak();
-
-    const best =
-        calculateBestStreak();
-
-    updateText(
-        "[data-current-streak]",
-        current
-    );
-
-    updateText(
-        "[data-best-streak]",
-        best
-    );
-
-    renderActivityChart();
-}
-
-
-function renderActivityChart() {
-
-    const chart =
-        $(".activity-chart");
-
-    if (!chart) {
-        return;
-    }
-
-    const today =
-        getToday();
-
-    const days = [];
-
-    for (let i = 13; i >= 0; i--) {
-
-        const date =
-            new Date(today);
-
-        date.setDate(
-            today.getDate() - i
-        );
-
-        days.push(date);
-    }
-
-    chart.innerHTML = "";
-
-    const maxValue =
-        Math.max(
-            1,
-            ...days.map(date => {
-
-                const data =
-                    state.activity[
-                        formatDate(date)
-                    ];
-
-                return (
-                    data?.tasksCompleted || 0
-                );
-            })
-        );
-
-    days.forEach(date => {
-
-        const key =
-            formatDate(date);
-
-        const data =
-            state.activity[key];
-
-        const value =
-            data?.tasksCompleted || 0;
-
-        const height =
-            Math.max(
-                8,
-                Math.round(
-                    (value / maxValue) * 100
-                )
-            );
-
-        const bar =
-            document.createElement("div");
-
-        bar.className =
-            "activity-bar";
-
-        bar.style.height =
-            `${height}%`;
-
-        bar.title =
-            `${key}: ${value} tasks`;
-
-        chart.appendChild(bar);
-    });
-}
-
-
-/* =========================================================
-   PROJECT / SOCIAL CHECKLISTS
-   ========================================================= */
-
-function restoreChecklistState() {
-
-    restoreCheckboxGroup(
-        "[data-github-check]",
-        state.githubChecklist
-    );
-
-    restoreCheckboxGroup(
-        "[data-linkedin-check]",
-        state.linkedinChecklist
-    );
-
-    restoreCheckboxGroup(
-        "[data-project-check]",
-        state.completedProjects
-    );
-
-    setupChecklistGroup(
-        "[data-github-check]",
-        state.githubChecklist
-    );
-
-    setupChecklistGroup(
-        "[data-linkedin-check]",
-        state.linkedinChecklist
-    );
-
-    setupChecklistGroup(
-        "[data-project-check]",
-        state.completedProjects
-    );
-}
-
-
-function restoreCheckboxGroup(
-    selector,
-    storage
-) {
-
-    const elements =
-        $$(selector);
-
-    elements.forEach(
-        (element, index) => {
-
-            const id =
-                element.dataset.id ||
-                `${selector}-${index}`;
-
-            element.dataset.id = id;
-
-            element.checked =
-                Boolean(storage[id]);
-
-            updateCheckboxVisual(
-                element
-            );
-        }
-    );
-}
-
-
-function setupChecklistGroup(
-    selector,
-    storage
-) {
-
-    const elements =
-        $$(selector);
-
-    elements.forEach(
-        (element, index) => {
-
-            const id =
-                element.dataset.id ||
-                `${selector}-${index}`;
-
-            element.dataset.id = id;
-
-            element.addEventListener(
-                "change",
-                () => {
-
-                    if (element.checked) {
-                        storage[id] = true;
-                    } else {
-                        delete storage[id];
-                    }
-
-                    updateCheckboxVisual(
-                        element
-                    );
-
-                    saveState();
-                    updateDashboard();
-                }
-            );
-        }
-    );
-}
-
-
-function updateCheckboxVisual(
-    checkbox
-) {
-
-    const wrapper =
-        checkbox.closest(
-            ".check-item, .checklist-item, label"
-        );
-
-    if (!wrapper) {
-        return;
-    }
-
-    wrapper.classList.toggle(
-        "is-checked",
-        checkbox.checked
-    );
-}
-
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-function restoreSettings() {
-
-    if (state.settings.compactMode) {
-
-        document.body.classList.add(
-            "compact-mode"
-        );
-    }
-
-    const soundToggle =
-        $("[data-setting-sound]");
-
-    if (soundToggle) {
-
-        soundToggle.checked =
-            state.settings.sound;
-    }
-
-    const compactToggle =
-        $("[data-setting-compact]");
-
-    if (compactToggle) {
-
-        compactToggle.checked =
-            state.settings.compactMode;
-    }
-}
-
-
-function setupSettings() {
-
-    const soundToggle =
-        $("[data-setting-sound]");
-
-    if (soundToggle) {
-
-        soundToggle.addEventListener(
-            "change",
-            () => {
-
-                state.settings.sound =
-                    soundToggle.checked;
-
-                saveState();
-            }
-        );
-    }
-
-    const compactToggle =
-        $("[data-setting-compact]");
-
-    if (compactToggle) {
-
-        compactToggle.addEventListener(
-            "change",
-            () => {
-
-                state.settings.compactMode =
-                    compactToggle.checked;
-
-                document.body.classList.toggle(
-                    "compact-mode",
-                    compactToggle.checked
-                );
-
-                saveState();
-            }
-        );
-    }
-}
-
-
-/* =========================================================
-   EXPORT / IMPORT
-   ========================================================= */
-
-function setupExportImport() {
-
-    const exportButton =
-        $("[data-export-progress]");
-
-    const importButton =
-        $("[data-import-progress]");
-
-    const fileInput =
-        $("[data-import-file]");
-
-    if (exportButton) {
-
-        exportButton.addEventListener(
-            "click",
-            exportProgress
-        );
-    }
-
-    if (importButton && fileInput) {
-
-        importButton.addEventListener(
-            "click",
-            () => fileInput.click()
-        );
-
-        fileInput.addEventListener(
-            "change",
-            handleImport
-        );
-    }
-}
-
-
-function exportProgress() {
-
-    const data =
-        JSON.stringify(
-            state,
-            null,
-            2
-        );
-
-    const blob =
-        new Blob(
-            [data],
-            {
-                type: "application/json"
-            }
-        );
-
-    const url =
-        URL.createObjectURL(blob);
-
-    const link =
-        document.createElement("a");
-
-    link.href = url;
-
-    link.download =
-        `abhis-cse-roadmap-${formatDate(
-            getToday()
-        )}.json`;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(url);
-
-    showToast(
-        "Progress exported successfully",
-        "success"
-    );
-}
-
-
-function handleImport(event) {
-
-    const file =
-        event.target.files?.[0];
-
-    if (!file) {
-        return;
-    }
-
-    const reader =
-        new FileReader();
-
-    reader.onload = () => {
-
-        try {
-
-            const imported =
-                JSON.parse(
-                    reader.result
-                );
-
-            state = {
-                ...structuredClone(defaultState),
-                ...imported
-            };
-
-            saveState();
-
-            showToast(
-                "Progress imported. Reloading...",
-                "success"
-            );
-
-            setTimeout(
-                () => location.reload(),
-                800
-            );
-
-        } catch (error) {
-
-            showToast(
-                "Invalid progress file",
-                "error"
-            );
-        }
-    };
-
-    reader.readAsText(file);
-}
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-function resetProgress() {
-
-    const confirmed =
-        window.confirm(
-            "Reset ALL roadmap progress? This cannot be undone."
-        );
-
-    if (!confirmed) {
-        return;
-    }
-
-    localStorage.removeItem(
-        CONFIG.storageKey
-    );
-
-    state =
-        structuredClone(defaultState);
-
-    showToast(
-        "Progress reset",
-        "success"
-    );
-
-    setTimeout(
-        () => location.reload(),
-        600
-    );
-}
-
-
-document.addEventListener(
+if (closeModal) {
+  closeModal.addEventListener(
     "click",
-    event => {
+    closeResourceModal
+  );
+}
 
-        const resetButton =
-            event.target.closest(
-                "[data-reset-progress]"
-            );
 
-        if (resetButton) {
-            resetProgress();
-        }
+if (resourceModal) {
+  resourceModal.addEventListener("click", event => {
+    if (event.target === resourceModal) {
+      closeResourceModal();
     }
-);
-
-
-/* =========================================================
-   TOAST SYSTEM
-   ========================================================= */
-
-function showToast(
-    message,
-    type = "info"
-) {
-
-    let container =
-        $(".toast-container");
-
-    if (!container) {
-
-        container =
-            document.createElement("div");
-
-        container.className =
-            "toast-container";
-
-        document.body.appendChild(
-            container
-        );
-    }
-
-    const toast =
-        document.createElement("div");
-
-    toast.className =
-        `toast toast-${type}`;
-
-    toast.innerHTML = `
-        <span class="toast-dot"></span>
-        <span class="toast-message">
-            ${escapeHTML(message)}
-        </span>
-    `;
-
-    container.appendChild(toast);
-
-    requestAnimationFrame(() => {
-
-        toast.classList.add(
-            "is-visible"
-        );
-    });
-
-    setTimeout(() => {
-
-        toast.classList.remove(
-            "is-visible"
-        );
-
-        setTimeout(
-            () => toast.remove(),
-            300
-        );
-
-    }, 2800);
+  });
 }
 
 
-/* =========================================================
-   COMPLETION SOUND
-   ========================================================= */
-
-function playCompletionSound() {
-
-    if (!state.settings.sound) {
-        return;
-    }
-
-    try {
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-        if (!AudioContext) {
-            return;
-        }
-
-        const context =
-            new AudioContext();
-
-        const oscillator =
-            context.createOscillator();
-
-        const gain =
-            context.createGain();
-
-        oscillator.type =
-            "sine";
-
-        oscillator.frequency.setValueAtTime(
-            660,
-            context.currentTime
-        );
-
-        oscillator.frequency.exponentialRampToValueAtTime(
-            880,
-            context.currentTime + 0.08
-        );
-
-        gain.gain.setValueAtTime(
-            0.0001,
-            context.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.04,
-            context.currentTime + 0.01
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            context.currentTime + 0.15
-        );
-
-        oscillator.connect(gain);
-        gain.connect(context.destination);
-
-        oscillator.start();
-
-        oscillator.stop(
-            context.currentTime + 0.16
-        );
-
-    } catch {
-        // Audio is optional.
-    }
-}
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeResourceModal();
+  }
+});
 
 
-/* =========================================================
-   KEYBOARD SHORTCUTS
-   ========================================================= */
+/* =========================================
+   SEARCH
+========================================= */
 
-function setupKeyboardShortcuts() {
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "/" &&
-                !isTypingContext(event.target)
-            ) {
-
-                event.preventDefault();
-
-                const search =
-                    $(
-                        CONFIG.selectors.searchInput
-                    );
-
-                search?.focus();
-            }
-
-            if (event.key === "Escape") {
-
-                closeResourceModal();
-                closeSidebar();
-            }
-        }
-    );
-}
+const searchInput =
+  document.getElementById("search");
 
 
-function isTypingContext(element) {
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    const query =
+      searchInput.value.trim().toLowerCase();
 
-    if (!element) {
-        return false;
-    }
+    document.querySelectorAll(".phase").forEach(
+      phase => {
+        const phaseTitle =
+          phase.querySelector(".phase-title")
+            ?.textContent
+            .toLowerCase() || "";
 
-    const tag =
-        element.tagName?.toLowerCase();
+        const phaseNumber =
+          phase.querySelector(".phase-number")
+            ?.textContent
+            .toLowerCase() || "";
 
-    return (
-        tag === "input" ||
-        tag === "textarea" ||
-        tag === "select" ||
-        element.isContentEditable
-    );
-}
+        const phaseMatches =
+          !query ||
+          phaseTitle.includes(query) ||
+          phaseNumber.includes(query);
 
+        const phaseTasks =
+          Array.from(
+            phase.querySelectorAll(".task")
+          );
 
-/* =========================================================
-   UTILITIES
-   ========================================================= */
+        let visibleTasks = 0;
 
-function debounce(
-    callback,
-    delay
-) {
+        phaseTasks.forEach(task => {
+          const text =
+            task.textContent.toLowerCase();
 
-    let timeout;
+          const matches =
+            !query ||
+            phaseMatches ||
+            text.includes(query);
 
-    return (...args) => {
+          task.style.display =
+            matches ? "" : "none";
 
-        clearTimeout(timeout);
-
-        timeout =
-            setTimeout(
-                () => callback(...args),
-                delay
-            );
-    };
-}
-
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* =========================================================
-   SMOOTH NAVIGATION
-   ========================================================= */
-
-document.addEventListener(
-    "click",
-    event => {
-
-        const link =
-            event.target.closest(
-                'a[href^="#"]'
-            );
-
-        if (!link) {
-            return;
-        }
-
-        const targetId =
-            link.getAttribute("href");
-
-        if (
-            !targetId ||
-            targetId === "#"
-        ) {
-            return;
-        }
-
-        const target =
-            document.querySelector(
-                targetId
-            );
-
-        if (!target) {
-            return;
-        }
-
-        event.preventDefault();
-
-        target.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+          if (matches) {
+            visibleTasks++;
+          }
         });
 
-        closeSidebar();
-    }
-);
-
-
-/* =========================================================
-   ACTIVE SIDEBAR NAVIGATION
-   ========================================================= */
-
-function setupActiveNavigation() {
-
-    const links =
-        $$(".sidebar a[href^='#']");
-
-    const sections =
-        links
-            .map(link => {
-
-                const id =
-                    link.getAttribute(
-                        "href"
-                    );
-
-                return document.querySelector(
-                    id
-                );
-            })
-            .filter(Boolean);
-
-    if (!sections.length) {
-        return;
-    }
-
-    const observer =
-        new IntersectionObserver(
-            entries => {
-
-                entries.forEach(entry => {
-
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
-
-                    const id =
-                        `#${entry.target.id}`;
-
-                    links.forEach(link => {
-
-                        link.classList.toggle(
-                            "active",
-                            link.getAttribute(
-                                "href"
-                            ) === id
-                        );
-                    });
-                });
-            },
-            {
-                rootMargin:
-                    "-20% 0px -65% 0px"
-            }
-        );
-
-    sections.forEach(
-        section => observer.observe(section)
+        phase.style.display =
+          !query || phaseMatches || visibleTasks > 0
+            ? ""
+            : "none";
+      }
     );
+  });
 }
 
 
-/* =========================================================
-   SCROLL PROGRESS
-   ========================================================= */
+/* =========================================
+   MOBILE SIDEBAR
+========================================= */
 
-function setupScrollProgress() {
+const menuBtn =
+  document.getElementById("menuBtn");
 
-    const indicator =
-        $(".scroll-progress");
+const sidebar =
+  document.querySelector(".sidebar");
 
-    if (!indicator) {
-        return;
+
+if (menuBtn && sidebar) {
+  menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+}
+
+
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    document
+      .querySelectorAll(".nav-link")
+      .forEach(item =>
+        item.classList.remove("active")
+      );
+
+    link.classList.add("active");
+
+    if (sidebar) {
+      sidebar.classList.remove("open");
     }
-
-    window.addEventListener(
-        "scroll",
-        () => {
-
-            const scrollTop =
-                window.scrollY;
-
-            const documentHeight =
-                document.documentElement
-                    .scrollHeight -
-                window.innerHeight;
-
-            const percentage =
-                documentHeight <= 0
-                    ? 0
-                    : (
-                        scrollTop /
-                        documentHeight
-                    ) * 100;
-
-            indicator.style.width =
-                `${percentage}%`;
-        },
-        {
-            passive: true
-        }
-    );
-}
+  });
+});
 
 
-/* =========================================================
-   REVEAL ANIMATIONS
-   ========================================================= */
+/* =========================================
+   RESET TRACKER
+========================================= */
 
-function setupRevealAnimations() {
-
-    const elements =
-        $$(
-            ".hero, .dashboard-card, .phase-card, " +
-            ".project-card, .social-card, .analytics-card"
-        );
-
-    if (!elements.length) {
-        return;
-    }
-
-    const observer =
-        new IntersectionObserver(
-            entries => {
-
-                entries.forEach(entry => {
-
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
-
-                    entry.target.classList.add(
-                        "is-visible"
-                    );
-
-                    observer.unobserve(
-                        entry.target
-                    );
-                });
-            },
-            {
-                threshold: 0.08
-            }
-        );
-
-    elements.forEach(
-        element => observer.observe(element)
-    );
-}
+const resetBtn =
+  document.getElementById("resetBtn");
 
 
-/* =========================================================
-   INITIAL UI ENHANCEMENTS
-   ========================================================= */
-
-function initializeEnhancements() {
-
-    setupActiveNavigation();
-    setupScrollProgress();
-    setupRevealAnimations();
-
-}
-
-
-/* =========================================================
-   WINDOW LOAD
-   ========================================================= */
-
-window.addEventListener(
-    "load",
-    () => {
-
-        initializeEnhancements();
-
-        updateDayCounter();
-        updateDashboard();
-        updateAllPhaseProgress();
-        updateAnalytics();
-
-    }
-);
-
-
-/* =========================================================
-   MIDNIGHT REFRESH
-   Keeps the Day counter correct without reopening page.
-   ========================================================= */
-
-function scheduleMidnightRefresh() {
-
-    const now =
-        new Date();
-
-    const tomorrow =
-        new Date(now);
-
-    tomorrow.setHours(
-        24,
-        0,
-        5,
-        0
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    const confirmed = confirm(
+      "Reset your entire roadmap progress?\n\nAll completed tasks, career checks and streak data will be removed."
     );
 
-    const delay =
-        tomorrow.getTime() -
-        now.getTime();
+    if (!confirmed) return;
 
-    setTimeout(() => {
+    localStorage.removeItem(STORAGE_KEY);
 
-        updateDayCounter();
-        updateDashboard();
-        updateAnalytics();
+    state = {
+      completedTasks: [],
+      careerChecks: [],
+      activityDates: []
+    };
 
-        scheduleMidnightRefresh();
+    tasks.forEach(task => {
+      task.classList.remove("completed");
+    });
 
-    }, delay);
+    careerChecks.forEach(check => {
+      check.checked = false;
+    });
+
+    updateProgress();
+
+    showToast("Roadmap reset successfully");
+  });
 }
 
-scheduleMidnightRefresh();
+
+/* =========================================
+   TOAST
+========================================= */
+
+let toastTimer;
+
+function showToast(message) {
+  const toast =
+    document.getElementById("toast");
+
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2200);
+}
 
 
-/* =========================================================
-   CONSOLE BRANDING
-   ========================================================= */
+/* =========================================
+   SAFE HTML
+========================================= */
+
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+restoreTasks();
+restoreCareerChecks();
+updateDayCounter();
+updateProgress();
+
+
+/* =========================================
+   AUTO UPDATE DAY
+========================================= */
+
+setInterval(() => {
+  updateDayCounter();
+  updateProgress();
+}, 60000);
+
+
+/* =========================================
+   CONSOLE
+========================================= */
 
 console.log(
-    "%c ABHI'S CSE MASTER ROADMAP ",
-    "background:#0f172a;color:#8b5cf6;font-size:16px;font-weight:800;padding:8px 14px;border-radius:8px;"
+  "%cABHI'S CSE ROADMAP",
+  "font-size:20px;font-weight:bold;"
 );
 
 console.log(
-    "%c Start Date: 08 October 2026 ",
-    "color:#94a3b8;font-size:12px;"
+  "Start Date: 08 October 2026"
 );
 
 console.log(
-    "%c Build. Learn. Ship. Repeat. ",
-    "color:#22c55e;font-size:12px;font-weight:700;"
+  `Current Roadmap Day: ${getDayNumber()}`
 );
