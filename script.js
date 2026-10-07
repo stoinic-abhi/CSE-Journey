@@ -1,2776 +1,2872 @@
-:root {
-  --bg: #07080b;
-  --bg-2: #0b0d11;
-  --panel: rgba(17, 19, 25, 0.82);
-  --panel-strong: #101218;
-  --panel-soft: rgba(255,255,255,0.035);
+/* =========================================================
+   ABHI'S CSE MASTER ROADMAP
+   script.js
+   Start Date: 08 October 2026
+   ========================================================= */
 
-  --text: #f5f7fb;
-  --muted: #9298a7;
-  --muted-2: #626978;
+"use strict";
 
-  --line: rgba(255,255,255,0.08);
-  --line-strong: rgba(255,255,255,0.13);
+/* =========================================================
+   CONFIG
+   ========================================================= */
 
-  --accent: #8cff5a;
-  --accent-2: #52d8ff;
-  --purple: #9c7cff;
-  --orange: #ffad5a;
-  --danger: #ff6262;
+const CONFIG = {
+    startDate: "2026-10-08",
+    storageKey: "abhis-cse-roadmap-v1",
 
-  --radius: 22px;
-  --radius-small: 14px;
+    selectors: {
+        dayNumber: ".day-number",
+        dayLabel: ".day-label",
+        progressFill: ".progress-fill",
+        progressPercent: ".progress-percent",
+        totalCompleted: "[data-total-completed]",
+        totalTasks: "[data-total-tasks]",
+        currentStreak: "[data-current-streak]",
+        bestStreak: "[data-best-streak]",
+        completionRate: "[data-completion-rate]",
+        searchInput: "[data-search]",
+        phaseCard: ".phase-card",
+        taskCard: ".task-card",
+        taskComplete: ".task-complete",
+        resourceButton: ".resource-btn",
+        resourceModal: ".modal-backdrop",
+        sidebar: ".sidebar",
+        mobileMenu: "[data-mobile-menu]",
+        sidebarClose: "[data-sidebar-close]",
+        phaseToggle: "[data-phase-toggle]",
+        toastContainer: ".toast-container"
+    }
+};
 
-  --sidebar: 270px;
 
-  --shadow:
-    0 30px 80px rgba(0,0,0,.35);
+/* =========================================================
+   RESOURCE DATABASE
+   =========================================================
+   Replace/add URLs anytime you want.
+   Resources are intentionally grouped by skill.
+   ========================================================= */
 
-  --font:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+const RESOURCES = {
+
+    "computer-basics": {
+        title: "Computer Fundamentals",
+        description: "Windows, files, folders, extensions, software installation, terminal and troubleshooting.",
+        resources: [
+            {
+                title: "Computer Fundamentals — Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+computer+fundamentals+hindi"
+            },
+            {
+                title: "Windows & Computer Basics",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+computer+fundamentals+hindi"
+            }
+        ]
+    },
+
+    "command-line": {
+        title: "Command Line / Terminal",
+        description: "Learn CMD, PowerShell, terminal navigation and basic commands.",
+        resources: [
+            {
+                title: "Windows Command Prompt Tutorial",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+CMD+commands+hindi"
+            },
+            {
+                title: "Linux Terminal Basics",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Linux+commands+hindi"
+            }
+        ]
+    },
+
+    "cpp": {
+        title: "C++ Programming",
+        description: "Complete C++ fundamentals from absolute beginner level.",
+        resources: [
+            {
+                title: "C++ Complete Course in Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+C%2B%2B+complete+course+hindi"
+            },
+            {
+                title: "C++ Programming in Hindi",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+C%2B%2B+course+hindi"
+            }
+        ]
+    },
+
+    "cpp-oop": {
+        title: "C++ OOP",
+        description: "Classes, objects, constructors, inheritance, polymorphism and encapsulation.",
+        resources: [
+            {
+                title: "OOPs in C++ Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+OOP+C%2B%2B+hindi"
+            },
+            {
+                title: "C++ OOP Concepts",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+OOP+C%2B%2B+hindi"
+            }
+        ]
+    },
+
+    "stl": {
+        title: "C++ STL",
+        description: "Vector, pair, map, set, stack, queue, priority queue and algorithms.",
+        resources: [
+            {
+                title: "C++ STL in Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+C%2B%2B+STL+hindi"
+            },
+            {
+                title: "C++ STL for DSA",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+C%2B%2B+STL+DSA"
+            }
+        ]
+    },
+
+    "dsa": {
+        title: "Data Structures & Algorithms",
+        description: "Core DSA roadmap from arrays to graphs and dynamic programming.",
+        resources: [
+            {
+                title: "DSA in C++ Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+DSA+C%2B%2B+hindi"
+            },
+            {
+                title: "DSA Supreme / C++",
+                creator: "Love Babbar",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Love+Babbar+DSA+Supreme+C%2B%2B"
+            },
+            {
+                title: "DSA in C++",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+DSA+C%2B%2B+hindi"
+            }
+        ]
+    },
+
+    "git": {
+        title: "Git & GitHub",
+        description: "Version control, repositories, commits, branches and collaboration.",
+        resources: [
+            {
+                title: "Git & GitHub Complete Course",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Git+GitHub+course+hindi"
+            },
+            {
+                title: "Git & GitHub in Hindi",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+Git+GitHub+hindi"
+            }
+        ]
+    },
+
+    "html": {
+        title: "HTML",
+        description: "Semantic HTML, forms, tables, accessibility and modern structure.",
+        resources: [
+            {
+                title: "HTML Complete Course",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+HTML+complete+course+hindi"
+            },
+            {
+                title: "HTML Tutorial",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+HTML+Hindi"
+            }
+        ]
+    },
+
+    "css": {
+        title: "CSS",
+        description: "Modern CSS, layouts, responsive design, animations and UI architecture.",
+        resources: [
+            {
+                title: "CSS Complete Course",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+CSS+complete+course+hindi"
+            },
+            {
+                title: "CSS Tutorial Hindi",
+                creator: "Thapa Technical",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Thapa+Technical+CSS+Hindi"
+            }
+        ]
+    },
+
+    "javascript": {
+        title: "JavaScript",
+        description: "Modern JavaScript from fundamentals to asynchronous programming and APIs.",
+        resources: [
+            {
+                title: "JavaScript Complete Course",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+JavaScript+complete+course+hindi"
+            },
+            {
+                title: "JavaScript Course",
+                creator: "Thapa Technical",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Thapa+Technical+JavaScript+course+hindi"
+            },
+            {
+                title: "JavaScript Hindi",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+JavaScript+hindi"
+            }
+        ]
+    },
+
+    "dom": {
+        title: "DOM & Browser APIs",
+        description: "DOM manipulation, events, forms, localStorage and browser APIs.",
+        resources: [
+            {
+                title: "JavaScript DOM Tutorial",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+DOM+JavaScript+hindi"
+            },
+            {
+                title: "DOM Manipulation",
+                creator: "Thapa Technical",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Thapa+Technical+DOM+JavaScript"
+            }
+        ]
+    },
+
+    "react": {
+        title: "React.js",
+        description: "Components, props, state, hooks, routing, APIs and production patterns.",
+        resources: [
+            {
+                title: "React JS Course Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+React+JS+course+hindi"
+            },
+            {
+                title: "React JS Hindi",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+React+JS+hindi"
+            },
+            {
+                title: "React Tutorial Hindi",
+                creator: "Thapa Technical",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Thapa+Technical+React+JS+hindi"
+            }
+        ]
+    },
+
+    "node": {
+        title: "Node.js",
+        description: "Backend JavaScript, modules, filesystem, HTTP and server fundamentals.",
+        resources: [
+            {
+                title: "Node.js Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Node.js+Hindi"
+            },
+            {
+                title: "Node.js Backend",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Node.js+hindi"
+            }
+        ]
+    },
+
+    "express": {
+        title: "Express.js",
+        description: "REST APIs, routing, middleware and backend architecture.",
+        resources: [
+            {
+                title: "Express.js Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Express.js+Hindi"
+            },
+            {
+                title: "Express JS Backend",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Express+JS+hindi"
+            }
+        ]
+    },
+
+    "sql": {
+        title: "SQL & PostgreSQL",
+        description: "Queries, joins, indexes, constraints, transactions and database design.",
+        resources: [
+            {
+                title: "SQL Complete Course Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+SQL+complete+course+hindi"
+            },
+            {
+                title: "SQL Database Hindi",
+                creator: "Gate Smashers",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Gate+Smashers+SQL+DBMS+hindi"
+            }
+        ]
+    },
+
+    "mongodb": {
+        title: "MongoDB",
+        description: "NoSQL concepts, collections, documents, queries and application integration.",
+        resources: [
+            {
+                title: "MongoDB Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+MongoDB+Hindi"
+            },
+            {
+                title: "MongoDB Course Hindi",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+MongoDB+hindi"
+            }
+        ]
+    },
+
+    "auth": {
+        title: "Authentication & Authorization",
+        description: "JWT, sessions, cookies, password hashing, OAuth and authorization.",
+        resources: [
+            {
+                title: "JWT Authentication Node.js",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+JWT+authentication+nodejs"
+            },
+            {
+                title: "Authentication Node.js Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+authentication+nodejs+hindi"
+            }
+        ]
+    },
+
+    "python": {
+        title: "Python",
+        description: "Python fundamentals for automation, data, AI and backend development.",
+        resources: [
+            {
+                title: "Python Complete Course Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Python+complete+course+hindi"
+            },
+            {
+                title: "Python Hindi",
+                creator: "Apna College",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Apna+College+Python+hindi"
+            }
+        ]
+    },
+
+    "linux": {
+        title: "Linux",
+        description: "Linux commands, permissions, processes, SSH and package management.",
+        resources: [
+            {
+                title: "Linux Complete Course Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Linux+course+hindi"
+            },
+            {
+                title: "Linux for Beginners",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Linux+Hindi"
+            }
+        ]
+    },
+
+    "os": {
+        title: "Operating Systems",
+        description: "Processes, threads, memory, scheduling, deadlocks and file systems.",
+        resources: [
+            {
+                title: "Operating System Hindi",
+                creator: "Gate Smashers",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Gate+Smashers+Operating+System+Hindi"
+            },
+            {
+                title: "OS Concepts",
+                creator: "Knowledge Gate",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Knowledge+Gate+Operating+System+Hindi"
+            }
+        ]
+    },
+
+    "dbms": {
+        title: "DBMS",
+        description: "Transactions, ACID, normalization, indexing and concurrency.",
+        resources: [
+            {
+                title: "DBMS Complete Course Hindi",
+                creator: "Gate Smashers",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Gate+Smashers+DBMS+complete+course+hindi"
+            },
+            {
+                title: "DBMS Hindi",
+                creator: "Knowledge Gate",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Knowledge+Gate+DBMS+Hindi"
+            }
+        ]
+    },
+
+    "networking": {
+        title: "Computer Networks",
+        description: "IP, DNS, HTTP, HTTPS, TCP, UDP, ports, REST, WebSockets and CORS.",
+        resources: [
+            {
+                title: "Computer Networks Hindi",
+                creator: "Gate Smashers",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Gate+Smashers+Computer+Networks+Hindi"
+            },
+            {
+                title: "Networking Basics Hindi",
+                creator: "Knowledge Gate",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Knowledge+Gate+Computer+Networks+Hindi"
+            }
+        ]
+    },
+
+    "excel": {
+        title: "Excel",
+        description: "Formulas, lookups, pivots, data cleaning and charts.",
+        resources: [
+            {
+                title: "Excel Complete Course Hindi",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Excel+complete+course+hindi"
+            },
+            {
+                title: "Excel Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Excel+Hindi+course+India"
+            }
+        ]
+    },
+
+    "docker": {
+        title: "Docker",
+        description: "Images, containers, Dockerfiles, volumes, networks and Compose.",
+        resources: [
+            {
+                title: "Docker Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Docker+hindi"
+            },
+            {
+                title: "Docker Course Hindi",
+                creator: "Chai aur Code",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Chai+aur+Code+Docker+hindi"
+            }
+        ]
+    },
+
+    "aws": {
+        title: "AWS",
+        description: "EC2, S3, IAM, RDS, Lambda and cloud fundamentals.",
+        resources: [
+            {
+                title: "AWS Cloud Hindi",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+AWS+cloud+hindi"
+            },
+            {
+                title: "AWS for Beginners Hindi",
+                creator: "Technical Guftgu",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=AWS+beginners+hindi+India"
+            }
+        ]
+    },
+
+    "ai": {
+        title: "AI / LLM",
+        description: "LLMs, prompting, APIs, embeddings, RAG, agents and evaluation.",
+        resources: [
+            {
+                title: "Generative AI Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+Generative+AI+hindi"
+            },
+            {
+                title: "Generative AI / LLM",
+                creator: "Krish Naik",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Krish+Naik+Generative+AI+LLM"
+            },
+            {
+                title: "AI Engineering",
+                creator: "CampusX",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CampusX+Generative+AI+Hindi"
+            }
+        ]
+    },
+
+    "cybersecurity": {
+        title: "Cybersecurity",
+        description: "Networking, Linux, HTTP, authentication, OWASP and secure coding.",
+        resources: [
+            {
+                title: "Cyber Security Hindi",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Cyber+Security+Hindi"
+            },
+            {
+                title: "Ethical Hacking Fundamentals",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+ethical+hacking+hindi"
+            }
+        ]
+    },
+
+    "react-native": {
+        title: "React Native + Expo",
+        description: "Cross-platform mobile app development using React Native and Expo.",
+        resources: [
+            {
+                title: "React Native Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+React+Native+hindi"
+            },
+            {
+                title: "React Native Expo",
+                creator: "Thapa Technical",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Thapa+Technical+React+Native+Expo"
+            }
+        ]
+    },
+
+    "system-design": {
+        title: "System Design",
+        description: "Scalability, caching, load balancing, queues, databases and distributed systems.",
+        resources: [
+            {
+                title: "System Design Hindi",
+                creator: "CodeWithHarry",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=CodeWithHarry+system+design+hindi"
+            },
+            {
+                title: "System Design for Beginners",
+                creator: "Concept && Coding",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=Concept+and+Coding+system+design"
+            }
+        ]
+    },
+
+    "uiux": {
+        title: "UI / UX",
+        description: "Typography, spacing, visual hierarchy, responsive design and Figma.",
+        resources: [
+            {
+                title: "UI UX Design Hindi",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+UI+UX+Hindi"
+            },
+            {
+                title: "Figma Hindi",
+                creator: "WsCube Tech",
+                type: "YouTube",
+                url: "https://www.youtube.com/results?search_query=WsCube+Tech+Figma+Hindi"
+            }
+        ]
+    }
+};
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+const defaultState = {
+    completedTasks: {},
+    completedProjects: {},
+    githubChecklist: {},
+    linkedinChecklist: {},
+    activity: {},
+    settings: {
+        sound: true,
+        compactMode: false
+    },
+    lastVisit: null,
+    createdAt: new Date().toISOString()
+};
+
+let state = loadState();
+
+
+/* =========================================================
+   DOM HELPERS
+   ========================================================= */
+
+const $ = (selector, parent = document) => {
+    return parent.querySelector(selector);
+};
+
+const $$ = (selector, parent = document) => {
+    return Array.from(parent.querySelectorAll(selector));
+};
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    initializeApplication();
+
+});
+
+
+function initializeApplication() {
+
+    updateDayCounter();
+    collectAndNormalizeTasks();
+    restoreTaskState();
+    restoreChecklistState();
+    restoreSettings();
+
+    setupTaskInteractions();
+    setupResourceButtons();
+    setupSearch();
+    setupPhaseToggles();
+    setupMobileNavigation();
+    setupSettings();
+    setupExportImport();
+
+    updateDashboard();
+    updateAllPhaseProgress();
+    updateAnalytics();
+
+    recordTodayVisit();
+
+    setupKeyboardShortcuts();
+
 }
 
 
-* {
-  box-sizing: border-box;
+/* =========================================================
+   LOCAL STORAGE
+   ========================================================= */
+
+function loadState() {
+
+    try {
+
+        const saved = localStorage.getItem(CONFIG.storageKey);
+
+        if (!saved) {
+            return structuredClone(defaultState);
+        }
+
+        const parsed = JSON.parse(saved);
+
+        return {
+            ...structuredClone(defaultState),
+            ...parsed,
+            completedTasks: parsed.completedTasks || {},
+            completedProjects: parsed.completedProjects || {},
+            githubChecklist: parsed.githubChecklist || {},
+            linkedinChecklist: parsed.linkedinChecklist || {},
+            activity: parsed.activity || {},
+            settings: {
+                ...defaultState.settings,
+                ...(parsed.settings || {})
+            }
+        };
+
+    } catch (error) {
+
+        console.warn("Could not load saved roadmap state.", error);
+
+        return structuredClone(defaultState);
+    }
 }
 
 
-html {
-  scroll-behavior: smooth;
+function saveState() {
+
+    try {
+
+        localStorage.setItem(
+            CONFIG.storageKey,
+            JSON.stringify(state)
+        );
+
+    } catch (error) {
+
+        console.warn("Could not save roadmap state.", error);
+    }
 }
 
 
-body {
-  margin: 0;
-  min-height: 100vh;
+/* =========================================================
+   DAY COUNTER
+   ========================================================= */
 
-  background:
-    radial-gradient(
-      circle at 80% 0%,
-      rgba(140,255,90,.07),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 20% 50%,
-      rgba(82,216,255,.045),
-      transparent 30%
-    ),
-    var(--bg);
+function getToday() {
 
-  color: var(--text);
-  font-family: var(--font);
+    const now = new Date();
 
-  font-size: 16px;
-  line-height: 1.5;
-
-  overflow-x: hidden;
-}
-
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-
-button {
-  color: inherit;
-}
-
-
-button,
-select {
-  cursor: pointer;
-}
-
-
-::selection {
-  background: rgba(140,255,90,.25);
-  color: white;
-}
-
-
-/* BACKGROUND */
-
-.noise {
-  position: fixed;
-  inset: 0;
-
-  pointer-events: none;
-  z-index: -3;
-
-  opacity: .035;
-
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-}
-
-
-.grid-bg {
-  position: fixed;
-  inset: 0;
-
-  pointer-events: none;
-  z-index: -4;
-
-  opacity: .18;
-
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-
-  background-size: 50px 50px;
-
-  mask-image:
-    linear-gradient(to bottom, black, transparent 85%);
-}
-
-
-.orb {
-  position: fixed;
-
-  width: 420px;
-  height: 420px;
-
-  border-radius: 50%;
-
-  filter: blur(100px);
-
-  pointer-events: none;
-
-  z-index: -2;
-
-  opacity: .07;
-}
-
-
-.orb-one {
-  top: 5%;
-  right: 10%;
-  background: var(--accent);
-}
-
-
-.orb-two {
-  bottom: 5%;
-  left: 15%;
-  background: var(--accent-2);
-}
-
-
-/* SIDEBAR */
-
-.sidebar {
-  position: fixed;
-
-  left: 0;
-  top: 0;
-  bottom: 0;
-
-  width: var(--sidebar);
-
-  padding: 26px 18px;
-
-  border-right: 1px solid var(--line);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(12,14,18,.96),
-      rgba(7,8,11,.94)
+    return new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
     );
 
-  backdrop-filter: blur(30px);
-
-  z-index: 100;
-
-  display: flex;
-  flex-direction: column;
 }
 
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+function getStartDate() {
 
-  padding: 4px 8px 26px;
+    const [year, month, day] = CONFIG.startDate
+        .split("-")
+        .map(Number);
+
+    return new Date(year, month - 1, day);
 }
 
 
-.brand-mark {
-  width: 35px;
-  height: 35px;
+function getDayNumber() {
 
-  border-radius: 10px;
+    const start = getStartDate();
+    const today = getToday();
 
-  border: 1px solid rgba(140,255,90,.45);
+    const difference =
+        Math.floor(
+            (today.getTime() - start.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
 
-  display: grid;
-  place-items: center;
-
-  position: relative;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(140,255,90,.13),
-      rgba(82,216,255,.05)
-    );
+    return difference + 1;
 }
 
 
-.brand-mark span {
-  position: absolute;
+function updateDayCounter() {
 
-  width: 12px;
-  height: 12px;
-
-  border: 2px solid var(--accent);
-
-  transform: rotate(45deg);
-}
-
-
-.brand-mark span:last-child {
-  width: 6px;
-  height: 6px;
-
-  border-color: var(--accent-2);
-}
-
-
-.brand-name {
-  font-weight: 900;
-  letter-spacing: .12em;
-  font-size: 14px;
-}
-
-
-.brand-sub {
-  font-size: 8px;
-  letter-spacing: .13em;
-  color: var(--muted);
-  margin-top: 1px;
-}
-
-
-.profile-mini {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 13px;
-
-  border: 1px solid var(--line);
-
-  background: rgba(255,255,255,.025);
-
-  border-radius: 14px;
-}
-
-
-.avatar {
-  width: 36px;
-  height: 36px;
-
-  border-radius: 50%;
-
-  display: grid;
-  place-items: center;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--accent),
-      var(--accent-2)
+    const dayNumberElement = $(
+        CONFIG.selectors.dayNumber
     );
 
-  color: #071006;
-
-  font-weight: 950;
-}
-
-
-.profile-copy {
-  display: flex;
-  flex-direction: column;
-
-  min-width: 0;
-}
-
-
-.profile-copy strong {
-  font-size: 13px;
-}
-
-
-.profile-copy span {
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 2px;
-
-  white-space: nowrap;
-}
-
-
-.status-dot {
-  margin-left: auto;
-
-  width: 8px;
-  height: 8px;
-
-  border-radius: 50%;
-
-  background: var(--accent);
-
-  box-shadow:
-    0 0 12px var(--accent);
-}
-
-
-.side-nav {
-  margin-top: 28px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-
-.nav-item {
-  width: 100%;
-
-  border: 0;
-  background: transparent;
-
-  padding: 13px 12px;
-
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  border-radius: 12px;
-
-  color: var(--muted);
-
-  font-size: 14px;
-  font-weight: 650;
-
-  text-align: left;
-
-  transition: .2s ease;
-}
-
-
-.nav-item:hover {
-  color: var(--text);
-  background: rgba(255,255,255,.04);
-}
-
-
-.nav-item.active {
-  color: var(--text);
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(140,255,90,.12),
-      rgba(140,255,90,.035)
+    const labelElement = $(
+        CONFIG.selectors.dayLabel
     );
 
-  box-shadow:
-    inset 2px 0 0 var(--accent);
-}
-
-
-.nav-icon {
-  width: 22px;
-
-  text-align: center;
-
-  font-size: 17px;
-
-  color: var(--muted-2);
-}
-
-
-.nav-item.active .nav-icon {
-  color: var(--accent);
-}
-
-
-.sidebar-bottom {
-  margin-top: auto;
-}
-
-
-.start-card {
-  padding: 15px;
-
-  border-radius: 15px;
-
-  border: 1px solid var(--line);
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(140,255,90,.08),
-      rgba(255,255,255,.02)
-    );
-
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-
-.tiny-label {
-  color: var(--accent);
-
-  font-size: 9px;
-  font-weight: 900;
-
-  letter-spacing: .15em;
-}
-
-
-.start-card strong {
-  font-size: 17px;
-  letter-spacing: .04em;
-}
-
-
-.start-card span:last-child {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-
-.sidebar-reset {
-  width: 100%;
-
-  margin-top: 10px;
-
-  padding: 9px;
-
-  border: 0;
-
-  background: transparent;
-
-  color: var(--muted-2);
-
-  font-size: 11px;
-}
-
-
-.sidebar-reset:hover {
-  color: var(--danger);
-}
-
-
-/* MOBILE HEADER */
-
-.mobile-header {
-  display: none;
-}
-
-
-/* MAIN */
-
-.main {
-  margin-left: var(--sidebar);
-
-  width: calc(100% - var(--sidebar));
-
-  padding: 0 48px 60px;
-
-  max-width: 1800px;
-}
-
-
-.topbar {
-  height: 78px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  border-bottom: 1px solid var(--line);
-}
-
-
-.breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  color: var(--muted);
-
-  font-size: 11px;
-  font-weight: 800;
-
-  letter-spacing: .1em;
-}
-
-
-.breadcrumbs span:first-child {
-  color: var(--text);
-}
-
-
-.breadcrumbs b {
-  color: var(--muted-2);
-}
-
-
-.top-actions {
-  display: flex;
-  gap: 8px;
-}
-
-
-.top-btn {
-  padding: 9px 13px;
-
-  border-radius: 10px;
-
-  border: 1px solid var(--line);
-
-  background: rgba(255,255,255,.025);
-
-  color: var(--muted);
-
-  font-size: 12px;
-  font-weight: 750;
-}
-
-
-.top-btn:hover {
-  color: var(--text);
-  border-color: var(--line-strong);
-}
-
-
-.top-btn.primary {
-  color: #071006;
-
-  border-color: var(--accent);
-
-  background: var(--accent);
-
-  font-weight: 900;
-}
-
-
-/* HERO */
-
-.hero-section {
-  padding: 55px 0 30px;
-
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 310px;
-
-  gap: 45px;
-
-  align-items: center;
-}
-
-
-.hero-left {
-  min-width: 0;
-}
-
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  color: var(--accent);
-
-  font-size: 11px;
-  font-weight: 900;
-
-  letter-spacing: .15em;
-
-  margin-bottom: 18px;
-}
-
-
-.pulse {
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: var(--accent);
-
-  box-shadow:
-    0 0 14px var(--accent);
-}
-
-
-.hero-section h1 {
-  margin: 0;
-
-  max-width: 950px;
-
-  font-size:
-    clamp(48px, 6vw, 92px);
-
-  line-height: .93;
-
-  letter-spacing: -.065em;
-
-  font-weight: 950;
-}
-
-
-.hero-section h1 span {
-  color: var(--accent);
-}
-
-
-.hero-section h1 em {
-  display: block;
-
-  font-style: normal;
-
-  color: transparent;
-
-  -webkit-text-stroke: 1px rgba(255,255,255,.38);
-}
-
-
-.hero-description {
-  max-width: 690px;
-
-  color: var(--muted);
-
-  font-size: 16px;
-
-  line-height: 1.75;
-
-  margin: 25px 0 24px;
-}
-
-
-.hero-meta {
-  display: flex;
-  align-items: center;
-
-  gap: 22px;
-}
-
-
-.hero-meta > div:not(.meta-divider) {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-
-.hero-meta span {
-  color: var(--muted-2);
-
-  font-size: 8px;
-  font-weight: 900;
-
-  letter-spacing: .14em;
-}
-
-
-.hero-meta strong {
-  font-size: 12px;
-  letter-spacing: .04em;
-}
-
-
-.meta-divider {
-  width: 1px;
-  height: 25px;
-
-  background: var(--line);
-}
-
-
-/* DAY CARD */
-
-.day-card {
-  padding: 22px;
-
-  border-radius: 24px;
-
-  border: 1px solid var(--line-strong);
-
-  background:
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(140,255,90,.11),
-      transparent 40%
-    ),
-    rgba(15,17,22,.9);
-
-  box-shadow: var(--shadow);
-}
-
-
-.day-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  color: var(--muted);
-
-  font-size: 10px;
-  font-weight: 900;
-
-  letter-spacing: .14em;
-}
-
-
-.live-pill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  color: var(--accent);
-
-  padding: 5px 8px;
-
-  border-radius: 50px;
-
-  background: rgba(140,255,90,.08);
-}
-
-
-.live-pill i {
-  width: 5px;
-  height: 5px;
-
-  border-radius: 50%;
-
-  background: var(--accent);
-}
-
-
-.day-number {
-  margin-top: 17px;
-
-  font-size: 64px;
-
-  line-height: 1;
-
-  letter-spacing: -.06em;
-
-  font-weight: 950;
-}
-
-
-.day-label {
-  margin-top: 5px;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  color: var(--accent);
-
-  letter-spacing: .13em;
-}
-
-
-.day-line {
-  display: flex;
-  justify-content: space-between;
-
-  margin-top: 25px;
-
-  color: var(--muted);
-
-  font-size: 10px;
-  font-weight: 800;
-}
-
-
-.day-progress {
-  height: 5px;
-
-  margin-top: 9px;
-
-  border-radius: 10px;
-
-  overflow: hidden;
-
-  background: rgba(255,255,255,.07);
-}
-
-
-.day-progress div {
-  height: 100%;
-
-  width: 0%;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent),
-      var(--accent-2)
-    );
-
-  transition: width .5s ease;
-}
-
-
-/* METRICS */
-
-.metrics-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
-
-  gap: 14px;
-
-  margin-top: 15px;
-}
-
-
-.metric-card {
-  min-height: 195px;
-
-  padding: 20px;
-
-  border-radius: var(--radius);
-
-  border: 1px solid var(--line);
-
-  background: var(--panel);
-
-  backdrop-filter: blur(20px);
-
-  display: flex;
-  flex-direction: column;
-
-  box-shadow: 0 15px 50px rgba(0,0,0,.13);
-}
-
-
-.metric-card:hover {
-  border-color: var(--line-strong);
-}
-
-
-.metric-head {
-  display: flex;
-  justify-content: space-between;
-
-  color: var(--muted-2);
-
-  font-size: 9px;
-  font-weight: 900;
-
-  letter-spacing: .14em;
-}
-
-
-.metric-main {
-  margin-top: 20px;
+    if (!dayNumberElement) {
+        return;
+    }
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-
-.metric-main > strong {
-  font-size: 47px;
-
-  line-height: 1;
-
-  letter-spacing: -.06em;
-}
-
-
-.circular-progress {
-  position: relative;
-
-  width: 64px;
-  height: 64px;
-}
-
-
-.circular-progress svg {
-  width: 100%;
-  height: 100%;
-
-  transform: rotate(-90deg);
-}
-
-
-.circular-progress circle {
-  fill: none;
-
-  stroke-width: 7;
-}
-
-
-.circle-bg {
-  stroke: rgba(255,255,255,.06);
-}
-
-
-.circle-value {
-  stroke: var(--accent);
-
-  stroke-linecap: round;
-
-  stroke-dasharray: 264;
-
-  stroke-dashoffset: 264;
-
-  transition: .5s ease;
-}
-
-
-.circular-progress span {
-  position: absolute;
-
-  inset: 0;
-
-  display: grid;
-  place-items: center;
-
-  font-size: 10px;
-  font-weight: 900;
-}
-
-
-.metric-foot {
-  display: flex;
-
-  justify-content: space-between;
-
-  margin-top: auto;
-
-  color: var(--muted);
-
-  font-size: 10px;
-}
-
-
-.streak-number {
-  margin-top: 22px;
-
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-
-.streak-number strong {
-  font-size: 48px;
-
-  letter-spacing: -.06em;
-}
-
-
-.streak-number span {
-  color: var(--accent);
-
-  font-size: 10px;
-  font-weight: 900;
-
-  letter-spacing: .12em;
-}
-
-
-.streak-dots {
-  display: flex;
-
-  gap: 5px;
-
-  margin-top: 17px;
-}
-
-
-.streak-dots i {
-  width: 19px;
-  height: 5px;
-
-  border-radius: 5px;
-
-  background: rgba(255,255,255,.07);
-}
-
-
-.streak-dots i.active {
-  background: var(--accent);
-
-  box-shadow:
-    0 0 8px rgba(140,255,90,.35);
-}
-
-
-.phase-number {
-  margin-top: 22px;
-
-  color: var(--accent);
-
-  font-size: 10px;
-  font-weight: 900;
-
-  letter-spacing: .15em;
-}
-
-
-.phase-name {
-  margin-top: 4px;
-
-  font-size: 22px;
-}
-
-
-.mini-progress {
-  height: 5px;
-
-  margin-top: 15px;
-
-  background: rgba(255,255,255,.06);
-
-  border-radius: 10px;
-
-  overflow: hidden;
-}
-
-
-.mini-progress div {
-  height: 100%;
-
-  width: 0%;
-
-  background: var(--accent);
-
-  transition: width .5s;
-}
-
-
-.next-mission {
-  margin-top: 18px;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 6px;
-}
-
-
-.next-tag {
-  align-self: flex-start;
-
-  padding: 4px 7px;
-
-  border-radius: 5px;
-
-  background: rgba(140,255,90,.08);
-
-  color: var(--accent);
-
-  font-size: 8px;
-  font-weight: 900;
-
-  letter-spacing: .1em;
-}
-
-
-.next-mission strong {
-  font-size: 18px;
-
-  line-height: 1.2;
-}
-
-
-.next-mission button {
-  width: fit-content;
-
-  margin-top: 5px;
-
-  border: 0;
-
-  background: transparent;
-
-  color: var(--accent);
-
-  font-size: 11px;
-  font-weight: 900;
-
-  padding: 0;
-}
-
-
-/* SECTIONS */
-
-.section-block {
-  margin-top: 70px;
-
-  scroll-margin-top: 25px;
-}
-
-
-.section-heading {
-  display: flex;
-
-  justify-content: space-between;
-  align-items: flex-end;
-
-  gap: 30px;
-
-  margin-bottom: 22px;
-}
-
-
-.section-kicker {
-  color: var(--accent);
-
-  font-size: 9px;
-  font-weight: 950;
-
-  letter-spacing: .17em;
-}
-
-
-.section-heading h2 {
-  margin: 5px 0 5px;
-
-  font-size: 31px;
-
-  letter-spacing: -.035em;
-}
-
-
-.section-heading p {
-  margin: 0;
-
-  color: var(--muted);
-
-  font-size: 13px;
-}
-
-
-/* FILTERS */
-
-.section-actions {
-  display: flex;
-  gap: 6px;
-}
-
-
-.filter-btn {
-  padding: 9px 12px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 8px;
-
-  background: transparent;
-
-  color: var(--muted);
-
-  font-size: 10px;
-  font-weight: 900;
-}
-
-
-.filter-btn.active {
-  background: rgba(140,255,90,.1);
-
-  color: var(--accent);
-
-  border-color: rgba(140,255,90,.3);
-}
-
-
-/* TODAY */
-
-.today-grid {
-  display: grid;
-
-  grid-template-columns:
-    minmax(0, 1.6fr)
-    minmax(250px, .7fr);
-
-  gap: 14px;
-}
-
-
-.mission-card,
-.command-card {
-  border: 1px solid var(--line);
-
-  border-radius: var(--radius);
-
-  background: var(--panel);
-
-  padding: 25px;
-}
-
-
-.mission-top {
-  display: flex;
-  align-items: center;
-
-  gap: 15px;
-}
-
-
-.mission-icon {
-  width: 50px;
-  height: 50px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 13px;
-
-  background: rgba(140,255,90,.08);
-
-  color: var(--accent);
+    const day = getDayNumber();
 
-  border: 1px solid rgba(140,255,90,.18);
+    if (day < 1) {
 
-  font-weight: 950;
-}
-
-
-.mission-label {
-  color: var(--muted-2);
-
-  font-size: 9px;
-  font-weight: 900;
-
-  letter-spacing: .13em;
-}
-
-
-.mission-card h3 {
-  margin: 3px 0 0;
-
-  font-size: 22px;
-}
-
-
-.mission-card > p {
-  color: var(--muted);
-
-  font-size: 13px;
-
-  line-height: 1.7;
-
-  max-width: 700px;
+        const daysUntilStart = Math.abs(day - 1);
 
-  margin: 18px 0;
-}
-
-
-.mission-actions {
-  display: flex;
-  gap: 8px;
-
-  flex-wrap: wrap;
-}
-
-
-.complete-large,
-.resource-large {
-  border-radius: 10px;
-
-  padding: 11px 15px;
+        dayNumberElement.textContent =
+            `T-${daysUntilStart}`;
 
-  font-size: 11px;
-  font-weight: 900;
-}
-
-
-.complete-large {
-  border: 1px solid var(--accent);
-
-  background: var(--accent);
+        if (labelElement) {
+            labelElement.textContent =
+                "Days Until Journey";
+        }
 
-  color: #071006;
-}
+        return;
+    }
 
+    dayNumberElement.textContent =
+        String(day).padStart(2, "0");
 
-.resource-large {
-  border: 1px solid var(--line);
+    if (labelElement) {
+        labelElement.textContent =
+            "Journey Day";
+    }
+}
+
+
+/* =========================================================
+   TASK NORMALIZATION
+   ========================================================= */
+
+function collectAndNormalizeTasks() {
+
+    const taskCards = $$(".task-card");
+
+    taskCards.forEach((card, index) => {
+
+        if (!card.dataset.taskId) {
+
+            const titleElement =
+                card.querySelector(
+                    ".task-title, h3, h4, [data-task-title]"
+                );
 
-  background: rgba(255,255,255,.035);
+            const title =
+                titleElement?.textContent?.trim()
+                || `task-${index + 1}`;
 
-  color: var(--text);
-}
+            card.dataset.taskId =
+                slugify(`${title}-${index + 1}`);
+        }
 
+        const resourceButton =
+            card.querySelector(".resource-btn");
 
-.resource-large:hover {
-  border-color: var(--accent-2);
-  color: var(--accent-2);
-}
+        if (
+            resourceButton &&
+            !resourceButton.dataset.resource
+        ) {
 
+            const text =
+                card.textContent.toLowerCase();
 
-.command-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+            const key = guessResourceKey(text);
 
-  gap: 17px;
+            if (key) {
+                resourceButton.dataset.resource = key;
+            }
+        }
+    });
 }
-
 
-.command-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  border-bottom: 1px solid var(--line);
+function slugify(value) {
 
-  padding-bottom: 12px;
+    return value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
 }
 
 
-.command-row:last-child {
-  border-bottom: 0;
-}
-
-
-.command-row span {
-  color: var(--muted);
-
-  font-size: 10px;
-  font-weight: 900;
-
-  letter-spacing: .1em;
-}
-
+function guessResourceKey(text) {
 
-.command-row strong {
-  font-size: 21px;
-}
+    const mappings = [
+        ["javascript", "javascript"],
+        ["react native", "react-native"],
+        ["react.js", "react"],
+        ["react", "react"],
+        ["node.js", "node"],
+        ["node js", "node"],
+        ["express", "express"],
+        ["postgres", "sql"],
+        ["sql", "sql"],
+        ["mongodb", "mongodb"],
+        ["authentication", "auth"],
+        ["authorization", "auth"],
+        ["python", "python"],
+        ["linux", "linux"],
+        ["docker", "docker"],
+        ["aws", "aws"],
+        ["cyber", "cybersecurity"],
+        ["security", "cybersecurity"],
+        ["system design", "system-design"],
+        ["network", "networking"],
+        ["dbms", "dbms"],
+        ["operating system", "os"],
+        ["excel", "excel"],
+        ["figma", "uiux"],
+        ["ui/ux", "uiux"],
+        ["ui ux", "uiux"],
+        ["stl", "stl"],
+        ["dsa", "dsa"],
+        ["data structure", "dsa"],
+        ["algorithm", "dsa"],
+        ["git", "git"],
+        ["github", "git"],
+        ["html", "html"],
+        ["css", "css"],
+        ["c++", "cpp"],
+        ["cpp", "cpp"],
+        ["oop", "cpp-oop"],
+        ["llm", "ai"],
+        ["generative ai", "ai"],
+        ["artificial intelligence", "ai"],
+        ["computer basics", "computer-basics"],
+        ["terminal", "command-line"],
+        ["command line", "command-line"]
+    ];
 
+    for (const [needle, key] of mappings) {
 
-/* ROADMAP CONTROLS */
+        if (text.includes(needle)) {
+            return key;
+        }
+    }
 
-.roadmap-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    return null;
 }
-
-
-.search-box {
-  width: 260px;
-
-  height: 42px;
 
-  display: flex;
-  align-items: center;
-  gap: 8px;
 
-  padding: 0 10px;
+/* =========================================================
+   TASK COMPLETION
+   ========================================================= */
 
-  border-radius: 10px;
+function setupTaskInteractions() {
 
-  border: 1px solid var(--line);
+    const buttons = $$(CONFIG.selectors.taskComplete);
 
-  background: rgba(255,255,255,.025);
-}
-
-
-.search-box > span {
-  color: var(--muted-2);
-}
+    buttons.forEach(button => {
 
+        button.addEventListener("click", event => {
 
-.search-box input {
-  width: 100%;
+            event.preventDefault();
+            event.stopPropagation();
 
-  border: 0;
-  outline: 0;
+            const taskCard =
+                button.closest(".task-card");
 
-  background: transparent;
+            if (!taskCard) {
+                return;
+            }
 
-  color: var(--text);
+            const taskId =
+                taskCard.dataset.taskId;
 
-  font-size: 12px;
-}
+            if (!taskId) {
+                return;
+            }
 
+            toggleTask(taskId, taskCard, button);
+        });
 
-.search-box input::placeholder {
-  color: var(--muted-2);
+    });
 }
-
 
-.search-box kbd {
-  white-space: nowrap;
 
-  color: var(--muted-2);
+function toggleTask(taskId, taskCard, button) {
 
-  border: 1px solid var(--line);
+    const wasCompleted =
+        Boolean(state.completedTasks[taskId]);
 
-  padding: 2px 5px;
+    if (wasCompleted) {
 
-  border-radius: 4px;
+        delete state.completedTasks[taskId];
 
-  font-size: 8px;
-}
+        taskCard.classList.remove("is-completed");
+        button.classList.remove("completed");
 
+        showToast(
+            "Task marked incomplete",
+            "info"
+        );
 
-#phaseSelect {
-  height: 42px;
+    } else {
 
-  padding: 0 10px;
+        state.completedTasks[taskId] = {
+            completedAt: new Date().toISOString()
+        };
 
-  border-radius: 10px;
+        taskCard.classList.add("is-completed");
+        button.classList.add("completed");
 
-  border: 1px solid var(--line);
+        playCompletionSound();
 
-  background: var(--panel-strong);
+        showToast(
+            "Task completed ✓",
+            "success"
+        );
+    }
 
-  color: var(--text);
+    recordActivity();
+    saveState();
 
-  font-size: 11px;
+    updateDashboard();
+    updateAllPhaseProgress();
+    updateAnalytics();
 }
-
-
-/* ROADMAP PHASE */
-
-.phase-block {
-  border: 1px solid var(--line);
-
-  border-radius: var(--radius);
-
-  background: rgba(12,14,18,.75);
 
-  overflow: hidden;
 
-  margin-bottom: 12px;
-}
-
+function restoreTaskState() {
 
-.phase-header {
-  width: 100%;
+    const taskCards = $$(".task-card");
 
-  border: 0;
+    taskCards.forEach(card => {
 
-  background: transparent;
+        const taskId = card.dataset.taskId;
 
-  padding: 19px 20px;
+        if (!taskId) {
+            return;
+        }
 
-  display: grid;
+        const button =
+            card.querySelector(".task-complete");
 
-  grid-template-columns:
-    55px
-    minmax(200px, 1fr)
-    170px
-    100px
-    30px;
+        if (
+            state.completedTasks[taskId]
+        ) {
 
-  align-items: center;
+            card.classList.add("is-completed");
 
-  gap: 16px;
+            if (button) {
+                button.classList.add("completed");
+            }
 
-  text-align: left;
-}
+        } else {
 
+            card.classList.remove("is-completed");
 
-.phase-header:hover {
-  background: rgba(255,255,255,.025);
+            if (button) {
+                button.classList.remove("completed");
+            }
+        }
+    });
 }
 
 
-.phase-index {
-  color: var(--accent);
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
 
-  font-size: 11px;
-  font-weight: 950;
+function getTaskCards() {
 
-  letter-spacing: .1em;
+    return $$(".task-card");
 }
 
 
-.phase-title strong {
-  display: block;
+function getTotalTasks() {
 
-  font-size: 17px;
+    return getTaskCards().length;
 }
 
 
-.phase-title span {
-  display: block;
+function getCompletedTasks() {
 
-  margin-top: 2px;
+    return getTaskCards()
+        .filter(card => {
 
-  color: var(--muted);
+            const id = card.dataset.taskId;
 
-  font-size: 10px;
+            return id &&
+                Boolean(state.completedTasks[id]);
+        })
+        .length;
 }
-
 
-.phase-bar {
-  height: 6px;
-
-  background: rgba(255,255,255,.06);
-
-  border-radius: 10px;
-
-  overflow: hidden;
-}
 
+function getCompletionPercentage() {
 
-.phase-bar div {
-  height: 100%;
+    const total = getTotalTasks();
 
-  width: 0%;
+    if (total === 0) {
+        return 0;
+    }
 
-  background:
-    linear-gradient(
-      90deg,
-      var(--accent),
-      var(--accent-2)
+    return Math.round(
+        (getCompletedTasks() / total) * 100
     );
 }
 
 
-.phase-percent {
-  color: var(--muted);
+function updateDashboard() {
 
-  font-size: 10px;
-  font-weight: 900;
+    const completed =
+        getCompletedTasks();
 
-  text-align: right;
-}
+    const total =
+        getTotalTasks();
 
+    const percentage =
+        getCompletionPercentage();
 
-.phase-arrow {
-  color: var(--muted);
-
-  transition: .2s;
-}
-
-
-.phase-block.open .phase-arrow {
-  transform: rotate(180deg);
-}
-
-
-.phase-tasks {
-  display: none;
-
-  padding: 0 10px 10px;
-}
-
-
-.phase-block.open .phase-tasks {
-  display: block;
-}
-
-
-/* TASK */
-
-.task-row {
-  display: grid;
-
-  grid-template-columns:
-    35px
-    minmax(0, 1fr)
-    120px
-    105px
-    105px;
-
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 13px 10px;
-
-  border-top: 1px solid rgba(255,255,255,.045);
-
-  transition: .18s;
-}
-
-
-.task-row:hover {
-  background: rgba(255,255,255,.025);
-}
-
-
-.task-row.completed {
-  opacity: .58;
-}
-
-
-.task-check {
-  width: 26px;
-  height: 26px;
-
-  border-radius: 7px;
-
-  border: 1px solid rgba(255,255,255,.15);
-
-  background: rgba(255,255,255,.025);
-
-  color: transparent;
-
-  display: grid;
-  place-items: center;
-
-  font-size: 14px;
-  font-weight: 950;
-
-  transition: .2s;
-}
-
-
-.task-check:hover {
-  border-color: var(--accent);
-}
-
-
-.task-row.completed .task-check {
-  background: var(--accent);
-
-  border-color: var(--accent);
-
-  color: #071006;
-}
-
-
-.task-main {
-  min-width: 0;
-}
-
-
-.task-title {
-  font-size: 14px;
-
-  font-weight: 800;
-
-  color: var(--text);
-}
-
-
-.task-row.completed .task-title {
-  text-decoration: line-through;
-}
-
-
-.task-description {
-  margin-top: 3px;
-
-  color: var(--muted);
-
-  font-size: 10px;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-
-.task-tag {
-  justify-self: start;
-
-  padding: 5px 7px;
-
-  border-radius: 5px;
-
-  background: rgba(255,255,255,.04);
-
-  border: 1px solid var(--line);
-
-  color: var(--muted);
-
-  font-size: 8px;
-  font-weight: 900;
-
-  letter-spacing: .08em;
-}
-
-
-.task-level {
-  color: var(--muted-2);
-
-  font-size: 9px;
-  font-weight: 850;
-}
-
-
-.task-resource,
-.task-more {
-  justify-self: stretch;
-
-  padding: 8px 8px;
-
-  border-radius: 8px;
-
-  border: 1px solid var(--line);
-
-  background: rgba(255,255,255,.025);
-
-  color: var(--text);
-
-  font-size: 9px;
-  font-weight: 900;
-}
-
-
-.task-resource:hover {
-  color: var(--accent-2);
-
-  border-color: rgba(82,216,255,.35);
-}
-
-
-.task-more:hover {
-  color: var(--accent);
-  border-color: rgba(140,255,90,.3);
-}
-
-
-.no-results {
-  padding: 40px;
-
-  text-align: center;
-
-  color: var(--muted);
-
-  border: 1px dashed var(--line);
-
-  border-radius: 16px;
-}
-
-
-/* PROJECTS */
-
-.projects-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0,1fr));
-
-  gap: 13px;
-}
-
-
-.project-card {
-  position: relative;
-
-  min-height: 235px;
-
-  padding: 20px;
-
-  border-radius: var(--radius);
-
-  border: 1px solid var(--line);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.045),
-      rgba(255,255,255,.015)
+    updateText(
+        "[data-total-completed]",
+        completed
     );
 
-  overflow: hidden;
+    updateText(
+        "[data-total-tasks]",
+        total
+    );
 
-  display: flex;
-  flex-direction: column;
+    updateText(
+        "[data-completion-rate]",
+        `${percentage}%`
+    );
+
+    updateText(
+        "[data-progress-percent]",
+        `${percentage}%`
+    );
+
+    updateText(
+        ".progress-percent",
+        `${percentage}%`
+    );
+
+    const fills = $$(
+        ".progress-fill"
+    );
+
+    fills.forEach(fill => {
+
+        fill.style.width =
+            `${percentage}%`;
+    });
+
+    document.documentElement
+        .style.setProperty(
+            "--roadmap-progress",
+            `${percentage}%`
+        );
 }
 
 
-.project-card::after {
-  content: "";
+function updateText(selector, value) {
 
-  position: absolute;
+    $$(selector).forEach(element => {
 
-  width: 130px;
-  height: 130px;
-
-  right: -60px;
-  bottom: -60px;
-
-  border-radius: 50%;
-
-  background: rgba(140,255,90,.07);
-
-  filter: blur(25px);
+        element.textContent = value;
+    });
 }
 
 
-.project-index {
-  color: var(--muted-2);
+/* =========================================================
+   PHASE PROGRESS
+   ========================================================= */
 
-  font-size: 9px;
-  font-weight: 950;
+function updateAllPhaseProgress() {
 
-  letter-spacing: .13em;
+    const phases = $$(".phase-card");
+
+    phases.forEach(phase => {
+
+        const tasks =
+            $$(".task-card", phase);
+
+        if (!tasks.length) {
+            return;
+        }
+
+        const completed =
+            tasks.filter(task => {
+
+                const id =
+                    task.dataset.taskId;
+
+                return id &&
+                    state.completedTasks[id];
+
+            }).length;
+
+        const percentage =
+            Math.round(
+                (completed / tasks.length) * 100
+            );
+
+        const progressBar =
+            phase.querySelector(
+                ".phase-progress-fill"
+            );
+
+        const progressText =
+            phase.querySelector(
+                ".phase-progress-percent"
+            );
+
+        if (progressBar) {
+
+            progressBar.style.width =
+                `${percentage}%`;
+        }
+
+        if (progressText) {
+
+            progressText.textContent =
+                `${percentage}%`;
+        }
+
+        phase.dataset.progress =
+            percentage;
+    });
 }
 
 
-.project-card h3 {
-  margin: 17px 0 6px;
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
-  font-size: 18px;
+function setupSearch() {
+
+    const inputs = $$(
+        CONFIG.selectors.searchInput
+    );
+
+    inputs.forEach(input => {
+
+        input.addEventListener(
+            "input",
+            debounce(() => {
+
+                performSearch(
+                    input.value.trim()
+                );
+
+            }, 120)
+        );
+    });
 }
 
 
-.project-card p {
-  color: var(--muted);
+function performSearch(query) {
 
-  font-size: 11px;
+    const normalized =
+        query.toLowerCase();
 
-  line-height: 1.65;
+    const phases = $$(".phase-card");
 
-  margin: 0;
+    phases.forEach(phase => {
+
+        const tasks =
+            $$(".task-card", phase);
+
+        let phaseHasMatch = false;
+
+        tasks.forEach(task => {
+
+            const text =
+                task.textContent.toLowerCase();
+
+            const matches =
+                !normalized ||
+                text.includes(normalized);
+
+            task.style.display =
+                matches ? "" : "none";
+
+            if (matches) {
+                phaseHasMatch = true;
+            }
+        });
+
+        phase.style.display =
+            phaseHasMatch || !normalized
+                ? ""
+                : "none";
+    });
+
 }
 
 
-.project-stack {
-  display: flex;
+/* =========================================================
+   PHASE ACCORDION
+   ========================================================= */
 
-  flex-wrap: wrap;
+function setupPhaseToggles() {
 
-  gap: 5px;
+    const phaseCards =
+        $$(".phase-card");
 
-  margin-top: 15px;
+    phaseCards.forEach(phase => {
+
+        const toggle =
+            phase.querySelector(
+                "[data-phase-toggle]"
+            );
+
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                phase.classList.toggle(
+                    "is-collapsed"
+                );
+
+                const collapsed =
+                    phase.classList.contains(
+                        "is-collapsed"
+                    );
+
+                toggle.setAttribute(
+                    "aria-expanded",
+                    String(!collapsed)
+                );
+            }
+        );
+    });
 }
 
 
-.project-stack span {
-  padding: 4px 6px;
+/* =========================================================
+   RESOURCE SYSTEM
+   ========================================================= */
 
-  border-radius: 4px;
+function setupResourceButtons() {
 
-  background: rgba(255,255,255,.04);
+    const buttons =
+        $$(CONFIG.selectors.resourceButton);
 
-  color: var(--muted);
+    buttons.forEach(button => {
 
-  font-size: 8px;
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const key =
+                    button.dataset.resource;
+
+                if (!key) {
+
+                    const card =
+                        button.closest(
+                            ".task-card"
+                        );
+
+                    const guessed =
+                        guessResourceKey(
+                            card?.textContent
+                                ?.toLowerCase() || ""
+                        );
+
+                    if (guessed) {
+                        openResourceModal(
+                            guessed
+                        );
+                    } else {
+                        showToast(
+                            "Resources coming soon",
+                            "info"
+                        );
+                    }
+
+                    return;
+                }
+
+                openResourceModal(key);
+            }
+        );
+    });
 }
 
 
-.project-bottom {
-  margin-top: auto;
+function openResourceModal(resourceKey) {
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    const resource =
+        RESOURCES[resourceKey];
 
-  padding-top: 18px;
+    if (!resource) {
+
+        showToast(
+            "Resource not found",
+            "error"
+        );
+
+        return;
+    }
+
+    let modal =
+        $(".resource-modal");
+
+    if (!modal) {
+        modal = createResourceModal();
+    }
+
+    const title =
+        modal.querySelector(
+            "[data-resource-title]"
+        );
+
+    const description =
+        modal.querySelector(
+            "[data-resource-description]"
+        );
+
+    const list =
+        modal.querySelector(
+            "[data-resource-list]"
+        );
+
+    if (title) {
+        title.textContent =
+            resource.title;
+    }
+
+    if (description) {
+        description.textContent =
+            resource.description;
+    }
+
+    if (list) {
+
+        list.innerHTML = "";
+
+        resource.resources.forEach(item => {
+
+            const link =
+                document.createElement("a");
+
+            link.className =
+                "resource-modal-item";
+
+            link.href = item.url;
+            link.target = "_blank";
+            link.rel =
+                "noopener noreferrer";
+
+            link.innerHTML = `
+                <span class="resource-modal-icon">
+                    ${getResourceIcon(item.type)}
+                </span>
+
+                <span class="resource-modal-content">
+                    <strong>${escapeHTML(item.title)}</strong>
+                    <small>
+                        ${escapeHTML(item.creator)}
+                        ·
+                        ${escapeHTML(item.type)}
+                    </small>
+                </span>
+
+                <span class="resource-modal-arrow">
+                    ↗
+                </span>
+            `;
+
+            list.appendChild(link);
+        });
+    }
+
+    modal.classList.add("is-open");
+
+    document.body.classList.add(
+        "modal-open"
+    );
 }
 
 
-.project-status {
-  display: flex;
-  align-items: center;
-  gap: 7px;
+function createResourceModal() {
 
-  color: var(--muted);
+    const modal =
+        document.createElement("div");
 
-  font-size: 9px;
-  font-weight: 900;
+    modal.className =
+        "modal-backdrop resource-modal";
+
+    modal.innerHTML = `
+        <div class="resource-modal-window">
+
+            <button
+                class="modal-close"
+                type="button"
+                aria-label="Close"
+                data-resource-close
+            >
+                ×
+            </button>
+
+            <div class="modal-header">
+
+                <span class="modal-eyebrow">
+                    LEARNING RESOURCES
+                </span>
+
+                <h2 data-resource-title>
+                    Resources
+                </h2>
+
+                <p data-resource-description>
+                    Select a resource to begin.
+                </p>
+
+            </div>
+
+            <div
+                class="resource-modal-list"
+                data-resource-list
+            ></div>
+
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeButton =
+        modal.querySelector(
+            "[data-resource-close]"
+        );
+
+    closeButton.addEventListener(
+        "click",
+        closeResourceModal
+    );
+
+    modal.addEventListener(
+        "click",
+        event => {
+
+            if (event.target === modal) {
+                closeResourceModal();
+            }
+        }
+    );
+
+    return modal;
 }
 
 
-.project-status i {
-  width: 7px;
-  height: 7px;
+function closeResourceModal() {
 
-  border-radius: 50%;
+    const modal =
+        $(".resource-modal");
 
-  background: var(--muted-2);
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove(
+        "is-open"
+    );
+
+    document.body.classList.remove(
+        "modal-open"
+    );
 }
 
 
-.project-card.completed .project-status {
-  color: var(--accent);
+function getResourceIcon(type) {
+
+    if (type === "YouTube") {
+        return "▶";
+    }
+
+    return "↗";
 }
 
 
-.project-card.completed .project-status i {
-  background: var(--accent);
+/* =========================================================
+   MOBILE NAVIGATION
+   ========================================================= */
 
-  box-shadow:
-    0 0 10px rgba(140,255,90,.4);
+function setupMobileNavigation() {
+
+    const sidebar =
+        $(".sidebar");
+
+    const openButton =
+        $("[data-mobile-menu]");
+
+    const closeButton =
+        $("[data-sidebar-close]");
+
+    if (!sidebar) {
+        return;
+    }
+
+    if (openButton) {
+
+        openButton.addEventListener(
+            "click",
+            () => {
+
+                sidebar.classList.add(
+                    "is-open"
+                );
+
+                document.body.classList.add(
+                    "sidebar-open"
+                );
+            }
+        );
+    }
+
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeSidebar
+        );
+    }
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            if (
+                !sidebar.classList.contains(
+                    "is-open"
+                )
+            ) {
+                return;
+            }
+
+            if (
+                sidebar.contains(event.target) ||
+                openButton?.contains(event.target)
+            ) {
+                return;
+            }
+
+            closeSidebar();
+        }
+    );
 }
 
 
-.project-check {
-  width: 30px;
-  height: 30px;
+function closeSidebar() {
 
-  border-radius: 8px;
+    const sidebar =
+        $(".sidebar");
 
-  border: 1px solid var(--line);
+    if (!sidebar) {
+        return;
+    }
 
-  background: transparent;
+    sidebar.classList.remove(
+        "is-open"
+    );
 
-  color: var(--muted);
+    document.body.classList.remove(
+        "sidebar-open"
+    );
 }
 
 
-.project-card.completed .project-check {
-  background: var(--accent);
+/* =========================================================
+   ACTIVITY / STREAK
+   ========================================================= */
 
-  border-color: var(--accent);
+function recordTodayVisit() {
 
-  color: #071006;
+    const key =
+        formatDate(getToday());
+
+    if (!state.activity[key]) {
+
+        state.activity[key] = {
+            visits: 0,
+            tasksCompleted: 0
+        };
+    }
+
+    state.activity[key].visits += 1;
+
+    state.lastVisit =
+        new Date().toISOString();
+
+    saveState();
 }
 
 
-/* SOCIAL */
+function recordActivity() {
 
-.social-grid {
-  display: grid;
+    const key =
+        formatDate(getToday());
 
-  grid-template-columns:
-    repeat(2, minmax(0,1fr));
+    if (!state.activity[key]) {
 
-  gap: 14px;
+        state.activity[key] = {
+            visits: 0,
+            tasksCompleted: 0
+        };
+    }
+
+    state.activity[key].tasksCompleted += 1;
+
+    saveState();
 }
 
 
-.social-card {
-  padding: 24px;
+function formatDate(date) {
 
-  border-radius: var(--radius);
+    const year =
+        date.getFullYear();
 
-  border: 1px solid var(--line);
+    const month =
+        String(date.getMonth() + 1)
+            .padStart(2, "0");
 
-  background: var(--panel);
+    const day =
+        String(date.getDate())
+            .padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
 }
 
 
-.social-header {
-  display: flex;
-  align-items: center;
+function calculateCurrentStreak() {
 
-  gap: 13px;
+    let streak = 0;
+
+    const date =
+        getToday();
+
+    while (true) {
+
+        const key =
+            formatDate(date);
+
+        const activity =
+            state.activity[key];
+
+        if (
+            !activity ||
+            (
+                activity.visits === 0 &&
+                activity.tasksCompleted === 0
+            )
+        ) {
+            break;
+        }
+
+        streak++;
+
+        date.setDate(
+            date.getDate() - 1
+        );
+    }
+
+    return streak;
 }
 
 
-.social-logo {
-  width: 48px;
-  height: 48px;
+function calculateBestStreak() {
 
-  border-radius: 13px;
+    const dates =
+        Object.keys(state.activity)
+            .sort();
 
-  display: grid;
-  place-items: center;
+    if (!dates.length) {
+        return 0;
+    }
 
-  background: rgba(255,255,255,.05);
+    let best = 0;
+    let current = 0;
+    let previous = null;
 
-  border: 1px solid var(--line);
+    dates.forEach(dateString => {
 
-  font-size: 18px;
-  font-weight: 950;
+        const activity =
+            state.activity[dateString];
+
+        if (
+            !activity ||
+            (
+                activity.visits === 0 &&
+                activity.tasksCompleted === 0
+            )
+        ) {
+            current = 0;
+            previous = null;
+            return;
+        }
+
+        const date =
+            new Date(
+                `${dateString}T00:00:00`
+            );
+
+        if (!previous) {
+
+            current = 1;
+
+        } else {
+
+            const difference =
+                Math.round(
+                    (
+                        date.getTime() -
+                        previous.getTime()
+                    ) /
+                    (1000 * 60 * 60 * 24)
+                );
+
+            if (difference === 1) {
+                current++;
+            } else {
+                current = 1;
+            }
+        }
+
+        best =
+            Math.max(best, current);
+
+        previous = date;
+    });
+
+    return best;
 }
 
 
-.social-header span {
-  color: var(--muted-2);
+/* =========================================================
+   ANALYTICS
+   ========================================================= */
 
-  font-size: 9px;
-  font-weight: 900;
+function updateAnalytics() {
 
-  letter-spacing: .12em;
+    const current =
+        calculateCurrentStreak();
+
+    const best =
+        calculateBestStreak();
+
+    updateText(
+        "[data-current-streak]",
+        current
+    );
+
+    updateText(
+        "[data-best-streak]",
+        best
+    );
+
+    renderActivityChart();
 }
 
 
-.social-header h3 {
-  margin: 2px 0 0;
+function renderActivityChart() {
 
-  font-size: 19px;
+    const chart =
+        $(".activity-chart");
+
+    if (!chart) {
+        return;
+    }
+
+    const today =
+        getToday();
+
+    const days = [];
+
+    for (let i = 13; i >= 0; i--) {
+
+        const date =
+            new Date(today);
+
+        date.setDate(
+            today.getDate() - i
+        );
+
+        days.push(date);
+    }
+
+    chart.innerHTML = "";
+
+    const maxValue =
+        Math.max(
+            1,
+            ...days.map(date => {
+
+                const data =
+                    state.activity[
+                        formatDate(date)
+                    ];
+
+                return (
+                    data?.tasksCompleted || 0
+                );
+            })
+        );
+
+    days.forEach(date => {
+
+        const key =
+            formatDate(date);
+
+        const data =
+            state.activity[key];
+
+        const value =
+            data?.tasksCompleted || 0;
+
+        const height =
+            Math.max(
+                8,
+                Math.round(
+                    (value / maxValue) * 100
+                )
+            );
+
+        const bar =
+            document.createElement("div");
+
+        bar.className =
+            "activity-bar";
+
+        bar.style.height =
+            `${height}%`;
+
+        bar.title =
+            `${key}: ${value} tasks`;
+
+        chart.appendChild(bar);
+    });
 }
 
 
-.social-progress {
-  margin-top: 23px;
+/* =========================================================
+   PROJECT / SOCIAL CHECKLISTS
+   ========================================================= */
+
+function restoreChecklistState() {
+
+    restoreCheckboxGroup(
+        "[data-github-check]",
+        state.githubChecklist
+    );
+
+    restoreCheckboxGroup(
+        "[data-linkedin-check]",
+        state.linkedinChecklist
+    );
+
+    restoreCheckboxGroup(
+        "[data-project-check]",
+        state.completedProjects
+    );
+
+    setupChecklistGroup(
+        "[data-github-check]",
+        state.githubChecklist
+    );
+
+    setupChecklistGroup(
+        "[data-linkedin-check]",
+        state.linkedinChecklist
+    );
+
+    setupChecklistGroup(
+        "[data-project-check]",
+        state.completedProjects
+    );
 }
 
 
-.social-progress-top {
-  display: flex;
-  justify-content: space-between;
+function restoreCheckboxGroup(
+    selector,
+    storage
+) {
 
-  margin-bottom: 8px;
+    const elements =
+        $$(selector);
 
-  color: var(--muted);
+    elements.forEach(
+        (element, index) => {
 
-  font-size: 10px;
+            const id =
+                element.dataset.id ||
+                `${selector}-${index}`;
+
+            element.dataset.id = id;
+
+            element.checked =
+                Boolean(storage[id]);
+
+            updateCheckboxVisual(
+                element
+            );
+        }
+    );
 }
 
 
-.social-progress-top strong {
-  color: var(--text);
+function setupChecklistGroup(
+    selector,
+    storage
+) {
+
+    const elements =
+        $$(selector);
+
+    elements.forEach(
+        (element, index) => {
+
+            const id =
+                element.dataset.id ||
+                `${selector}-${index}`;
+
+            element.dataset.id = id;
+
+            element.addEventListener(
+                "change",
+                () => {
+
+                    if (element.checked) {
+                        storage[id] = true;
+                    } else {
+                        delete storage[id];
+                    }
+
+                    updateCheckboxVisual(
+                        element
+                    );
+
+                    saveState();
+                    updateDashboard();
+                }
+            );
+        }
+    );
 }
 
 
-.progress-track {
-  height: 5px;
+function updateCheckboxVisual(
+    checkbox
+) {
 
-  background: rgba(255,255,255,.06);
+    const wrapper =
+        checkbox.closest(
+            ".check-item, .checklist-item, label"
+        );
 
-  border-radius: 10px;
+    if (!wrapper) {
+        return;
+    }
 
-  overflow: hidden;
+    wrapper.classList.toggle(
+        "is-checked",
+        checkbox.checked
+    );
 }
 
 
-.progress-track div {
-  height: 100%;
+/* =========================================================
+   SETTINGS
+   ========================================================= */
 
-  width: 0%;
+function restoreSettings() {
 
-  background: var(--accent);
+    if (state.settings.compactMode) {
 
-  transition: width .4s;
+        document.body.classList.add(
+            "compact-mode"
+        );
+    }
+
+    const soundToggle =
+        $("[data-setting-sound]");
+
+    if (soundToggle) {
+
+        soundToggle.checked =
+            state.settings.sound;
+    }
+
+    const compactToggle =
+        $("[data-setting-compact]");
+
+    if (compactToggle) {
+
+        compactToggle.checked =
+            state.settings.compactMode;
+    }
 }
 
 
-.check-list {
-  margin-top: 16px;
+function setupSettings() {
+
+    const soundToggle =
+        $("[data-setting-sound]");
+
+    if (soundToggle) {
+
+        soundToggle.addEventListener(
+            "change",
+            () => {
+
+                state.settings.sound =
+                    soundToggle.checked;
+
+                saveState();
+            }
+        );
+    }
+
+    const compactToggle =
+        $("[data-setting-compact]");
+
+    if (compactToggle) {
+
+        compactToggle.addEventListener(
+            "change",
+            () => {
+
+                state.settings.compactMode =
+                    compactToggle.checked;
+
+                document.body.classList.toggle(
+                    "compact-mode",
+                    compactToggle.checked
+                );
+
+                saveState();
+            }
+        );
+    }
 }
 
 
-.check-item {
-  display: flex;
-  align-items: flex-start;
+/* =========================================================
+   EXPORT / IMPORT
+   ========================================================= */
 
-  gap: 10px;
+function setupExportImport() {
 
-  padding: 10px 0;
+    const exportButton =
+        $("[data-export-progress]");
 
-  border-bottom: 1px solid rgba(255,255,255,.045);
+    const importButton =
+        $("[data-import-progress]");
 
-  cursor: pointer;
+    const fileInput =
+        $("[data-import-file]");
+
+    if (exportButton) {
+
+        exportButton.addEventListener(
+            "click",
+            exportProgress
+        );
+    }
+
+    if (importButton && fileInput) {
+
+        importButton.addEventListener(
+            "click",
+            () => fileInput.click()
+        );
+
+        fileInput.addEventListener(
+            "change",
+            handleImport
+        );
+    }
 }
 
 
-.check-item:last-child {
-  border-bottom: 0;
+function exportProgress() {
+
+    const data =
+        JSON.stringify(
+            state,
+            null,
+            2
+        );
+
+    const blob =
+        new Blob(
+            [data],
+            {
+                type: "application/json"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        `abhis-cse-roadmap-${formatDate(
+            getToday()
+        )}.json`;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast(
+        "Progress exported successfully",
+        "success"
+    );
 }
 
 
-.check-box {
-  flex: 0 0 auto;
+function handleImport(event) {
 
-  width: 18px;
-  height: 18px;
+    const file =
+        event.target.files?.[0];
 
-  border-radius: 5px;
+    if (!file) {
+        return;
+    }
 
-  border: 1px solid var(--line-strong);
+    const reader =
+        new FileReader();
 
-  display: grid;
-  place-items: center;
+    reader.onload = () => {
 
-  color: transparent;
+        try {
 
-  font-size: 10px;
-  font-weight: 900;
+            const imported =
+                JSON.parse(
+                    reader.result
+                );
+
+            state = {
+                ...structuredClone(defaultState),
+                ...imported
+            };
+
+            saveState();
+
+            showToast(
+                "Progress imported. Reloading...",
+                "success"
+            );
+
+            setTimeout(
+                () => location.reload(),
+                800
+            );
+
+        } catch (error) {
+
+            showToast(
+                "Invalid progress file",
+                "error"
+            );
+        }
+    };
+
+    reader.readAsText(file);
 }
 
 
-.check-item.done .check-box {
-  color: #071006;
+/* =========================================================
+   RESET
+   ========================================================= */
 
-  background: var(--accent);
+function resetProgress() {
 
-  border-color: var(--accent);
+    const confirmed =
+        window.confirm(
+            "Reset ALL roadmap progress? This cannot be undone."
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    localStorage.removeItem(
+        CONFIG.storageKey
+    );
+
+    state =
+        structuredClone(defaultState);
+
+    showToast(
+        "Progress reset",
+        "success"
+    );
+
+    setTimeout(
+        () => location.reload(),
+        600
+    );
 }
 
 
-.check-item.done .check-copy {
-  opacity: .5;
+document.addEventListener(
+    "click",
+    event => {
 
-  text-decoration: line-through;
+        const resetButton =
+            event.target.closest(
+                "[data-reset-progress]"
+            );
+
+        if (resetButton) {
+            resetProgress();
+        }
+    }
+);
+
+
+/* =========================================================
+   TOAST SYSTEM
+   ========================================================= */
+
+function showToast(
+    message,
+    type = "info"
+) {
+
+    let container =
+        $(".toast-container");
+
+    if (!container) {
+
+        container =
+            document.createElement("div");
+
+        container.className =
+            "toast-container";
+
+        document.body.appendChild(
+            container
+        );
+    }
+
+    const toast =
+        document.createElement("div");
+
+    toast.className =
+        `toast toast-${type}`;
+
+    toast.innerHTML = `
+        <span class="toast-dot"></span>
+        <span class="toast-message">
+            ${escapeHTML(message)}
+        </span>
+    `;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+
+        toast.classList.add(
+            "is-visible"
+        );
+    });
+
+    setTimeout(() => {
+
+        toast.classList.remove(
+            "is-visible"
+        );
+
+        setTimeout(
+            () => toast.remove(),
+            300
+        );
+
+    }, 2800);
 }
 
 
-.check-copy {
-  font-size: 11px;
-  font-weight: 700;
+/* =========================================================
+   COMPLETION SOUND
+   ========================================================= */
+
+function playCompletionSound() {
+
+    if (!state.settings.sound) {
+        return;
+    }
+
+    try {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        if (!AudioContext) {
+            return;
+        }
+
+        const context =
+            new AudioContext();
+
+        const oscillator =
+            context.createOscillator();
+
+        const gain =
+            context.createGain();
+
+        oscillator.type =
+            "sine";
+
+        oscillator.frequency.setValueAtTime(
+            660,
+            context.currentTime
+        );
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+            880,
+            context.currentTime + 0.08
+        );
+
+        gain.gain.setValueAtTime(
+            0.0001,
+            context.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.04,
+            context.currentTime + 0.01
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            context.currentTime + 0.15
+        );
+
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+
+        oscillator.start();
+
+        oscillator.stop(
+            context.currentTime + 0.16
+        );
+
+    } catch {
+        // Audio is optional.
+    }
 }
 
 
-.check-copy span {
-  display: block;
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
 
-  color: var(--muted);
+function setupKeyboardShortcuts() {
 
-  font-size: 9px;
+    document.addEventListener(
+        "keydown",
+        event => {
 
-  margin-top: 2px;
+            if (
+                event.key === "/" &&
+                !isTypingContext(event.target)
+            ) {
 
-  font-weight: 500;
+                event.preventDefault();
+
+                const search =
+                    $(
+                        CONFIG.selectors.searchInput
+                    );
+
+                search?.focus();
+            }
+
+            if (event.key === "Escape") {
+
+                closeResourceModal();
+                closeSidebar();
+            }
+        }
+    );
 }
 
 
-/* SYSTEM */
+function isTypingContext(element) {
 
-.system-grid {
-  display: grid;
+    if (!element) {
+        return false;
+    }
 
-  grid-template-columns:
-    repeat(2, minmax(0,1fr));
+    const tag =
+        element.tagName?.toLowerCase();
 
-  gap: 12px;
+    return (
+        tag === "input" ||
+        tag === "textarea" ||
+        tag === "select" ||
+        element.isContentEditable
+    );
 }
 
 
-.system-card {
-  display: grid;
+/* =========================================================
+   UTILITIES
+   ========================================================= */
 
-  grid-template-columns: 42px minmax(0,1fr) auto;
+function debounce(
+    callback,
+    delay
+) {
 
-  align-items: center;
+    let timeout;
 
-  gap: 13px;
+    return (...args) => {
 
-  padding: 18px;
+        clearTimeout(timeout);
 
-  border: 1px solid var(--line);
-
-  border-radius: 16px;
-
-  background: rgba(255,255,255,.025);
+        timeout =
+            setTimeout(
+                () => callback(...args),
+                delay
+            );
+    };
 }
 
 
-.system-icon {
-  width: 38px;
-  height: 38px;
+function escapeHTML(value) {
 
-  display: grid;
-  place-items: center;
-
-  border-radius: 10px;
-
-  background: rgba(255,255,255,.04);
-
-  color: var(--accent);
-
-  font-weight: 900;
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-.system-card strong {
-  display: block;
+/* =========================================================
+   SMOOTH NAVIGATION
+   ========================================================= */
 
-  font-size: 13px;
+document.addEventListener(
+    "click",
+    event => {
+
+        const link =
+            event.target.closest(
+                'a[href^="#"]'
+            );
+
+        if (!link) {
+            return;
+        }
+
+        const targetId =
+            link.getAttribute("href");
+
+        if (
+            !targetId ||
+            targetId === "#"
+        ) {
+            return;
+        }
+
+        const target =
+            document.querySelector(
+                targetId
+            );
+
+        if (!target) {
+            return;
+        }
+
+        event.preventDefault();
+
+        target.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        closeSidebar();
+    }
+);
+
+
+/* =========================================================
+   ACTIVE SIDEBAR NAVIGATION
+   ========================================================= */
+
+function setupActiveNavigation() {
+
+    const links =
+        $$(".sidebar a[href^='#']");
+
+    const sections =
+        links
+            .map(link => {
+
+                const id =
+                    link.getAttribute(
+                        "href"
+                    );
+
+                return document.querySelector(
+                    id
+                );
+            })
+            .filter(Boolean);
+
+    if (!sections.length) {
+        return;
+    }
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    const id =
+                        `#${entry.target.id}`;
+
+                    links.forEach(link => {
+
+                        link.classList.toggle(
+                            "active",
+                            link.getAttribute(
+                                "href"
+                            ) === id
+                        );
+                    });
+                });
+            },
+            {
+                rootMargin:
+                    "-20% 0px -65% 0px"
+            }
+        );
+
+    sections.forEach(
+        section => observer.observe(section)
+    );
 }
 
 
-.system-card p {
-  margin: 3px 0 0;
+/* =========================================================
+   SCROLL PROGRESS
+   ========================================================= */
 
-  color: var(--muted);
+function setupScrollProgress() {
 
-  font-size: 10px;
+    const indicator =
+        $(".scroll-progress");
+
+    if (!indicator) {
+        return;
+    }
+
+    window.addEventListener(
+        "scroll",
+        () => {
+
+            const scrollTop =
+                window.scrollY;
+
+            const documentHeight =
+                document.documentElement
+                    .scrollHeight -
+                window.innerHeight;
+
+            const percentage =
+                documentHeight <= 0
+                    ? 0
+                    : (
+                        scrollTop /
+                        documentHeight
+                    ) * 100;
+
+            indicator.style.width =
+                `${percentage}%`;
+        },
+        {
+            passive: true
+        }
+    );
 }
 
 
-.system-status {
-  color: var(--accent);
+/* =========================================================
+   REVEAL ANIMATIONS
+   ========================================================= */
 
-  font-size: 8px;
-  font-weight: 950;
+function setupRevealAnimations() {
 
-  letter-spacing: .1em;
+    const elements =
+        $$(
+            ".hero, .dashboard-card, .phase-card, " +
+            ".project-card, .social-card, .analytics-card"
+        );
+
+    if (!elements.length) {
+        return;
+    }
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add(
+                        "is-visible"
+                    );
+
+                    observer.unobserve(
+                        entry.target
+                    );
+                });
+            },
+            {
+                threshold: 0.08
+            }
+        );
+
+    elements.forEach(
+        element => observer.observe(element)
+    );
 }
 
 
-.system-btn {
-  padding: 8px 11px;
+/* =========================================================
+   INITIAL UI ENHANCEMENTS
+   ========================================================= */
 
-  border-radius: 8px;
+function initializeEnhancements() {
 
-  border: 1px solid var(--line);
+    setupActiveNavigation();
+    setupScrollProgress();
+    setupRevealAnimations();
 
-  background: rgba(255,255,255,.04);
-
-  color: var(--text);
-
-  font-size: 10px;
-  font-weight: 900;
 }
 
 
-.system-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+/* =========================================================
+   WINDOW LOAD
+   ========================================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        initializeEnhancements();
+
+        updateDayCounter();
+        updateDashboard();
+        updateAllPhaseProgress();
+        updateAnalytics();
+
+    }
+);
+
+
+/* =========================================================
+   MIDNIGHT REFRESH
+   Keeps the Day counter correct without reopening page.
+   ========================================================= */
+
+function scheduleMidnightRefresh() {
+
+    const now =
+        new Date();
+
+    const tomorrow =
+        new Date(now);
+
+    tomorrow.setHours(
+        24,
+        0,
+        5,
+        0
+    );
+
+    const delay =
+        tomorrow.getTime() -
+        now.getTime();
+
+    setTimeout(() => {
+
+        updateDayCounter();
+        updateDashboard();
+        updateAnalytics();
+
+        scheduleMidnightRefresh();
+
+    }, delay);
 }
 
-
-.system-btn.danger:hover {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-
-.danger-card .system-icon {
-  color: var(--danger);
-}
-
-
-/* FOOTER */
-
-.footer {
-  margin-top: 80px;
-
-  padding-top: 20px;
-
-  border-top: 1px solid var(--line);
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  color: var(--muted);
-
-  font-size: 9px;
-
-  letter-spacing: .08em;
-}
-
-
-.footer div {
-  color: var(--text);
-
-  font-weight: 950;
-}
-
-
-.footer strong {
-  color: var(--accent);
-}
-
-
-/* MODAL */
-
-.modal-backdrop {
-  position: fixed;
-
-  inset: 0;
-
-  background: rgba(0,0,0,.72);
-
-  backdrop-filter: blur(10px);
-
-  display: none;
-
-  place-items: center;
-
-  z-index: 500;
-
-  padding: 20px;
-}
-
-
-.modal-backdrop.open {
-  display: grid;
-}
-
-
-.task-modal {
-  position: relative;
-
-  width: min(650px, 100%);
-
-  padding: 30px;
-
-  border-radius: 24px;
-
-  border: 1px solid var(--line-strong);
-
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(140,255,90,.08),
-      transparent 35%
-    ),
-    #0e1015;
-
-  box-shadow:
-    0 40px 120px rgba(0,0,0,.7);
-}
-
-
-.modal-close {
-  position: absolute;
-
-  right: 16px;
-  top: 16px;
-
-  width: 32px;
-  height: 32px;
-
-  border-radius: 8px;
-
-  border: 1px solid var(--line);
-
-  background: rgba(255,255,255,.03);
-
-  color: var(--muted);
-
-  font-size: 19px;
-}
-
-
-.modal-kicker {
-  color: var(--accent);
-
-  font-size: 9px;
-  font-weight: 950;
-
-  letter-spacing: .15em;
-}
-
-
-.task-modal h2 {
-  margin: 7px 45px 13px 0;
-
-  font-size: 29px;
-
-  line-height: 1.1;
-}
-
-
-.modal-meta {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 6px;
-}
-
-
-.modal-meta span {
-  padding: 5px 7px;
-
-  border: 1px solid var(--line);
-
-  border-radius: 5px;
-
-  color: var(--muted);
-
-  font-size: 8px;
-  font-weight: 900;
-}
-
-
-.task-modal > p {
-  margin: 20px 0;
-
-  color: var(--muted);
-
-  font-size: 13px;
-
-  line-height: 1.7;
-}
-
-
-.notes-title {
-  color: var(--muted-2);
-
-  font-size: 9px;
-  font-weight: 900;
-
-  letter-spacing: .13em;
-
-  margin-bottom: 7px;
-}
-
-
-#modalNotes {
-  width: 100%;
-
-  min-height: 130px;
-
-  resize: vertical;
-
-  padding: 13px;
-
-  border-radius: 11px;
-
-  border: 1px solid var(--line);
-
-  outline: 0;
-
-  background: rgba(255,255,255,.025);
-
-  color: var(--text);
-
-  font-size: 12px;
-
-  line-height: 1.6;
-}
-
-
-#modalNotes:focus {
-  border-color: rgba(140,255,90,.4);
-}
-
-
-.modal-actions {
-  display: flex;
-
-  gap: 8px;
-
-  margin-top: 13px;
-}
-
-
-/* RESPONSIVE */
-
-@media (max-width: 1250px) {
-
-  .main {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
-  .projects-grid {
-    grid-template-columns:
-      repeat(2, minmax(0,1fr));
-  }
-
-  .metrics-grid {
-    grid-template-columns:
-      repeat(2, minmax(0,1fr));
-  }
-
-  .hero-section {
-    grid-template-columns:
-      minmax(0,1fr)
-      280px;
-  }
-}
-
-
-@media (max-width: 1000px) {
-
-  :root {
-    --sidebar: 230px;
-  }
-
-  .main {
-    padding-left: 22px;
-    padding-right: 22px;
-  }
-
-  .hero-section {
-    grid-template-columns: 1fr;
-  }
-
-  .day-card {
-    max-width: 400px;
-  }
-
-  .roadmap-controls {
-    width: 100%;
-  }
-
-  .section-heading {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .roadmap-controls {
-    flex-wrap: wrap;
-  }
-
-  .search-box {
-    width: 100%;
-  }
-
-  .task-row {
-    grid-template-columns:
-      32px
-      minmax(0,1fr)
-      100px
-      95px;
-  }
-
-  .task-level {
-    display: none;
-  }
-
-  .social-grid,
-  .system-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-@media (max-width: 760px) {
-
-  :root {
-    --sidebar: 0px;
-  }
-
-  body {
-    font-size: 15px;
-  }
-
-  .sidebar {
-    transform: translateX(-100%);
-
-    width: 280px;
-
-    transition: .25s ease;
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .mobile-header {
-    position: sticky;
-
-    top: 0;
-
-    z-index: 90;
-
-    height: 62px;
-
-    padding: 0 15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 1px solid var(--line);
-
-    background: rgba(7,8,11,.88);
-
-    backdrop-filter: blur(20px);
-  }
-
-  .mobile-brand {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-
-    font-size: 11px;
-    font-weight: 950;
-
-    letter-spacing: .1em;
-  }
-
-  .brand-dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: var(--accent);
-
-    box-shadow:
-      0 0 10px var(--accent);
-  }
-
-  .icon-btn {
-    width: 36px;
-    height: 36px;
-
-    border-radius: 9px;
-
-    border: 1px solid var(--line);
-
-    background: rgba(255,255,255,.03);
-
-    color: var(--text);
-
-    font-size: 18px;
-  }
-
-  .main {
-    width: 100%;
-
-    margin-left: 0;
-
-    padding:
-      0
-      15px
-      45px;
-  }
-
-  .topbar {
-    display: none;
-  }
-
-  .hero-section {
-    padding-top: 35px;
-  }
-
-  .hero-section h1 {
-    font-size: 47px;
-  }
-
-  .hero-description {
-    font-size: 14px;
-  }
-
-  .hero-meta {
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .meta-divider {
-    display: none;
-  }
-
-  .metrics-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .metric-card {
-    min-height: 175px;
-  }
-
-  .section-block {
-    margin-top: 50px;
-  }
-
-  .section-heading h2 {
-    font-size: 26px;
-  }
-
-  .section-actions {
-    width: 100%;
-  }
-
-  .filter-btn {
-    flex: 1;
-  }
-
-  .today-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .roadmap-controls {
-    display: grid;
-
-    grid-template-columns: 1fr 130px;
-
-    width: 100%;
-  }
-
-  .search-box {
-    width: 100%;
-  }
-
-  .search-box kbd {
-    display: none;
-  }
-
-  .phase-header {
-    grid-template-columns:
-      45px
-      minmax(0,1fr)
-      25px;
-  }
-
-  .phase-bar,
-  .phase-percent {
-    display: none;
-  }
-
-  .task-row {
-    grid-template-columns:
-      30px
-      minmax(0,1fr)
-      85px;
-
-    gap: 8px;
-  }
-
-  .task-tag {
-    display: none;
-  }
-
-  .task-more {
-    display: none;
-  }
-
-  .task-resource {
-    font-size: 8px;
-  }
-
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .social-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .system-card {
-    grid-template-columns: 38px minmax(0,1fr);
-  }
-
-  .system-btn,
-  .system-status {
-    grid-column: 2;
-    justify-self: start;
-  }
-
-  .footer {
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 7px;
-  }
-}
-
-
-@media (max-width: 450px) {
-
-  .hero-section h1 {
-    font-size: 40px;
-  }
-
-  .day-number {
-    font-size: 55px;
-  }
-
-  .mission-card,
-  .command-card,
-  .social-card {
-    padding: 18px;
-  }
-
-  .task-title {
-    font-size: 12px;
-  }
-
-  .task-description {
-    font-size: 9px;
-  }
-
-  .task-resource {
-    padding: 7px 5px;
-  }
-}
+scheduleMidnightRefresh();
+
+
+/* =========================================================
+   CONSOLE BRANDING
+   ========================================================= */
+
+console.log(
+    "%c ABHI'S CSE MASTER ROADMAP ",
+    "background:#0f172a;color:#8b5cf6;font-size:16px;font-weight:800;padding:8px 14px;border-radius:8px;"
+);
+
+console.log(
+    "%c Start Date: 08 October 2026 ",
+    "color:#94a3b8;font-size:12px;"
+);
+
+console.log(
+    "%c Build. Learn. Ship. Repeat. ",
+    "color:#22c55e;font-size:12px;font-weight:700;"
+);
