@@ -1,1368 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Abhi's CSE Journey</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE 365 Mastery Tracker | 0 to Hero Roadmap</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
+  <!-- Ambient background light -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
 
-<div class="app">
-
-    <!-- ================= SIDEBAR ================= -->
-
-    <aside class="sidebar">
-
-        <div class="brand">
-            <div class="brand-logo">A</div>
-
-            <div>
-                <h2>ABHI'S</h2>
-                <span>CSE JOURNEY</span>
-            </div>
+  <!-- Top Sticky Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo-group">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <h1 class="logo-title">CSE 365 DAYS MASTER ROADMAP</h1>
+          <p class="logo-subtitle">Exact 365 Tasks (0 se Advance) &bull; Selected Indian Mentors &bull; 4GB RAM Optimized</p>
         </div>
-
-        <nav class="nav">
-
-            <a href="#overview" class="nav-link active">
-                <span>⌂</span>
-                Overview
-            </a>
-
-            <a href="#roadmap" class="nav-link">
-                <span>◈</span>
-                Roadmap
-            </a>
-
-            <a href="#projects" class="nav-link">
-                <span>◫</span>
-                Projects
-            </a>
-
-            <a href="#career" class="nav-link">
-                <span>↗</span>
-                Career
-            </a>
-
-        </nav>
-
-        <div class="sidebar-bottom">
-
-            <div class="mini-progress">
-                <div class="mini-progress-top">
-                    <span>Overall Progress</span>
-                    <strong id="sidePercent">0%</strong>
-                </div>
-
-                <div class="progress-track">
-                    <div id="sideProgress"></div>
-                </div>
-            </div>
-
-            <p>Started · 08 Oct 2026</p>
-
-        </div>
-
-    </aside>
-
-
-    <!-- ================= MAIN ================= -->
-
-    <main class="main">
-
-        <!-- MOBILE HEADER -->
-
-        <header class="mobile-header">
-
-            <div class="brand">
-                <div class="brand-logo">A</div>
-
-                <div>
-                    <h2>ABHI'S</h2>
-                    <span>CSE JOURNEY</span>
-                </div>
-            </div>
-
-            <button id="menuBtn">☰</button>
-
-        </header>
-
-
-        <!-- ================= TOPBAR ================= -->
-
-        <div class="topbar">
-
-            <div>
-                <span class="eyebrow">PERSONAL DEVELOPMENT SYSTEM</span>
-
-                <h1>
-                    Build.
-                    <span>Learn.</span>
-                    Ship.
-                </h1>
-            </div>
-
-            <div class="date-box">
-                <span>START DATE</span>
-                <strong>08 OCT 2026</strong>
-            </div>
-
-        </div>
-
-
-        <!-- ================= HERO ================= -->
-
-        <section class="hero" id="overview">
-
-            <div class="hero-content">
-
-                <span class="hero-label">CURRENT MISSION</span>
-
-                <h2>
-                    Become a
-                    <span>Software Engineer.</span>
-                </h2>
-
-                <p>
-                    A complete roadmap from zero to
-                    full-stack development, AI, cloud,
-                    cybersecurity and real-world projects.
-                </p>
-
-                <div class="hero-buttons">
-
-                    <a href="#roadmap" class="btn primary">
-                        Continue Journey →
-                    </a>
-
-                    <button class="btn secondary" id="resetBtn">
-                        Reset Progress
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="day-card">
-
-                <span>TODAY'S JOURNEY</span>
-
-                <div id="dayNumber">
-                    01
-                </div>
-
-                <strong id="dayText">
-                    DAY 01
-                </strong>
-
-                <small>
-                    Since 08 October 2026
-                </small>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= STATS ================= -->
-
-        <section class="stats">
-
-            <div class="stat-card">
-
-                <span>COMPLETED</span>
-
-                <strong id="completedCount">
-                    0
-                </strong>
-
-                <small>tasks</small>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <span>TOTAL TASKS</span>
-
-                <strong id="totalCount">
-                    0
-                </strong>
-
-                <small>roadmap items</small>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <span>PROGRESS</span>
-
-                <strong id="progressPercent">
-                    0%
-                </strong>
-
-                <small>overall</small>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <span>STREAK</span>
-
-                <strong id="streak">
-                    0
-                </strong>
-
-                <small>days</small>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= PROGRESS ================= -->
-
-        <section class="progress-section">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">MASTER PROGRESS</span>
-                    <h2>Your Engineering Journey</h2>
-                </div>
-
-                <strong id="progressLabel">0%</strong>
-
-            </div>
-
-            <div class="big-progress">
-
-                <div id="bigProgressBar"></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= ROADMAP ================= -->
-
-        <section id="roadmap" class="roadmap">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">THE ROADMAP</span>
-                    <h2>From Zero → Software Engineer</h2>
-                </div>
-
-                <input
-                    type="text"
-                    id="search"
-                    placeholder="Search roadmap..."
-                >
-
-            </div>
-
-
-            <!-- PHASE 01 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        01
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>FOUNDATION</span>
-
-                        <h3>
-                            Computer + Programming Basics
-                        </h3>
-
-                        <p>
-                            Build a strong technical foundation.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="computer">
-
-                        <button class="check">
-                            ✓
-                        </button>
-
-                        <div>
-                            <h4>Computer Fundamentals</h4>
-                            <p>
-                                Windows, files, folders,
-                                software, extensions and troubleshooting.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="terminal">
-
-                        <button class="check">
-                            ✓
-                        </button>
-
-                        <div>
-                            <h4>Command Line</h4>
-                            <p>
-                                CMD, PowerShell, terminal,
-                                PATH and environment variables.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="cpp">
-
-                        <button class="check">
-                            ✓
-                        </button>
-
-                        <div>
-                            <h4>C++ Fundamentals</h4>
-                            <p>
-                                Variables, conditions, loops,
-                                functions, arrays and strings.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="cpp-oop">
-
-                        <button class="check">
-                            ✓
-                        </button>
-
-                        <div>
-                            <h4>C++ OOP + STL</h4>
-                            <p>
-                                Classes, objects, inheritance,
-                                vectors, maps, sets and algorithms.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="git">
-
-                        <button class="check">
-                            ✓
-                        </button>
-
-                        <div>
-                            <h4>Git + GitHub</h4>
-                            <p>
-                                Repositories, commits, branches,
-                                pull requests and collaboration.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASE 02 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        02
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>DSA</span>
-
-                        <h3>
-                            Data Structures & Algorithms
-                        </h3>
-
-                        <p>
-                            Problem solving and interview fundamentals.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="dsa">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Arrays + Strings</h4>
-                            <p>
-                                Searching, sorting, two pointers
-                                and sliding window.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="dsa">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Linked Lists</h4>
-                            <p>
-                                Singly, doubly and circular lists.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="dsa">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Stacks + Queues</h4>
-                            <p>
-                                LIFO, FIFO, deque and priority queues.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="dsa">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Trees + Graphs</h4>
-                            <p>
-                                BST, heaps, BFS, DFS and graph algorithms.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="dsa">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Dynamic Programming</h4>
-                            <p>
-                                Memoization, tabulation and optimization.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASE 03 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        03
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>WEB DEVELOPMENT</span>
-
-                        <h3>
-                            Frontend Engineering
-                        </h3>
-
-                        <p>
-                            Build modern responsive web applications.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="html">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>HTML</h4>
-                            <p>
-                                Semantic HTML, forms, tables and accessibility.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="css">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>CSS</h4>
-                            <p>
-                                Flexbox, Grid, responsive design,
-                                animations and architecture.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="javascript">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>JavaScript</h4>
-                            <p>
-                                ES6+, DOM, events, promises,
-                                async/await and APIs.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="react">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>React.js</h4>
-                            <p>
-                                Components, props, state,
-                                hooks, routing and APIs.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASE 04 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        04
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>BACKEND</span>
-
-                        <h3>
-                            Backend + Databases
-                        </h3>
-
-                        <p>
-                            Build production-ready APIs and databases.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="node">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Node.js</h4>
-                            <p>
-                                Runtime, modules, filesystem
-                                and HTTP servers.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="express">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Express.js + REST APIs</h4>
-                            <p>
-                                Routes, middleware and API architecture.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="sql">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>SQL + PostgreSQL</h4>
-                            <p>
-                                CRUD, joins, indexes, transactions
-                                and normalization.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="auth">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Authentication</h4>
-                            <p>
-                                JWT, sessions, cookies,
-                                hashing and authorization.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASE 05 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        05
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>ADVANCED</span>
-
-                        <h3>
-                            Python + Cloud + AI
-                        </h3>
-
-                        <p>
-                            Expand into modern engineering.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="python">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Python</h4>
-                            <p>
-                                Automation, scripting,
-                                data and backend fundamentals.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="linux">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Linux</h4>
-                            <p>
-                                Commands, permissions,
-                                processes and SSH.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="docker">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Docker</h4>
-                            <p>
-                                Containers, images,
-                                Dockerfile and Compose.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="aws">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>AWS</h4>
-                            <p>
-                                EC2, S3, IAM, RDS
-                                and Lambda basics.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="ai">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>AI + LLM Engineering</h4>
-                            <p>
-                                LLMs, APIs, embeddings,
-                                RAG, agents and evaluation.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASE 06 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        06
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>COMPUTER SCIENCE</span>
-
-                        <h3>
-                            Core CS Fundamentals
-                        </h3>
-
-                        <p>
-                            Understand how computers and systems actually work.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="os">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Operating Systems</h4>
-                            <p>
-                                Processes, threads, memory,
-                                scheduling and deadlocks.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="dbms">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>DBMS</h4>
-                            <p>
-                                Transactions, ACID,
-                                indexing and normalization.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="networking">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Computer Networks</h4>
-                            <p>
-                                DNS, HTTP, TCP/IP,
-                                ports, REST and WebSockets.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PHASE 07 -->
-
-            <div class="phase">
-
-                <div class="phase-header">
-
-                    <div class="phase-number">
-                        07
-                    </div>
-
-                    <div class="phase-title">
-
-                        <span>SPECIALIZATION</span>
-
-                        <h3>
-                            Mobile + Security + Systems
-                        </h3>
-
-                        <p>
-                            Go beyond full-stack development.
-                        </p>
-
-                    </div>
-
-                    <div class="phase-percent">
-                        <strong>0%</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="tasks">
-
-                    <div class="task"
-                        data-resource="react-native">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>React Native + Expo</h4>
-                            <p>
-                                Cross-platform mobile development.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="cybersecurity">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>Cybersecurity</h4>
-                            <p>
-                                OWASP, authentication,
-                                secure coding and web security.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-
-                    <div class="task"
-                        data-resource="system-design">
-
-                        <button class="check">✓</button>
-
-                        <div>
-                            <h4>System Design</h4>
-                            <p>
-                                Scalability, caching,
-                                load balancing and distributed systems.
-                            </p>
-                        </div>
-
-                        <button class="resource">
-                            Resources ↗
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= PROJECTS ================= -->
-
-        <section id="projects" class="projects">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">BUILD IN PUBLIC</span>
-                    <h2>Projects That Prove Your Skills</h2>
-                </div>
-
-            </div>
-
-
-            <div class="project-grid">
-
-                <div class="project-card">
-
-                    <span class="project-number">01</span>
-
-                    <h3>KACHEHRI</h3>
-
-                    <p>
-                        India-wide university social network
-                        combining community, posts, events
-                        and campus life.
-                    </p>
-
-                    <div class="project-tags">
-                        <span>React Native</span>
-                        <span>Expo</span>
-                        <span>Backend</span>
-                    </div>
-
-                </div>
-
-
-                <div class="project-card">
-
-                    <span class="project-number">02</span>
-
-                    <h3>IMAGE → PDF</h3>
-
-                    <p>
-                        Lightweight browser-based productivity
-                        tool with a clean premium interface.
-                    </p>
-
-                    <div class="project-tags">
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                    </div>
-
-                </div>
-
-
-                <div class="project-card">
-
-                    <span class="project-number">03</span>
-
-                    <h3>AI APPLICATION</h3>
-
-                    <p>
-                        Build a real AI-powered product
-                        using APIs, RAG and modern AI tooling.
-                    </p>
-
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>AI</span>
-                        <span>API</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= CAREER ================= -->
-
-        <section id="career" class="career">
-
-            <div class="section-heading">
-
-                <div>
-                    <span class="eyebrow">CAREER SYSTEM</span>
-                    <h2>Professional Presence</h2>
-                </div>
-
-            </div>
-
-
-            <div class="career-grid">
-
-                <div class="career-card">
-
-                    <div class="career-icon">
-                        GH
-                    </div>
-
-                    <div>
-
-                        <h3>GitHub</h3>
-
-                        <p>
-                            Real projects. Real code.
-                            Real contribution history.
-                        </p>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                class="career-check"
-                            >
-                            Profile setup
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                class="career-check"
-                            >
-                            First serious project
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                class="career-check"
-                            >
-                            Clean README
-                        </label>
-
-                    </div>
-
-                </div>
-
-
-                <div class="career-card">
-
-                    <div class="career-icon">
-                        IN
-                    </div>
-
-                    <div>
-
-                        <h3>LinkedIn</h3>
-
-                        <p>
-                            Document genuine learning,
-                            projects and engineering progress.
-                        </p>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                class="career-check"
-                            >
-                            Profile setup
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                class="career-check"
-                            >
-                            Add projects
-                        </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                class="career-check"
-                            >
-                            Share build journey
-                        </label>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ================= FOOTER ================= -->
-
-        <footer>
-
-            <strong>
-                ABHI'S CSE JOURNEY
-            </strong>
-
-            <span>
-                Build. Learn. Ship. Repeat.
-            </span>
-
-        </footer>
-
-    </main>
-
-</div>
-
-
-<!-- ================= RESOURCE MODAL ================= -->
-
-<div id="resourceModal" class="modal">
-
-    <div class="modal-box">
-
-        <button id="closeModal" class="modal-close">
-            ×
-        </button>
-
-        <span class="eyebrow">
-            LEARNING RESOURCES
-        </span>
-
-        <h2 id="modalTitle">
-            Resources
-        </h2>
-
-        <p id="modalDescription">
-            Best resources for this topic.
-        </p>
-
-        <div id="resourceList"></div>
-
+      </div>
+      <div class="header-actions">
+        <button id="exportBtn" class="btn btn-secondary" title="Export Progress Backup">💾 Backup Progress</button>
+        <button id="resetBtn" class="btn btn-danger-outline" title="Reset all progress">🔄 Reset All</button>
+      </div>
     </div>
+  </header>
 
-</div>
+  <!-- Main Content -->
+  <main class="main-container">
 
+    <!-- Low-End PC Confidence & Mission Banner -->
+    <section class="banner-card">
+      <div class="banner-content">
+        <div class="badge-row">
+          <span class="badge badge-success">✅ C++ is 100% Sahi For Dual-Core & 4GB RAM</span>
+          <span class="badge badge-accent">🇮🇳 Selected Indian Creators Mapped</span>
+          <span class="badge badge-blue">🎯 365 Daily Tasks From Absolute Zero</span>
+        </div>
+        <h2 class="banner-heading">"Pehle Hum Khud Ko Banayenge, Fir Profile Chamkegi."</h2>
+        <p class="banner-text">
+          Koi jaldbazi nahi, 365 tasks ko step-by-step master karo. Har task ke baad tick mark lagao, code VS Code mein compile karo, GitHub pe push karo aur LinkedIn pe apni real learning journey share karo!
+        </p>
+      </div>
 
-<!-- ================= TOAST ================= -->
+      <div class="specs-box">
+        <div class="specs-header">💻 Low-End Beast Configuration</div>
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="spec-label">CPU:</span>
+            <span class="spec-val">Pentium 2-Core (Lightweight)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">RAM:</span>
+            <span class="spec-val">4 GB DDR3 (Clean memory)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">SSD:</span>
+            <span class="spec-val">256 GB SSD (Ultra Fast I/O)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">C++ Verdict:</span>
+            <span class="spec-val text-success">Super Fast (~40MB RAM usage) ✅</span>
+          </div>
+        </div>
+        <p class="specs-note">⚡ Tip: Use VS Code + GCC (MinGW) or Code::Blocks. Do NOT install heavy Visual Studio 2022!</p>
+      </div>
+    </section>
 
-<div id="toast"></div>
+    <!-- Global Progress Dashboard -->
+    <section class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-icon text-cyan">🎯</div>
+        <div class="stat-info">
+          <div class="stat-label">Total Completion</div>
+          <div class="stat-val" id="overallPercent">0%</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="overallProgressBar" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
 
+      <div class="stat-card">
+        <div class="stat-icon text-success">✅</div>
+        <div class="stat-info">
+          <div class="stat-label">Tasks Finished</div>
+          <div class="stat-val"><span id="completedCount">0</span> / <span id="totalCount">365</span></div>
+          <div class="stat-sub">Persisted in LocalStorage</div>
+        </div>
+      </div>
 
-<script src="script.js"></script>
+      <div class="stat-card">
+        <div class="stat-icon text-purple">🐙</div>
+        <div class="stat-info">
+          <div class="stat-label">GitHub Ready Commits</div>
+          <div class="stat-val" id="gitCommitsCount">0 Commits</div>
+          <div class="stat-sub">Daily green streak habit</div>
+        </div>
+      </div>
 
+      <div class="stat-card">
+        <div class="stat-icon text-warning">💼</div>
+        <div class="stat-info">
+          <div class="stat-label">LinkedIn Journey Posts</div>
+          <div class="stat-val" id="linkedInPostsCount">0 Posts</div>
+          <div class="stat-sub">Authentic public learning</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls: Search & Phase Tabs -->
+    <section class="controls-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search any task (e.g. 14, Pointers, Arrays, SQL, React, OS, Docker)...">
+      </div>
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-btn active" data-filter="all">All 365 Tasks</button>
+        <button class="filter-btn" data-filter="phase1">Phase 1: Computer & C++ (1-37)</button>
+        <button class="filter-btn" data-filter="phase2">Phase 2: OOP & Git (38-77)</button>
+        <button class="filter-btn" data-filter="phase3">Phase 3: DSA Mastery (78-125)</button>
+        <button class="filter-btn" data-filter="phase4">Phase 4: Web Dev (126-180)</button>
+        <button class="filter-btn" data-filter="phase5">Phase 5: React & Backend (181-222)</button>
+        <button class="filter-btn" data-filter="phase6">Phase 6: Linux & Cloud (223-246)</button>
+        <button class="filter-btn" data-filter="phase7">Phase 7: CS Core & Sys Design (247-281)</button>
+        <button class="filter-btn" data-filter="phase8">Phase 8: Python & AI/ML (282-315)</button>
+        <button class="filter-btn" data-filter="phase9">Phase 9: Mobile Dev (316-332)</button>
+        <button class="filter-btn" data-filter="phase10">Phase 10: Career & Placements (333-365)</button>
+      </div>
+    </section>
+
+    <!-- Roadmap Content -->
+    <section id="roadmapContainer" class="roadmap-container">
+      <!-- Injected dynamically via JS -->
+    </section>
+  </main>
+
+  <!-- Modal: Git Push & LinkedIn Post Generator -->
+  <div class="modal-overlay" id="actionModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-badge" id="modalBadge">TASK #001 COMPLETED</span>
+          <h3 class="modal-title" id="modalTaskTitle">Task Title</h3>
+        </div>
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-tabs">
+          <button class="modal-tab-btn active" data-target="gitTab">🐙 Push to GitHub</button>
+          <button class="modal-tab-btn" data-target="linkedinTab">💼 Share on LinkedIn</button>
+        </div>
+
+        <!-- Git Tab -->
+        <div class="modal-tab-content active" id="gitTab">
+          <p class="tab-desc">Abhi is task ka code ya notes commit aur push karo:</p>
+          <div class="code-preview-wrap">
+            <pre><code id="gitCommandsCode">git add .
+git commit -m "Day 1: Completed Task #1 - Computer kaise kaam karta hai"
+git push origin main</code></pre>
+            <button class="btn btn-copy" id="copyGitBtn">📋 Copy Commands</button>
+          </div>
+          <div class="quick-terminal-note">
+            💡 Tip: Apne terminal (PowerShell / VS Code terminal) mein paste karo. Clean commits se green contributions banegi!
+          </div>
+        </div>
+
+        <!-- LinkedIn Tab -->
+        <div class="modal-tab-content" id="linkedinTab">
+          <p class="tab-desc">Apni real learning journey share karo (zero fake show-off, pure consistency):</p>
+          <div class="textarea-preview-wrap">
+            <textarea id="linkedinPostText" readonly rows="8"></textarea>
+            <div class="tab-actions">
+              <button class="btn btn-primary" id="copyLinkedinBtn">📋 Copy Post Content</button>
+              <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener" class="btn btn-secondary">🚀 Open LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Action completed!</div>
+
+  <script src="app.js"></script>
 </body>
 </html>
