@@ -1,3309 +1,2776 @@
-/* =========================================================
-   CSE OS — COMMAND CENTER ENGINE
-   =========================================================
-
-   START DATE:
-   08 OCTOBER 2026
-
-   8 Oct 2026 = DAY 1
-   9 Oct 2026 = DAY 2
-   ...
-
-   Everything is saved in localStorage.
-   ========================================================= */
-
-
-const STORAGE_KEY = "abhi_cse_os_v2";
-
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-const DEFAULT_START_DATE = "2026-10-08";
-
-
-/* =========================================================
-   ROADMAP DATA
-   =========================================================
-
-   Every task contains:
-
-   id
-   title
-   description
-   xp
-   resource
-   resourceName
-
-   Resource buttons automatically open the relevant
-   learning page in a new tab.
-   ========================================================= */
-
-const ROADMAP = [
-
-    {
-        id: "p1",
-        number: "01",
-        title: "Computer + Professional Foundations",
-        short: "Become comfortable operating like a developer.",
-        tasks: [
-
-            {
-                id: "p1-t1",
-                title: "Windows & file system fundamentals",
-                description: "Files, folders, extensions, paths, storage and basic Windows navigation.",
-                xp: 10,
-                resource: "https://support.microsoft.com/windows",
-                resourceName: "Microsoft Windows Support"
-            },
-
-            {
-                id: "p1-t2",
-                title: "Understand file extensions & project structure",
-                description: "Understand .cpp, .h, .html, .css, .js, .json, .md and common project folders.",
-                xp: 10,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development",
-                resourceName: "MDN Web Development"
-            },
-
-            {
-                id: "p1-t3",
-                title: "ZIP, extraction & compression",
-                description: "Learn ZIP archives, extraction, compression and basic archive handling.",
-                xp: 10,
-                resource: "https://support.microsoft.com/windows/zip-and-unzip-files",
-                resourceName: "Microsoft ZIP Guide"
-            },
-
-            {
-                id: "p1-t4",
-                title: "Environment variables & PATH",
-                description: "Understand PATH, environment variables and why terminals can find programs.",
-                xp: 20,
-                resource: "https://learn.microsoft.com/windows-server/administration/windows-commands/set_1",
-                resourceName: "Microsoft Command Reference"
-            },
-
-            {
-                id: "p1-t5",
-                title: "Command Prompt / PowerShell basics",
-                description: "Navigate directories, create files, run programs and understand the command line.",
-                xp: 20,
-                resource: "https://learn.microsoft.com/powershell/",
-                resourceName: "Microsoft PowerShell"
-            },
-
-            {
-                id: "p1-t6",
-                title: "Browser DevTools",
-                description: "Inspect HTML/CSS, console errors, network requests and basic debugging.",
-                xp: 20,
-                resource: "https://developer.chrome.com/docs/devtools/",
-                resourceName: "Chrome DevTools"
-            },
-
-            {
-                id: "p1-t7",
-                title: "Basic troubleshooting mindset",
-                description: "Learn to read errors, isolate problems, reproduce bugs and search documentation.",
-                xp: 20,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development",
-                resourceName: "MDN Learning"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p2",
-        number: "02",
-        title: "C++ Programming",
-        short: "Build genuine programming fundamentals.",
-        tasks: [
-
-            {
-                id: "p2-t1",
-                title: "Install C++ compiler + VS Code setup",
-                description: "Set up a lightweight C++ development environment.",
-                xp: 20,
-                resource: "https://www.learncpp.com/cpp-tutorial/introduction-to-these-tutorials/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t2",
-                title: "Variables & data types",
-                description: "int, float, double, char, bool, strings, constants and type basics.",
-                xp: 20,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t3",
-                title: "Operators & expressions",
-                description: "Arithmetic, comparison, logical, assignment and increment operators.",
-                xp: 20,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t4",
-                title: "Input / Output",
-                description: "cin, cout, formatting and basic console programs.",
-                xp: 20,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t5",
-                title: "Conditions",
-                description: "if, else, else-if, switch and logical decision making.",
-                xp: 20,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t6",
-                title: "Loops",
-                description: "for, while, do-while, break and continue.",
-                xp: 20,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t7",
-                title: "Functions",
-                description: "Parameters, return values, scope, overloading and reusable code.",
-                xp: 25,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t8",
-                title: "Arrays",
-                description: "One-dimensional and multidimensional arrays plus traversal.",
-                xp: 25,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t9",
-                title: "Strings",
-                description: "std::string, string operations, input and manipulation.",
-                xp: 25,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t10",
-                title: "Pointers",
-                description: "Understand addresses, pointers, dereferencing and memory basics.",
-                xp: 30,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t11",
-                title: "References",
-                description: "Understand references, pass-by-reference and when they are useful.",
-                xp: 25,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t12",
-                title: "Structs & user-defined types",
-                description: "Group related data and understand custom data structures.",
-                xp: 20,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t13",
-                title: "OOP fundamentals",
-                description: "Classes, objects, constructors, encapsulation and member functions.",
-                xp: 35,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t14",
-                title: "Inheritance & polymorphism",
-                description: "Understand inheritance, virtual functions and polymorphism.",
-                xp: 35,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p2-t15",
-                title: "C++ STL",
-                description: "vector, string, map, set, stack, queue, algorithms and iterators.",
-                xp: 40,
-                resource: "https://en.cppreference.com/w/cpp/container",
-                resourceName: "cppreference"
-            },
-
-            {
-                id: "p2-t16",
-                title: "Build C++ mini projects",
-                description: "Build multiple console projects without copying code.",
-                xp: 50,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p3",
-        number: "03",
-        title: "DSA + Problem Solving",
-        short: "Turn programming knowledge into problem-solving ability.",
-        tasks: [
-
-            {
-                id: "p3-t1",
-                title: "Time & space complexity",
-                description: "Big-O, Big-Theta basics and complexity analysis.",
-                xp: 30,
-                resource: "https://www.bigocheatsheet.com/",
-                resourceName: "Big-O Cheat Sheet"
-            },
-
-            {
-                id: "p3-t2",
-                title: "Arrays DSA",
-                description: "Traversal, prefix sums, two pointers and common array patterns.",
-                xp: 35,
-                resource: "https://cp-algorithms.com/",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t3",
-                title: "Strings DSA",
-                description: "Frequency counting, pattern techniques and string problems.",
-                xp: 35,
-                resource: "https://cp-algorithms.com/string/",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t4",
-                title: "Searching",
-                description: "Linear search, binary search and search-space thinking.",
-                xp: 35,
-                resource: "https://cp-algorithms.com/num_methods/binary_search.html",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t5",
-                title: "Sorting",
-                description: "Bubble, selection, insertion, merge, quick sort and complexity.",
-                xp: 35,
-                resource: "https://cp-algorithms.com/",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t6",
-                title: "Linked Lists",
-                description: "Singly, doubly linked lists and common interview patterns.",
-                xp: 40,
-                resource: "https://www.geeksforgeeks.org/data-structures/linked-list/",
-                resourceName: "GeeksforGeeks"
-            },
-
-            {
-                id: "p3-t7",
-                title: "Stacks & Queues",
-                description: "Implement and solve common stack/queue problems.",
-                xp: 35,
-                resource: "https://www.geeksforgeeks.org/stack-data-structure/",
-                resourceName: "GeeksforGeeks"
-            },
-
-            {
-                id: "p3-t8",
-                title: "Hashing",
-                description: "Hash maps, sets, frequency counting and lookup optimization.",
-                xp: 40,
-                resource: "https://cp-algorithms.com/data_structures/disjoint_set_union.html",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t9",
-                title: "Recursion & backtracking",
-                description: "Recursive thinking, base cases, recursion trees and backtracking.",
-                xp: 45,
-                resource: "https://cp-algorithms.com/",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t10",
-                title: "Trees & BST",
-                description: "Binary trees, traversal, BST operations and recursion.",
-                xp: 50,
-                resource: "https://www.geeksforgeeks.org/binary-tree-data-structure/",
-                resourceName: "GeeksforGeeks"
-            },
-
-            {
-                id: "p3-t11",
-                title: "Heaps / Priority Queue",
-                description: "Heap operations and priority-based problem solving.",
-                xp: 45,
-                resource: "https://cp-algorithms.com/",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t12",
-                title: "Graphs",
-                description: "BFS, DFS, representations, shortest paths and graph thinking.",
-                xp: 55,
-                resource: "https://cp-algorithms.com/graph/breadth-first-search.html",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t13",
-                title: "Dynamic Programming",
-                description: "Memoization, tabulation and recognizing DP patterns.",
-                xp: 60,
-                resource: "https://cp-algorithms.com/dynamic_programming/intro-to-dp.html",
-                resourceName: "CP Algorithms"
-            },
-
-            {
-                id: "p3-t14",
-                title: "Solve 100+ DSA problems",
-                description: "Build consistency across easy, medium and selected hard problems.",
-                xp: 100,
-                resource: "https://leetcode.com/problemset/",
-                resourceName: "LeetCode"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p4",
-        number: "04",
-        title: "Web Development",
-        short: "HTML → CSS → JavaScript → React.",
-        tasks: [
-
-            {
-                id: "p4-t1",
-                title: "HTML fundamentals",
-                description: "Document structure, semantic elements, links, images and forms.",
-                xp: 30,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content",
-                resourceName: "MDN HTML"
-            },
-
-            {
-                id: "p4-t2",
-                title: "HTML forms & accessibility",
-                description: "Forms, labels, inputs, semantic markup and accessibility basics.",
-                xp: 30,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms",
-                resourceName: "MDN Forms"
-            },
-
-            {
-                id: "p4-t3",
-                title: "CSS fundamentals",
-                description: "Selectors, box model, colors, typography and spacing.",
-                xp: 30,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics",
-                resourceName: "MDN CSS"
-            },
-
-            {
-                id: "p4-t4",
-                title: "Flexbox",
-                description: "Build modern one-dimensional layouts.",
-                xp: 30,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox",
-                resourceName: "MDN Flexbox"
-            },
-
-            {
-                id: "p4-t5",
-                title: "CSS Grid",
-                description: "Build responsive two-dimensional layouts.",
-                xp: 30,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids",
-                resourceName: "MDN CSS Grid"
-            },
-
-            {
-                id: "p4-t6",
-                title: "Responsive design",
-                description: "Media queries, mobile-first design and responsive interfaces.",
-                xp: 30,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design",
-                resourceName: "MDN Responsive Design"
-            },
-
-            {
-                id: "p4-t7",
-                title: "CSS animations & transitions",
-                description: "Transitions, transforms and keyframe animations.",
-                xp: 25,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations",
-                resourceName: "MDN CSS Animations"
-            },
-
-            {
-                id: "p4-t8",
-                title: "JavaScript fundamentals",
-                description: "Variables, types, operators, conditions and loops.",
-                xp: 40,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting",
-                resourceName: "MDN JavaScript"
-            },
-
-            {
-                id: "p4-t9",
-                title: "Functions, arrays & objects",
-                description: "Core JavaScript data structures and reusable functions.",
-                xp: 40,
-                resource: "https://javascript.info/",
-                resourceName: "JavaScript.info"
-            },
-
-            {
-                id: "p4-t10",
-                title: "DOM manipulation",
-                description: "Select elements, modify UI, create elements and respond to events.",
-                xp: 40,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model",
-                resourceName: "MDN DOM"
-            },
-
-            {
-                id: "p4-t11",
-                title: "ES6+",
-                description: "let/const, destructuring, spread, arrow functions, modules and modern syntax.",
-                xp: 40,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
-                resourceName: "MDN JavaScript Guide"
-            },
-
-            {
-                id: "p4-t12",
-                title: "Promises + async/await",
-                description: "Understand asynchronous JavaScript and promise-based workflows.",
-                xp: 45,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Async_JS",
-                resourceName: "MDN Async JavaScript"
-            },
-
-            {
-                id: "p4-t13",
-                title: "Fetch + APIs",
-                description: "Consume REST APIs from frontend JavaScript.",
-                xp: 45,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
-                resourceName: "MDN Fetch API"
-            },
-
-            {
-                id: "p4-t14",
-                title: "React fundamentals",
-                description: "Components, JSX, props, state and component thinking.",
-                xp: 50,
-                resource: "https://react.dev/learn",
-                resourceName: "React Learn"
-            },
-
-            {
-                id: "p4-t15",
-                title: "React Hooks",
-                description: "useState, useEffect and core hooks.",
-                xp: 50,
-                resource: "https://react.dev/reference/react",
-                resourceName: "React Reference"
-            },
-
-            {
-                id: "p4-t16",
-                title: "React routing + forms",
-                description: "Multi-page SPA navigation, forms and validation.",
-                xp: 50,
-                resource: "https://reactrouter.com/",
-                resourceName: "React Router"
-            },
-
-            {
-                id: "p4-t17",
-                title: "Build a serious React project",
-                description: "Create a polished responsive application from scratch.",
-                xp: 100,
-                resource: "https://react.dev/learn",
-                resourceName: "React Learn"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p5",
-        number: "05",
-        title: "Backend + Databases",
-        short: "Turn frontend applications into real software.",
-        tasks: [
-
-            {
-                id: "p5-t1",
-                title: "Node.js fundamentals",
-                description: "Understand Node runtime, modules, npm and server-side JavaScript.",
-                xp: 40,
-                resource: "https://nodejs.org/en/learn",
-                resourceName: "Node.js Learn"
-            },
-
-            {
-                id: "p5-t2",
-                title: "npm + packages",
-                description: "Install dependencies, package.json, scripts and semantic versions.",
-                xp: 25,
-                resource: "https://docs.npmjs.com/",
-                resourceName: "npm Docs"
-            },
-
-            {
-                id: "p5-t3",
-                title: "Express.js",
-                description: "Build HTTP servers, routes and middleware.",
-                xp: 45,
-                resource: "https://expressjs.com/en/starter/installing.html",
-                resourceName: "Express Docs"
-            },
-
-            {
-                id: "p5-t4",
-                title: "REST APIs",
-                description: "HTTP methods, status codes, resources and API architecture.",
-                xp: 45,
-                resource: "https://developer.mozilla.org/en-US/docs/Glossary/REST",
-                resourceName: "MDN REST"
-            },
-
-            {
-                id: "p5-t5",
-                title: "PostgreSQL fundamentals",
-                description: "Relational databases, tables, rows and basic database concepts.",
-                xp: 40,
-                resource: "https://www.postgresql.org/docs/current/tutorial.html",
-                resourceName: "PostgreSQL Tutorial"
-            },
-
-            {
-                id: "p5-t6",
-                title: "SQL CRUD",
-                description: "SELECT, INSERT, UPDATE and DELETE.",
-                xp: 35,
-                resource: "https://www.postgresql.org/docs/current/tutorial-sql.html",
-                resourceName: "PostgreSQL SQL"
-            },
-
-            {
-                id: "p5-t7",
-                title: "WHERE / ORDER BY / GROUP BY",
-                description: "Filter, sort and aggregate relational data.",
-                xp: 35,
-                resource: "https://www.postgresql.org/docs/current/tutorial-sql.html",
-                resourceName: "PostgreSQL SQL"
-            },
-
-            {
-                id: "p5-t8",
-                title: "SQL JOINs",
-                description: "INNER JOIN, LEFT JOIN and relational data modeling.",
-                xp: 45,
-                resource: "https://www.postgresql.org/docs/current/tutorial-join.html",
-                resourceName: "PostgreSQL JOIN Tutorial"
-            },
-
-            {
-                id: "p5-t9",
-                title: "Indexes",
-                description: "Understand indexes and why they improve query performance.",
-                xp: 40,
-                resource: "https://www.postgresql.org/docs/current/indexes.html",
-                resourceName: "PostgreSQL Indexes"
-            },
-
-            {
-                id: "p5-t10",
-                title: "Constraints + normalization",
-                description: "Primary keys, foreign keys, unique constraints and data design.",
-                xp: 40,
-                resource: "https://www.postgresql.org/docs/current/ddl-constraints.html",
-                resourceName: "PostgreSQL Constraints"
-            },
-
-            {
-                id: "p5-t11",
-                title: "Transactions + ACID",
-                description: "Understand atomicity, consistency, isolation and durability.",
-                xp: 45,
-                resource: "https://www.postgresql.org/docs/current/tutorial-transactions.html",
-                resourceName: "PostgreSQL Transactions"
-            },
-
-            {
-                id: "p5-t12",
-                title: "Authentication",
-                description: "Sessions, JWT, password hashing and authentication architecture.",
-                xp: 60,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/Security",
-                resourceName: "MDN Web Security"
-            },
-
-            {
-                id: "p5-t13",
-                title: "Authorization",
-                description: "Roles, permissions and access control.",
-                xp: 45,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/Security",
-                resourceName: "MDN Security"
-            },
-
-            {
-                id: "p5-t14",
-                title: "MongoDB basics",
-                description: "Understand NoSQL documents and when MongoDB is appropriate.",
-                xp: 35,
-                resource: "https://www.mongodb.com/docs/manual/",
-                resourceName: "MongoDB Docs"
-            },
-
-            {
-                id: "p5-t15",
-                title: "Build a full-stack application",
-                description: "React frontend + Node backend + PostgreSQL database + auth.",
-                xp: 120,
-                resource: "https://fullstackopen.com/en/",
-                resourceName: "Full Stack Open"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p6",
-        number: "06",
-        title: "Git + GitHub + Linux + Developer Workflow",
-        short: "Work like a real developer.",
-        tasks: [
-
-            {
-                id: "p6-t1",
-                title: "Git fundamentals",
-                description: "Repositories, commits and version control concepts.",
-                xp: 30,
-                resource: "https://git-scm.com/book/en/v2",
-                resourceName: "Pro Git"
-            },
-
-            {
-                id: "p6-t2",
-                title: "git init / add / commit",
-                description: "Create repositories and make meaningful commits.",
-                xp: 25,
-                resource: "https://git-scm.com/docs",
-                resourceName: "Git Documentation"
-            },
-
-            {
-                id: "p6-t3",
-                title: "push / pull / clone",
-                description: "Work with remote repositories.",
-                xp: 25,
-                resource: "https://skills.github.com/",
-                resourceName: "GitHub Skills"
-            },
-
-            {
-                id: "p6-t4",
-                title: "Branches + merge",
-                description: "Work safely with branches and merge changes.",
-                xp: 35,
-                resource: "https://skills.github.com/",
-                resourceName: "GitHub Skills"
-            },
-
-            {
-                id: "p6-t5",
-                title: "Rebase basics",
-                description: "Understand when and why rebase is useful.",
-                xp: 35,
-                resource: "https://git-scm.com/book/en/v2/Git-Branching-Rebasing",
-                resourceName: "Pro Git Rebasing"
-            },
-
-            {
-                id: "p6-t6",
-                title: ".gitignore + repository hygiene",
-                description: "Keep secrets, dependencies and generated files out of repositories.",
-                xp: 25,
-                resource: "https://git-scm.com/docs/gitignore",
-                resourceName: "Gitignore Docs"
-            },
-
-            {
-                id: "p6-t7",
-                title: "Professional README",
-                description: "Write project overview, features, setup, screenshots and roadmap.",
-                xp: 30,
-                resource: "https://www.makeareadme.com/",
-                resourceName: "Make a README"
-            },
-
-            {
-                id: "p6-t8",
-                title: "GitHub Issues + Pull Requests",
-                description: "Understand collaborative GitHub workflows.",
-                xp: 35,
-                resource: "https://skills.github.com/",
-                resourceName: "GitHub Skills"
-            },
-
-            {
-                id: "p6-t9",
-                title: "GitHub Actions basics",
-                description: "Understand CI workflows and automated checks.",
-                xp: 45,
-                resource: "https://docs.github.com/actions",
-                resourceName: "GitHub Actions"
-            },
-
-            {
-                id: "p6-t10",
-                title: "Linux terminal basics",
-                description: "ls, cd, pwd, mkdir, touch, cp, mv, rm, cat and grep.",
-                xp: 35,
-                resource: "https://ubuntu.com/tutorials/command-line-for-beginners",
-                resourceName: "Ubuntu Command Line"
-            },
-
-            {
-                id: "p6-t11",
-                title: "Permissions + processes",
-                description: "chmod, permissions, processes and basic Linux administration.",
-                xp: 35,
-                resource: "https://ubuntu.com/tutorials/command-line-for-beginners",
-                resourceName: "Ubuntu Command Line"
-            },
-
-            {
-                id: "p6-t12",
-                title: "SSH",
-                description: "Understand SSH keys and secure remote connections.",
-                xp: 35,
-                resource: "https://docs.github.com/authentication/connecting-to-github-with-ssh",
-                resourceName: "GitHub SSH Guide"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p7",
-        number: "07",
-        title: "CS Fundamentals",
-        short: "Understand what is happening underneath your code.",
-        tasks: [
-
-            {
-                id: "p7-t1",
-                title: "Operating Systems",
-                description: "Processes, threads, memory, scheduling and file systems.",
-                xp: 50,
-                resource: "https://pages.cs.wisc.edu/~remzi/OSTEP/",
-                resourceName: "OSTEP"
-            },
-
-            {
-                id: "p7-t2",
-                title: "Memory management",
-                description: "Stack, heap, virtual memory and memory allocation.",
-                xp: 45,
-                resource: "https://pages.cs.wisc.edu/~remzi/OSTEP/",
-                resourceName: "OSTEP"
-            },
-
-            {
-                id: "p7-t3",
-                title: "OOP concepts revision",
-                description: "Encapsulation, inheritance, polymorphism and abstraction.",
-                xp: 35,
-                resource: "https://www.learncpp.com/",
-                resourceName: "LearnCpp"
-            },
-
-            {
-                id: "p7-t4",
-                title: "DBMS fundamentals",
-                description: "Database architecture, relational models, transactions and indexing.",
-                xp: 50,
-                resource: "https://www.postgresql.org/docs/current/tutorial.html",
-                resourceName: "PostgreSQL Docs"
-            },
-
-            {
-                id: "p7-t5",
-                title: "Computer Networks",
-                description: "IP, DNS, HTTP, HTTPS, TCP, UDP and ports.",
-                xp: 55,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/HTTP",
-                resourceName: "MDN HTTP"
-            },
-
-            {
-                id: "p7-t6",
-                title: "Web security basics",
-                description: "Cookies, CORS, authentication and common browser security concepts.",
-                xp: 50,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/Security",
-                resourceName: "MDN Security"
-            },
-
-            {
-                id: "p7-t7",
-                title: "Networking practical understanding",
-                description: "Use browser DevTools and terminal tools to inspect real network traffic.",
-                xp: 40,
-                resource: "https://developer.chrome.com/docs/devtools/network/",
-                resourceName: "Chrome Network DevTools"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p8",
-        number: "08",
-        title: "Python + Automation + AI",
-        short: "Add Python and modern AI engineering skills.",
-        tasks: [
-
-            {
-                id: "p8-t1",
-                title: "Python fundamentals",
-                description: "Variables, types, conditions, loops, functions and modules.",
-                xp: 45,
-                resource: "https://docs.python.org/3/tutorial/",
-                resourceName: "Python Tutorial"
-            },
-
-            {
-                id: "p8-t2",
-                title: "Python data structures",
-                description: "Lists, tuples, dictionaries, sets and comprehensions.",
-                xp: 40,
-                resource: "https://docs.python.org/3/tutorial/datastructures.html",
-                resourceName: "Python Data Structures"
-            },
-
-            {
-                id: "p8-t3",
-                title: "Python automation",
-                description: "Build scripts that automate repetitive computer tasks.",
-                xp: 45,
-                resource: "https://docs.python.org/3/library/",
-                resourceName: "Python Standard Library"
-            },
-
-            {
-                id: "p8-t4",
-                title: "HTTP requests in Python",
-                description: "Consume APIs and automate web/API workflows.",
-                xp: 35,
-                resource: "https://requests.readthedocs.io/",
-                resourceName: "Requests"
-            },
-
-            {
-                id: "p8-t5",
-                title: "NumPy basics",
-                description: "Understand numerical arrays and vectorized operations.",
-                xp: 30,
-                resource: "https://numpy.org/learn/",
-                resourceName: "NumPy Learn"
-            },
-
-            {
-                id: "p8-t6",
-                title: "Pandas basics",
-                description: "Load, clean, transform and analyze tabular data.",
-                xp: 35,
-                resource: "https://pandas.pydata.org/docs/getting_started/index.html",
-                resourceName: "Pandas Getting Started"
-            },
-
-            {
-                id: "p8-t7",
-                title: "LLM fundamentals",
-                description: "Understand tokens, context windows, inference and model behavior.",
-                xp: 45,
-                resource: "https://huggingface.co/learn",
-                resourceName: "Hugging Face Learn"
-            },
-
-            {
-                id: "p8-t8",
-                title: "Prompt engineering",
-                description: "Write structured prompts and evaluate model outputs.",
-                xp: 30,
-                resource: "https://platform.openai.com/docs/guides/prompt-engineering",
-                resourceName: "OpenAI Prompt Engineering"
-            },
-
-            {
-                id: "p8-t9",
-                title: "AI APIs",
-                description: "Integrate an LLM API into a real application.",
-                xp: 50,
-                resource: "https://platform.openai.com/docs/overview",
-                resourceName: "OpenAI API Docs"
-            },
-
-            {
-                id: "p8-t10",
-                title: "Embeddings + vector search",
-                description: "Understand semantic search and vector representations.",
-                xp: 50,
-                resource: "https://huggingface.co/learn/nlp-course/chapter5/6",
-                resourceName: "Hugging Face NLP"
-            },
-
-            {
-                id: "p8-t11",
-                title: "RAG architecture",
-                description: "Build retrieval-augmented generation with a knowledge source.",
-                xp: 60,
-                resource: "https://huggingface.co/learn",
-                resourceName: "Hugging Face Learn"
-            },
-
-            {
-                id: "p8-t12",
-                title: "AI-powered project",
-                description: "Build a real application using AI as one component of the product.",
-                xp: 100,
-                resource: "https://huggingface.co/learn",
-                resourceName: "Hugging Face Learn"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p9",
-        number: "09",
-        title: "Cloud + Docker + Deployment",
-        short: "Learn how software reaches real users.",
-        tasks: [
-
-            {
-                id: "p9-t1",
-                title: "Deployment fundamentals",
-                description: "Understand build, deploy, domains, environment variables and production.",
-                xp: 35,
-                resource: "https://developer.mozilla.org/en-US/docs/Learn_web_development",
-                resourceName: "MDN Web Development"
-            },
-
-            {
-                id: "p9-t2",
-                title: "Docker fundamentals",
-                description: "Images, containers, Dockerfiles and basic container workflows.",
-                xp: 45,
-                resource: "https://docs.docker.com/get-started/",
-                resourceName: "Docker Get Started"
-            },
-
-            {
-                id: "p9-t3",
-                title: "Docker Compose",
-                description: "Run multiple services together.",
-                xp: 40,
-                resource: "https://docs.docker.com/compose/",
-                resourceName: "Docker Compose"
-            },
-
-            {
-                id: "p9-t4",
-                title: "AWS fundamentals",
-                description: "Understand core cloud concepts and AWS architecture.",
-                xp: 40,
-                resource: "https://aws.amazon.com/getting-started/",
-                resourceName: "AWS Getting Started"
-            },
-
-            {
-                id: "p9-t5",
-                title: "EC2",
-                description: "Understand virtual servers and basic deployment.",
-                xp: 40,
-                resource: "https://docs.aws.amazon.com/ec2/",
-                resourceName: "AWS EC2"
-            },
-
-            {
-                id: "p9-t6",
-                title: "S3",
-                description: "Object storage and common cloud storage use cases.",
-                xp: 30,
-                resource: "https://docs.aws.amazon.com/s3/",
-                resourceName: "AWS S3"
-            },
-
-            {
-                id: "p9-t7",
-                title: "IAM basics",
-                description: "Understand cloud identities, permissions and least privilege.",
-                xp: 35,
-                resource: "https://docs.aws.amazon.com/iam/",
-                resourceName: "AWS IAM"
-            },
-
-            {
-                id: "p9-t8",
-                title: "CI/CD fundamentals",
-                description: "Automate testing, builds and deployment.",
-                xp: 45,
-                resource: "https://docs.github.com/actions",
-                resourceName: "GitHub Actions"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p10",
-        number: "10",
-        title: "Cybersecurity + Mobile + Product Skills",
-        short: "Expand into security, mobile and product building.",
-        tasks: [
-
-            {
-                id: "p10-t1",
-                title: "OWASP Top 10",
-                description: "Understand common web application security risks.",
-                xp: 45,
-                resource: "https://owasp.org/www-project-top-ten/",
-                resourceName: "OWASP Top 10"
-            },
-
-            {
-                id: "p10-t2",
-                title: "Secure authentication",
-                description: "Understand common authentication weaknesses and secure patterns.",
-                xp: 45,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/Security",
-                resourceName: "MDN Security"
-            },
-
-            {
-                id: "p10-t3",
-                title: "React Native fundamentals",
-                description: "Use React knowledge to build native mobile interfaces.",
-                xp: 50,
-                resource: "https://reactnative.dev/docs/getting-started",
-                resourceName: "React Native"
-            },
-
-            {
-                id: "p10-t4",
-                title: "Expo fundamentals",
-                description: "Build and run React Native applications using Expo.",
-                xp: 40,
-                resource: "https://docs.expo.dev/",
-                resourceName: "Expo Docs"
-            },
-
-            {
-                id: "p10-t5",
-                title: "Build KACHEHRI foundation",
-                description: "Apply React Native + Expo knowledge to your India-wide university platform.",
-                xp: 100,
-                resource: "https://docs.expo.dev/",
-                resourceName: "Expo Docs"
-            },
-
-            {
-                id: "p10-t6",
-                title: "UI/UX fundamentals",
-                description: "Typography, spacing, hierarchy, responsive design and user flows.",
-                xp: 35,
-                resource: "https://www.figma.com/resources/learn-design/",
-                resourceName: "Figma Learn Design"
-            },
-
-            {
-                id: "p10-t7",
-                title: "Figma basics",
-                description: "Create basic wireframes, UI layouts and prototypes.",
-                xp: 30,
-                resource: "https://help.figma.com/hc/en-us",
-                resourceName: "Figma Help"
-            },
-
-            {
-                id: "p10-t8",
-                title: "Product thinking",
-                description: "Problem discovery, users, MVPs, feedback and iteration.",
-                xp: 30,
-                resource: "https://www.productplan.com/glossary/minimum-viable-product/",
-                resourceName: "MVP Guide"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p11",
-        number: "11",
-        title: "Corporate Productivity",
-        short: "Professional tools that support your engineering career.",
-        tasks: [
-
-            {
-                id: "p11-t1",
-                title: "Excel fundamentals",
-                description: "Tables, sorting, filtering and basic formatting.",
-                xp: 20,
-                resource: "https://support.microsoft.com/excel",
-                resourceName: "Microsoft Excel Support"
-            },
-
-            {
-                id: "p11-t2",
-                title: "Excel formulas",
-                description: "IF, SUMIF, SUMIFS, COUNTIF, COUNTIFS and XLOOKUP.",
-                xp: 30,
-                resource: "https://support.microsoft.com/excel",
-                resourceName: "Microsoft Excel Support"
-            },
-
-            {
-                id: "p11-t3",
-                title: "Pivot tables + charts",
-                description: "Summarize and visualize structured data.",
-                xp: 30,
-                resource: "https://support.microsoft.com/excel",
-                resourceName: "Microsoft Excel Support"
-            },
-
-            {
-                id: "p11-t4",
-                title: "Word professional documents",
-                description: "Headings, formatting, tables, page layout and PDF export.",
-                xp: 15,
-                resource: "https://support.microsoft.com/word",
-                resourceName: "Microsoft Word Support"
-            },
-
-            {
-                id: "p11-t5",
-                title: "PowerPoint fundamentals",
-                description: "Build clean technical presentations and explain projects.",
-                xp: 20,
-                resource: "https://support.microsoft.com/powerpoint",
-                resourceName: "Microsoft PowerPoint Support"
-            },
-
-            {
-                id: "p11-t6",
-                title: "Technical communication",
-                description: "Explain technical problems clearly in writing and conversation.",
-                xp: 30,
-                resource: "https://developers.google.com/tech-writing",
-                resourceName: "Google Technical Writing"
-            }
-
-        ]
-    },
-
-
-    {
-        id: "p12",
-        number: "12",
-        title: "Interview + System Design + Advanced Engineering",
-        short: "Turn your skills into employability.",
-        tasks: [
-
-            {
-                id: "p12-t1",
-                title: "DSA interview revision",
-                description: "Revise core patterns and solve problems under time constraints.",
-                xp: 70,
-                resource: "https://leetcode.com/",
-                resourceName: "LeetCode"
-            },
-
-            {
-                id: "p12-t2",
-                title: "OS interview revision",
-                description: "Processes, threads, memory, scheduling and deadlocks.",
-                xp: 50,
-                resource: "https://pages.cs.wisc.edu/~remzi/OSTEP/",
-                resourceName: "OSTEP"
-            },
-
-            {
-                id: "p12-t3",
-                title: "DBMS interview revision",
-                description: "SQL, normalization, indexing, transactions and ACID.",
-                xp: 50,
-                resource: "https://www.postgresql.org/docs/current/tutorial.html",
-                resourceName: "PostgreSQL"
-            },
-
-            {
-                id: "p12-t4",
-                title: "Networking interview revision",
-                description: "HTTP, HTTPS, DNS, TCP/IP, APIs and common networking questions.",
-                xp: 50,
-                resource: "https://developer.mozilla.org/en-US/docs/Web/HTTP",
-                resourceName: "MDN HTTP"
-            },
-
-            {
-                id: "p12-t5",
-                title: "System design basics",
-                description: "Scalability, caching, load balancing, databases and queues.",
-                xp: 60,
-                resource: "https://github.com/donnemartin/system-design-primer",
-                resourceName: "System Design Primer"
-            },
-
-            {
-                id: "p12-t6",
-                title: "Portfolio project #1",
-                description: "Build a serious full-stack application with production-quality documentation.",
-                xp: 150,
-                resource: "https://fullstackopen.com/en/",
-                resourceName: "Full Stack Open"
-            },
-
-            {
-                id: "p12-t7",
-                title: "Portfolio project #2",
-                description: "Build another application solving a different real-world problem.",
-                xp: 150,
-                resource: "https://fullstackopen.com/en/",
-                resourceName: "Full Stack Open"
-            },
-
-            {
-                id: "p12-t8",
-                title: "Portfolio project #3 — AI",
-                description: "Build and deploy a useful AI-powered product.",
-                xp: 180,
-                resource: "https://huggingface.co/learn",
-                resourceName: "Hugging Face Learn"
-            },
-
-            {
-                id: "p12-t9",
-                title: "Open-source contribution",
-                description: "Find a beginner-friendly issue and make a real contribution.",
-                xp: 100,
-                resource: "https://goodfirstissue.dev/",
-                resourceName: "Good First Issue"
-            },
-
-            {
-                id: "p12-t10",
-                title: "Resume with proof",
-                description: "Create a resume that prioritizes measurable projects and real evidence.",
-                xp: 50,
-                resource: "https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/",
-                resourceName: "Harvard Resume Guide"
-            },
-
-            {
-                id: "p12-t11",
-                title: "LinkedIn final optimization",
-                description: "Make your profile accurately represent your real engineering journey.",
-                xp: 40,
-                resource: "https://www.linkedin.com/help/linkedin",
-                resourceName: "LinkedIn Help"
-            },
-
-            {
-                id: "p12-t12",
-                title: "Final engineering capstone",
-                description: "Build, deploy, document and publicly showcase your strongest project.",
-                xp: 250,
-                resource: "https://fullstackopen.com/en/",
-                resourceName: "Full Stack Open"
-            }
-
-        ]
-    }
-
-];
-
-
-/* =========================================================
-   STATE
-   ========================================================= */
-
-let state = {
-
-    startDate: DEFAULT_START_DATE,
-
-    completed: {},
-
-    activity: [],
-
-    special: {},
-
-    animations: true
-
-};
-
-
-let currentFilter = "all";
-let currentSearch = "";
-let selectedTask = null;
-
-
-/* =========================================================
-   LOAD / SAVE
-   ========================================================= */
-
-function loadState() {
-
-    const saved = localStorage.getItem(STORAGE_KEY);
-
-    if (!saved) return;
-
-    try {
-
-        const parsed = JSON.parse(saved);
-
-        state = {
-            ...state,
-            ...parsed
-        };
-
-    } catch (error) {
-
-        console.warn("Could not load saved progress.");
-
-    }
-
+:root {
+  --bg: #07080b;
+  --bg-2: #0b0d11;
+  --panel: rgba(17, 19, 25, 0.82);
+  --panel-strong: #101218;
+  --panel-soft: rgba(255,255,255,0.035);
+
+  --text: #f5f7fb;
+  --muted: #9298a7;
+  --muted-2: #626978;
+
+  --line: rgba(255,255,255,0.08);
+  --line-strong: rgba(255,255,255,0.13);
+
+  --accent: #8cff5a;
+  --accent-2: #52d8ff;
+  --purple: #9c7cff;
+  --orange: #ffad5a;
+  --danger: #ff6262;
+
+  --radius: 22px;
+  --radius-small: 14px;
+
+  --sidebar: 270px;
+
+  --shadow:
+    0 30px 80px rgba(0,0,0,.35);
+
+  --font:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 
-function saveState() {
+* {
+  box-sizing: border-box;
+}
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(state)
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(140,255,90,.07),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(82,216,255,.045),
+      transparent 30%
+    ),
+    var(--bg);
+
+  color: var(--text);
+  font-family: var(--font);
+
+  font-size: 16px;
+  line-height: 1.5;
+
+  overflow-x: hidden;
+}
+
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+
+button {
+  color: inherit;
+}
+
+
+button,
+select {
+  cursor: pointer;
+}
+
+
+::selection {
+  background: rgba(140,255,90,.25);
+  color: white;
+}
+
+
+/* BACKGROUND */
+
+.noise {
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: -3;
+
+  opacity: .035;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: -4;
+
+  opacity: .18;
+
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+
+  background-size: 50px 50px;
+
+  mask-image:
+    linear-gradient(to bottom, black, transparent 85%);
+}
+
+
+.orb {
+  position: fixed;
+
+  width: 420px;
+  height: 420px;
+
+  border-radius: 50%;
+
+  filter: blur(100px);
+
+  pointer-events: none;
+
+  z-index: -2;
+
+  opacity: .07;
+}
+
+
+.orb-one {
+  top: 5%;
+  right: 10%;
+  background: var(--accent);
+}
+
+
+.orb-two {
+  bottom: 5%;
+  left: 15%;
+  background: var(--accent-2);
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+  position: fixed;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: var(--sidebar);
+
+  padding: 26px 18px;
+
+  border-right: 1px solid var(--line);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12,14,18,.96),
+      rgba(7,8,11,.94)
     );
 
+  backdrop-filter: blur(30px);
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
 }
 
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-function allTasks() {
+  padding: 4px 8px 26px;
+}
 
-    return ROADMAP.flatMap(
-        phase => phase.tasks.map(task => ({
-            ...task,
-            phaseId: phase.id,
-            phaseNumber: phase.number,
-            phaseTitle: phase.title
-        }))
+
+.brand-mark {
+  width: 35px;
+  height: 35px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(140,255,90,.45);
+
+  display: grid;
+  place-items: center;
+
+  position: relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,255,90,.13),
+      rgba(82,216,255,.05)
+    );
+}
+
+
+.brand-mark span {
+  position: absolute;
+
+  width: 12px;
+  height: 12px;
+
+  border: 2px solid var(--accent);
+
+  transform: rotate(45deg);
+}
+
+
+.brand-mark span:last-child {
+  width: 6px;
+  height: 6px;
+
+  border-color: var(--accent-2);
+}
+
+
+.brand-name {
+  font-weight: 900;
+  letter-spacing: .12em;
+  font-size: 14px;
+}
+
+
+.brand-sub {
+  font-size: 8px;
+  letter-spacing: .13em;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 13px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.025);
+
+  border-radius: 14px;
+}
+
+
+.avatar {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      var(--accent-2)
     );
 
+  color: #071006;
+
+  font-weight: 950;
 }
 
 
-function getTask(taskId) {
+.profile-copy {
+  display: flex;
+  flex-direction: column;
 
-    return allTasks().find(
-        task => task.id === taskId
+  min-width: 0;
+}
+
+
+.profile-copy strong {
+  font-size: 13px;
+}
+
+
+.profile-copy span {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+
+  white-space: nowrap;
+}
+
+
+.status-dot {
+  margin-left: auto;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+
+  box-shadow:
+    0 0 12px var(--accent);
+}
+
+
+.side-nav {
+  margin-top: 28px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.nav-item {
+  width: 100%;
+
+  border: 0;
+  background: transparent;
+
+  padding: 13px 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border-radius: 12px;
+
+  color: var(--muted);
+
+  font-size: 14px;
+  font-weight: 650;
+
+  text-align: left;
+
+  transition: .2s ease;
+}
+
+
+.nav-item:hover {
+  color: var(--text);
+  background: rgba(255,255,255,.04);
+}
+
+
+.nav-item.active {
+  color: var(--text);
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(140,255,90,.12),
+      rgba(140,255,90,.035)
     );
 
+  box-shadow:
+    inset 2px 0 0 var(--accent);
 }
 
 
-function getPhase(phaseId) {
+.nav-icon {
+  width: 22px;
 
-    return ROADMAP.find(
-        phase => phase.id === phaseId
+  text-align: center;
+
+  font-size: 17px;
+
+  color: var(--muted-2);
+}
+
+
+.nav-item.active .nav-icon {
+  color: var(--accent);
+}
+
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+
+.start-card {
+  padding: 15px;
+
+  border-radius: 15px;
+
+  border: 1px solid var(--line);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(140,255,90,.08),
+      rgba(255,255,255,.02)
     );
 
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 
-function completedTasks() {
+.tiny-label {
+  color: var(--accent);
 
-    return allTasks().filter(
-        task => state.completed[task.id]
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: .15em;
+}
+
+
+.start-card strong {
+  font-size: 17px;
+  letter-spacing: .04em;
+}
+
+
+.start-card span:last-child {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+
+.sidebar-reset {
+  width: 100%;
+
+  margin-top: 10px;
+
+  padding: 9px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--muted-2);
+
+  font-size: 11px;
+}
+
+
+.sidebar-reset:hover {
+  color: var(--danger);
+}
+
+
+/* MOBILE HEADER */
+
+.mobile-header {
+  display: none;
+}
+
+
+/* MAIN */
+
+.main {
+  margin-left: var(--sidebar);
+
+  width: calc(100% - var(--sidebar));
+
+  padding: 0 48px 60px;
+
+  max-width: 1800px;
+}
+
+
+.topbar {
+  height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--line);
+}
+
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: .1em;
+}
+
+
+.breadcrumbs span:first-child {
+  color: var(--text);
+}
+
+
+.breadcrumbs b {
+  color: var(--muted-2);
+}
+
+
+.top-actions {
+  display: flex;
+  gap: 8px;
+}
+
+
+.top-btn {
+  padding: 9px 13px;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.025);
+
+  color: var(--muted);
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+
+.top-btn:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+
+.top-btn.primary {
+  color: #071006;
+
+  border-color: var(--accent);
+
+  background: var(--accent);
+
+  font-weight: 900;
+}
+
+
+/* HERO */
+
+.hero-section {
+  padding: 55px 0 30px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+
+  gap: 45px;
+
+  align-items: center;
+}
+
+
+.hero-left {
+  min-width: 0;
+}
+
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--accent);
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: .15em;
+
+  margin-bottom: 18px;
+}
+
+
+.pulse {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+
+  box-shadow:
+    0 0 14px var(--accent);
+}
+
+
+.hero-section h1 {
+  margin: 0;
+
+  max-width: 950px;
+
+  font-size:
+    clamp(48px, 6vw, 92px);
+
+  line-height: .93;
+
+  letter-spacing: -.065em;
+
+  font-weight: 950;
+}
+
+
+.hero-section h1 span {
+  color: var(--accent);
+}
+
+
+.hero-section h1 em {
+  display: block;
+
+  font-style: normal;
+
+  color: transparent;
+
+  -webkit-text-stroke: 1px rgba(255,255,255,.38);
+}
+
+
+.hero-description {
+  max-width: 690px;
+
+  color: var(--muted);
+
+  font-size: 16px;
+
+  line-height: 1.75;
+
+  margin: 25px 0 24px;
+}
+
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 22px;
+}
+
+
+.hero-meta > div:not(.meta-divider) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+.hero-meta span {
+  color: var(--muted-2);
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: .14em;
+}
+
+
+.hero-meta strong {
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+
+
+.meta-divider {
+  width: 1px;
+  height: 25px;
+
+  background: var(--line);
+}
+
+
+/* DAY CARD */
+
+.day-card {
+  padding: 22px;
+
+  border-radius: 24px;
+
+  border: 1px solid var(--line-strong);
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(140,255,90,.11),
+      transparent 40%
+    ),
+    rgba(15,17,22,.9);
+
+  box-shadow: var(--shadow);
+}
+
+
+.day-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: .14em;
+}
+
+
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: var(--accent);
+
+  padding: 5px 8px;
+
+  border-radius: 50px;
+
+  background: rgba(140,255,90,.08);
+}
+
+
+.live-pill i {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+}
+
+
+.day-number {
+  margin-top: 17px;
+
+  font-size: 64px;
+
+  line-height: 1;
+
+  letter-spacing: -.06em;
+
+  font-weight: 950;
+}
+
+
+.day-label {
+  margin-top: 5px;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  color: var(--accent);
+
+  letter-spacing: .13em;
+}
+
+
+.day-line {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 25px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+.day-progress {
+  height: 5px;
+
+  margin-top: 9px;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  background: rgba(255,255,255,.07);
+}
+
+
+.day-progress div {
+  height: 100%;
+
+  width: 0%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--accent),
+      var(--accent-2)
     );
 
+  transition: width .5s ease;
 }
 
 
-function totalXP() {
+/* METRICS */
 
-    return completedTasks().reduce(
-        (sum, task) => sum + task.xp,
-        0
+.metrics-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-top: 15px;
+}
+
+
+.metric-card {
+  min-height: 195px;
+
+  padding: 20px;
+
+  border-radius: var(--radius);
+
+  border: 1px solid var(--line);
+
+  background: var(--panel);
+
+  backdrop-filter: blur(20px);
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 15px 50px rgba(0,0,0,.13);
+}
+
+
+.metric-card:hover {
+  border-color: var(--line-strong);
+}
+
+
+.metric-head {
+  display: flex;
+  justify-content: space-between;
+
+  color: var(--muted-2);
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: .14em;
+}
+
+
+.metric-main {
+  margin-top: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.metric-main > strong {
+  font-size: 47px;
+
+  line-height: 1;
+
+  letter-spacing: -.06em;
+}
+
+
+.circular-progress {
+  position: relative;
+
+  width: 64px;
+  height: 64px;
+}
+
+
+.circular-progress svg {
+  width: 100%;
+  height: 100%;
+
+  transform: rotate(-90deg);
+}
+
+
+.circular-progress circle {
+  fill: none;
+
+  stroke-width: 7;
+}
+
+
+.circle-bg {
+  stroke: rgba(255,255,255,.06);
+}
+
+
+.circle-value {
+  stroke: var(--accent);
+
+  stroke-linecap: round;
+
+  stroke-dasharray: 264;
+
+  stroke-dashoffset: 264;
+
+  transition: .5s ease;
+}
+
+
+.circular-progress span {
+  position: absolute;
+
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+
+.metric-foot {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: auto;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+.streak-number {
+  margin-top: 22px;
+
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+
+.streak-number strong {
+  font-size: 48px;
+
+  letter-spacing: -.06em;
+}
+
+
+.streak-number span {
+  color: var(--accent);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: .12em;
+}
+
+
+.streak-dots {
+  display: flex;
+
+  gap: 5px;
+
+  margin-top: 17px;
+}
+
+
+.streak-dots i {
+  width: 19px;
+  height: 5px;
+
+  border-radius: 5px;
+
+  background: rgba(255,255,255,.07);
+}
+
+
+.streak-dots i.active {
+  background: var(--accent);
+
+  box-shadow:
+    0 0 8px rgba(140,255,90,.35);
+}
+
+
+.phase-number {
+  margin-top: 22px;
+
+  color: var(--accent);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: .15em;
+}
+
+
+.phase-name {
+  margin-top: 4px;
+
+  font-size: 22px;
+}
+
+
+.mini-progress {
+  height: 5px;
+
+  margin-top: 15px;
+
+  background: rgba(255,255,255,.06);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+
+.mini-progress div {
+  height: 100%;
+
+  width: 0%;
+
+  background: var(--accent);
+
+  transition: width .5s;
+}
+
+
+.next-mission {
+  margin-top: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+.next-tag {
+  align-self: flex-start;
+
+  padding: 4px 7px;
+
+  border-radius: 5px;
+
+  background: rgba(140,255,90,.08);
+
+  color: var(--accent);
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: .1em;
+}
+
+
+.next-mission strong {
+  font-size: 18px;
+
+  line-height: 1.2;
+}
+
+
+.next-mission button {
+  width: fit-content;
+
+  margin-top: 5px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--accent);
+
+  font-size: 11px;
+  font-weight: 900;
+
+  padding: 0;
+}
+
+
+/* SECTIONS */
+
+.section-block {
+  margin-top: 70px;
+
+  scroll-margin-top: 25px;
+}
+
+
+.section-heading {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 30px;
+
+  margin-bottom: 22px;
+}
+
+
+.section-kicker {
+  color: var(--accent);
+
+  font-size: 9px;
+  font-weight: 950;
+
+  letter-spacing: .17em;
+}
+
+
+.section-heading h2 {
+  margin: 5px 0 5px;
+
+  font-size: 31px;
+
+  letter-spacing: -.035em;
+}
+
+
+.section-heading p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+
+/* FILTERS */
+
+.section-actions {
+  display: flex;
+  gap: 6px;
+}
+
+
+.filter-btn {
+  padding: 9px 12px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+
+.filter-btn.active {
+  background: rgba(140,255,90,.1);
+
+  color: var(--accent);
+
+  border-color: rgba(140,255,90,.3);
+}
+
+
+/* TODAY */
+
+.today-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.6fr)
+    minmax(250px, .7fr);
+
+  gap: 14px;
+}
+
+
+.mission-card,
+.command-card {
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius);
+
+  background: var(--panel);
+
+  padding: 25px;
+}
+
+
+.mission-top {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+.mission-icon {
+  width: 50px;
+  height: 50px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background: rgba(140,255,90,.08);
+
+  color: var(--accent);
+
+  border: 1px solid rgba(140,255,90,.18);
+
+  font-weight: 950;
+}
+
+
+.mission-label {
+  color: var(--muted-2);
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: .13em;
+}
+
+
+.mission-card h3 {
+  margin: 3px 0 0;
+
+  font-size: 22px;
+}
+
+
+.mission-card > p {
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  max-width: 700px;
+
+  margin: 18px 0;
+}
+
+
+.mission-actions {
+  display: flex;
+  gap: 8px;
+
+  flex-wrap: wrap;
+}
+
+
+.complete-large,
+.resource-large {
+  border-radius: 10px;
+
+  padding: 11px 15px;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+
+.complete-large {
+  border: 1px solid var(--accent);
+
+  background: var(--accent);
+
+  color: #071006;
+}
+
+
+.resource-large {
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.035);
+
+  color: var(--text);
+}
+
+
+.resource-large:hover {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+}
+
+
+.command-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 17px;
+}
+
+
+.command-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid var(--line);
+
+  padding-bottom: 12px;
+}
+
+
+.command-row:last-child {
+  border-bottom: 0;
+}
+
+
+.command-row span {
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: .1em;
+}
+
+
+.command-row strong {
+  font-size: 21px;
+}
+
+
+/* ROADMAP CONTROLS */
+
+.roadmap-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.search-box {
+  width: 260px;
+
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 10px;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.025);
+}
+
+
+.search-box > span {
+  color: var(--muted-2);
+}
+
+
+.search-box input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: var(--text);
+
+  font-size: 12px;
+}
+
+
+.search-box input::placeholder {
+  color: var(--muted-2);
+}
+
+
+.search-box kbd {
+  white-space: nowrap;
+
+  color: var(--muted-2);
+
+  border: 1px solid var(--line);
+
+  padding: 2px 5px;
+
+  border-radius: 4px;
+
+  font-size: 8px;
+}
+
+
+#phaseSelect {
+  height: 42px;
+
+  padding: 0 10px;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--line);
+
+  background: var(--panel-strong);
+
+  color: var(--text);
+
+  font-size: 11px;
+}
+
+
+/* ROADMAP PHASE */
+
+.phase-block {
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius);
+
+  background: rgba(12,14,18,.75);
+
+  overflow: hidden;
+
+  margin-bottom: 12px;
+}
+
+
+.phase-header {
+  width: 100%;
+
+  border: 0;
+
+  background: transparent;
+
+  padding: 19px 20px;
+
+  display: grid;
+
+  grid-template-columns:
+    55px
+    minmax(200px, 1fr)
+    170px
+    100px
+    30px;
+
+  align-items: center;
+
+  gap: 16px;
+
+  text-align: left;
+}
+
+
+.phase-header:hover {
+  background: rgba(255,255,255,.025);
+}
+
+
+.phase-index {
+  color: var(--accent);
+
+  font-size: 11px;
+  font-weight: 950;
+
+  letter-spacing: .1em;
+}
+
+
+.phase-title strong {
+  display: block;
+
+  font-size: 17px;
+}
+
+
+.phase-title span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+.phase-bar {
+  height: 6px;
+
+  background: rgba(255,255,255,.06);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+
+.phase-bar div {
+  height: 100%;
+
+  width: 0%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--accent),
+      var(--accent-2)
+    );
+}
+
+
+.phase-percent {
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 900;
+
+  text-align: right;
+}
+
+
+.phase-arrow {
+  color: var(--muted);
+
+  transition: .2s;
+}
+
+
+.phase-block.open .phase-arrow {
+  transform: rotate(180deg);
+}
+
+
+.phase-tasks {
+  display: none;
+
+  padding: 0 10px 10px;
+}
+
+
+.phase-block.open .phase-tasks {
+  display: block;
+}
+
+
+/* TASK */
+
+.task-row {
+  display: grid;
+
+  grid-template-columns:
+    35px
+    minmax(0, 1fr)
+    120px
+    105px
+    105px;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 10px;
+
+  border-top: 1px solid rgba(255,255,255,.045);
+
+  transition: .18s;
+}
+
+
+.task-row:hover {
+  background: rgba(255,255,255,.025);
+}
+
+
+.task-row.completed {
+  opacity: .58;
+}
+
+
+.task-check {
+  width: 26px;
+  height: 26px;
+
+  border-radius: 7px;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.025);
+
+  color: transparent;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 14px;
+  font-weight: 950;
+
+  transition: .2s;
+}
+
+
+.task-check:hover {
+  border-color: var(--accent);
+}
+
+
+.task-row.completed .task-check {
+  background: var(--accent);
+
+  border-color: var(--accent);
+
+  color: #071006;
+}
+
+
+.task-main {
+  min-width: 0;
+}
+
+
+.task-title {
+  font-size: 14px;
+
+  font-weight: 800;
+
+  color: var(--text);
+}
+
+
+.task-row.completed .task-title {
+  text-decoration: line-through;
+}
+
+
+.task-description {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.task-tag {
+  justify-self: start;
+
+  padding: 5px 7px;
+
+  border-radius: 5px;
+
+  background: rgba(255,255,255,.04);
+
+  border: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: .08em;
+}
+
+
+.task-level {
+  color: var(--muted-2);
+
+  font-size: 9px;
+  font-weight: 850;
+}
+
+
+.task-resource,
+.task-more {
+  justify-self: stretch;
+
+  padding: 8px 8px;
+
+  border-radius: 8px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.025);
+
+  color: var(--text);
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+
+.task-resource:hover {
+  color: var(--accent-2);
+
+  border-color: rgba(82,216,255,.35);
+}
+
+
+.task-more:hover {
+  color: var(--accent);
+  border-color: rgba(140,255,90,.3);
+}
+
+
+.no-results {
+  padding: 40px;
+
+  text-align: center;
+
+  color: var(--muted);
+
+  border: 1px dashed var(--line);
+
+  border-radius: 16px;
+}
+
+
+/* PROJECTS */
+
+.projects-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0,1fr));
+
+  gap: 13px;
+}
+
+
+.project-card {
+  position: relative;
+
+  min-height: 235px;
+
+  padding: 20px;
+
+  border-radius: var(--radius);
+
+  border: 1px solid var(--line);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.045),
+      rgba(255,255,255,.015)
     );
 
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
 }
 
 
-/* =========================================================
-   DAY COUNTER
-   ========================================================= */
+.project-card::after {
+  content: "";
 
-function getMissionDay() {
+  position: absolute;
 
-    const start = new Date(
-        `${state.startDate}T00:00:00`
-    );
+  width: 130px;
+  height: 130px;
 
-    const now = new Date();
+  right: -60px;
+  bottom: -60px;
 
-    start.setHours(0,0,0,0);
+  border-radius: 50%;
 
-    now.setHours(0,0,0,0);
+  background: rgba(140,255,90,.07);
 
-    const difference =
-        Math.floor(
-            (now - start) /
-            (1000 * 60 * 60 * 24)
-        );
-
-    return Math.max(1, difference + 1);
-
+  filter: blur(25px);
 }
 
 
-function formatDate(dateString) {
+.project-index {
+  color: var(--muted-2);
 
-    const date = new Date(
-        `${dateString}T00:00:00`
-    );
+  font-size: 9px;
+  font-weight: 950;
 
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-        }
-    );
-
+  letter-spacing: .13em;
 }
 
 
-function updateDay() {
+.project-card h3 {
+  margin: 17px 0 6px;
 
-    const day = getMissionDay();
-
-    document.getElementById("dayNumber")
-        .textContent =
-        String(day).padStart(2,"0");
-
-    document.getElementById("todayChip")
-        .textContent =
-        `DAY ${String(day).padStart(2,"0")}`;
-
-    document.getElementById("daySince")
-        .textContent =
-        `Since ${formatDate(state.startDate)}`;
-
-    document.getElementById("todayDate")
-        .textContent =
-        new Date().toLocaleDateString(
-            "en-IN",
-            {
-                weekday: "short",
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            }
-        );
-
+  font-size: 18px;
 }
 
 
-/* =========================================================
-   XP + LEVEL
-   ========================================================= */
+.project-card p {
+  color: var(--muted);
 
-function updateXP() {
+  font-size: 11px;
 
-    const xp = totalXP();
+  line-height: 1.65;
 
-    const level =
-        Math.floor(xp / 100) + 1;
-
-    const xpInLevel =
-        xp % 100;
-
-    const xpRemaining =
-        100 - xpInLevel;
-
-    document.getElementById("xpCount")
-        .textContent = xp;
-
-    document.getElementById("levelNumber")
-        .textContent = level;
-
-    document.getElementById("xpNext")
-        .textContent = xpRemaining;
-
+  margin: 0;
 }
 
 
-/* =========================================================
-   OVERALL PROGRESS
-   ========================================================= */
+.project-stack {
+  display: flex;
 
-function updateOverall() {
+  flex-wrap: wrap;
 
-    const total = allTasks().length;
+  gap: 5px;
 
-    const completed = completedTasks().length;
-
-    const percent =
-        total === 0
-            ? 0
-            : Math.round(
-                completed / total * 100
-            );
-
-    document.getElementById("overallPercent")
-        .textContent = percent;
-
-    document.getElementById("overallProgress")
-        .style.width = `${percent}%`;
-
-    document.getElementById("completedCount")
-        .textContent =
-        `${completed} completed`;
-
-    document.getElementById("totalCount")
-        .textContent =
-        `${total} tasks`;
-
-    document.getElementById("roadmapPercent")
-        .textContent = `${percent}%`;
-
-    document.getElementById("activityCompleted")
-        .textContent = completed;
-
+  margin-top: 15px;
 }
 
 
-/* =========================================================
-   STREAK
-   ========================================================= */
+.project-stack span {
+  padding: 4px 6px;
 
-function calculateStreak() {
+  border-radius: 4px;
 
-    const dates = [
-        ...new Set(
-            state.activity
-                .map(item => item.date)
-                .filter(Boolean)
-        )
-    ].sort().reverse();
+  background: rgba(255,255,255,.04);
 
-    if (!dates.length) return 0;
+  color: var(--muted);
 
-    let streak = 0;
-
-    let current =
-        new Date();
-
-    current.setHours(0,0,0,0);
-
-    for (const dateString of dates) {
-
-        const activityDate =
-            new Date(
-                `${dateString}T00:00:00`
-            );
-
-        const difference =
-            Math.floor(
-                (current - activityDate) /
-                (1000 * 60 * 60 * 24)
-            );
-
-        if (
-            difference === 0 ||
-            difference === 1
-        ) {
-
-            streak++;
-
-            current = activityDate;
-
-        } else {
-
-            break;
-
-        }
-
-    }
-
-    return streak;
-
+  font-size: 8px;
 }
 
 
-function updateStreak() {
+.project-bottom {
+  margin-top: auto;
 
-    document.getElementById("streakCount")
-        .textContent =
-        calculateStreak();
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+  padding-top: 18px;
 }
 
 
-/* =========================================================
-   PHASE PROGRESS
-   ========================================================= */
+.project-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 
-function phaseProgress(phase) {
+  color: var(--muted);
 
-    const done =
-        phase.tasks.filter(
-            task => state.completed[task.id]
-        ).length;
-
-    return Math.round(
-        done / phase.tasks.length * 100
-    );
-
+  font-size: 9px;
+  font-weight: 900;
 }
 
 
-/* =========================================================
-   PHASE GRID
-   ========================================================= */
+.project-status i {
+  width: 7px;
+  height: 7px;
 
-function renderPhaseGrid() {
+  border-radius: 50%;
 
-    const container =
-        document.getElementById("phaseGrid");
-
-    container.innerHTML = "";
-
-    ROADMAP.forEach(phase => {
-
-        const percent =
-            phaseProgress(phase);
-
-        const card =
-            document.createElement("div");
-
-        card.className = "phase-card";
-
-        card.innerHTML = `
-
-            <div class="phase-card-top">
-
-                <span class="phase-num">
-                    PHASE ${phase.number}
-                </span>
-
-                <span class="phase-percent">
-                    ${percent}%
-                </span>
-
-            </div>
-
-            <h4>
-                ${phase.title}
-            </h4>
-
-            <p>
-                ${phase.short}
-            </p>
-
-            <div class="mini-progress">
-                <span style="width:${percent}%"></span>
-            </div>
-
-        `;
-
-        card.addEventListener(
-            "click",
-            () => {
-
-                openSection("roadmap");
-
-                setTimeout(() => {
-
-                    const target =
-                        document.querySelector(
-                            `[data-phase="${phase.id}"]`
-                        );
-
-                    if (target) {
-
-                        target.classList.add("open");
-
-                        target.scrollIntoView({
-                            behavior: "smooth",
-                            block: "center"
-                        });
-
-                    }
-
-                }, 50);
-
-            }
-        );
-
-        container.appendChild(card);
-
-    });
-
+  background: var(--muted-2);
 }
 
 
-/* =========================================================
-   ROADMAP RENDER
-   ========================================================= */
-
-function renderRoadmap() {
-
-    const container =
-        document.getElementById(
-            "roadmapContainer"
-        );
-
-    container.innerHTML = "";
-
-    let visibleSomething = false;
-
-
-    ROADMAP.forEach(phase => {
-
-        const matchingTasks =
-            phase.tasks.filter(task => {
-
-                const search =
-                    currentSearch.trim().toLowerCase();
-
-                const matchesSearch =
-                    !search ||
-                    task.title.toLowerCase().includes(search) ||
-                    task.description.toLowerCase().includes(search) ||
-                    phase.title.toLowerCase().includes(search);
-
-                const completed =
-                    !!state.completed[task.id];
-
-                const matchesFilter =
-                    currentFilter === "all" ||
-                    (
-                        currentFilter === "active" &&
-                        !completed
-                    ) ||
-                    (
-                        currentFilter === "completed" &&
-                        completed
-                    );
-
-                return matchesSearch && matchesFilter;
-
-            });
-
-
-        if (!matchingTasks.length) {
-            return;
-        }
-
-
-        visibleSomething = true;
-
-
-        const phaseElement =
-            document.createElement("div");
-
-        phaseElement.className =
-            "roadmap-phase";
-
-        phaseElement.dataset.phase =
-            phase.id;
-
-
-        const percent =
-            phaseProgress(phase);
-
-
-        phaseElement.innerHTML = `
-
-            <div class="phase-header">
-
-                <div class="phase-header-left">
-
-                    <div class="phase-badge">
-                        ${phase.number}
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            ${phase.title}
-                        </h3>
-
-                        <p>
-                            ${phase.short}
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="phase-header-right">
-
-                    <span>
-                        ${percent}% complete
-                    </span>
-
-                    <span class="chevron">
-                        ▼
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="task-list"></div>
-
-        `;
-
-
-        const header =
-            phaseElement.querySelector(
-                ".phase-header"
-            );
-
-
-        header.addEventListener(
-            "click",
-            () => {
-
-                phaseElement.classList.toggle(
-                    "open"
-                );
-
-            }
-        );
-
-
-        const taskList =
-            phaseElement.querySelector(
-                ".task-list"
-            );
-
-
-        matchingTasks.forEach(task => {
-
-            const isCompleted =
-                !!state.completed[task.id];
-
-
-            const taskElement =
-                document.createElement("div");
-
-            taskElement.className =
-                `task ${isCompleted ? "completed" : ""}`;
-
-
-            taskElement.dataset.task =
-                task.id;
-
-
-            taskElement.innerHTML = `
-
-                <input
-                    class="task-check"
-                    type="checkbox"
-                    ${isCompleted ? "checked" : ""}
-                    aria-label="Complete ${escapeHTML(task.title)}"
-                >
-
-                <div class="task-info">
-
-                    <div class="task-title">
-                        ${escapeHTML(task.title)}
-                    </div>
-
-                    <div class="task-description">
-                        ${escapeHTML(task.description)}
-                    </div>
-
-                </div>
-
-                <span class="task-xp">
-                    +${task.xp} XP
-                </span>
-
-                <a
-                    class="resource-btn"
-                    href="${task.resource}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    ↗ Resource
-                </a>
-
-                <button
-                    class="task-details"
-                    title="Task details"
-                >
-                    ⋯
-                </button>
-
-            `;
-
-
-            const checkbox =
-                taskElement.querySelector(
-                    ".task-check"
-                );
-
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-
-                    toggleTask(
-                        task.id,
-                        checkbox.checked
-                    );
-
-                }
-            );
-
-
-            const details =
-                taskElement.querySelector(
-                    ".task-details"
-                );
-
-
-            details.addEventListener(
-                "click",
-                () => {
-
-                    openTaskModal(task);
-
-                }
-            );
-
-
-            taskList.appendChild(
-                taskElement
-            );
-
-        });
-
-
-        container.appendChild(
-            phaseElement
-        );
-
-    });
-
-
-    if (!visibleSomething) {
-
-        container.innerHTML = `
-
-            <div class="no-results">
-                No matching tasks found.
-            </div>
-
-        `;
-
-    }
-
+.project-card.completed .project-status {
+  color: var(--accent);
 }
 
 
-/* =========================================================
-   HTML ESCAPE
-   ========================================================= */
+.project-card.completed .project-status i {
+  background: var(--accent);
 
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
+  box-shadow:
+    0 0 10px rgba(140,255,90,.4);
 }
 
 
-/* =========================================================
-   TOGGLE TASK
-   ========================================================= */
+.project-check {
+  width: 30px;
+  height: 30px;
 
-function toggleTask(
-    taskId,
-    checked
-) {
+  border-radius: 8px;
 
-    const task =
-        getTask(taskId);
+  border: 1px solid var(--line);
 
-    if (!task) return;
+  background: transparent;
 
-
-    if (checked) {
-
-        if (!state.completed[taskId]) {
-
-            state.completed[taskId] = true;
-
-            addActivity(
-                "task",
-                task
-            );
-
-            showToast(
-                `Completed: ${task.title} +${task.xp} XP`
-            );
-
-        }
-
-    } else {
-
-        delete state.completed[taskId];
-
-        showToast(
-            "Task marked active."
-        );
-
-    }
-
-
-    saveState();
-
-    refreshEverything();
-
+  color: var(--muted);
 }
 
 
-/* =========================================================
-   ACTIVITY
-   ========================================================= */
+.project-card.completed .project-check {
+  background: var(--accent);
 
-function addActivity(
-    type,
-    task
-) {
+  border-color: var(--accent);
 
-    const now =
-        new Date();
-
-    const today =
-        now.toISOString()
-            .split("T")[0];
-
-
-    state.activity.unshift({
-
-        id:
-            `${Date.now()}-${task.id}`,
-
-        type,
-
-        taskId:
-            task.id,
-
-        title:
-            task.title,
-
-        phase:
-            task.phaseTitle,
-
-        date:
-            today,
-
-        timestamp:
-            now.toISOString()
-
-    });
-
-
-    state.activity =
-        state.activity.slice(
-            0,
-            100
-        );
-
+  color: #071006;
 }
 
 
-function renderRecentActivity() {
+/* SOCIAL */
 
-    const container =
-        document.getElementById(
-            "recentActivity"
-        );
+.social-grid {
+  display: grid;
 
+  grid-template-columns:
+    repeat(2, minmax(0,1fr));
 
-    if (!state.activity.length) {
-
-        container.innerHTML = `
-
-            <div class="empty">
-                Complete your first task to create activity.
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const items =
-        state.activity.slice(0,5);
-
-
-    container.innerHTML =
-        items.map(item => `
-
-            <div class="timeline-item">
-
-                <div class="timeline-icon">
-                    ✓
-                </div>
-
-                <div>
-
-                    <strong>
-                        ${escapeHTML(item.title)}
-                    </strong>
-
-                    <p>
-                        ${escapeHTML(item.phase)}
-                    </p>
-
-                </div>
-
-                <span class="timeline-time">
-                    ${formatActivityTime(item.timestamp)}
-                </span>
-
-            </div>
-
-        `).join("");
-
+  gap: 14px;
 }
 
 
-function renderActivityPage() {
+.social-card {
+  padding: 24px;
 
-    const timeline =
-        document.getElementById(
-            "activityTimeline"
-        );
+  border-radius: var(--radius);
 
+  border: 1px solid var(--line);
 
-    const github =
-        Object.values(state.special)
-            .filter(
-                item =>
-                    item.category === "github" &&
-                    item.checked
-            ).length;
-
-
-    const linkedin =
-        Object.values(state.special)
-            .filter(
-                item =>
-                    item.category === "linkedin" &&
-                    item.checked
-            ).length;
-
-
-    document.getElementById(
-        "githubCount"
-    ).textContent = github;
-
-
-    document.getElementById(
-        "linkedinCount"
-    ).textContent = linkedin;
-
-
-    const projectCount =
-        state.activity.filter(
-            item =>
-                item.title.toLowerCase().includes("project")
-        ).length;
-
-
-    document.getElementById(
-        "projectCount"
-    ).textContent = projectCount;
-
-
-    if (!state.activity.length) {
-
-        timeline.innerHTML = `
-
-            <div class="empty">
-                Your activity timeline is empty.
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    timeline.innerHTML =
-        state.activity.map(item => `
-
-            <div class="timeline-item">
-
-                <div class="timeline-icon">
-                    ✓
-                </div>
-
-                <div>
-
-                    <strong>
-                        ${escapeHTML(item.title)}
-                    </strong>
-
-                    <p>
-                        ${escapeHTML(item.phase)}
-                    </p>
-
-                </div>
-
-                <span class="timeline-time">
-                    ${formatActivityTime(item.timestamp)}
-                </span>
-
-            </div>
-
-        `).join("");
-
+  background: var(--panel);
 }
 
 
-function formatActivityTime(timestamp) {
+.social-header {
+  display: flex;
+  align-items: center;
 
-    const date =
-        new Date(timestamp);
-
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-            day: "2-digit",
-            month: "short"
-        }
-    );
-
+  gap: 13px;
 }
 
 
-/* =========================================================
-   DAILY FOCUS
-   ========================================================= */
+.social-logo {
+  width: 48px;
+  height: 48px;
 
-function updateDailyFocus() {
+  border-radius: 13px;
 
-    const next =
-        allTasks().find(
-            task =>
-                !state.completed[task.id]
-        );
+  display: grid;
+  place-items: center;
 
+  background: rgba(255,255,255,.05);
 
-    if (!next) {
+  border: 1px solid var(--line);
 
-        document.getElementById(
-            "dailyFocusTitle"
-        ).textContent =
-            "All roadmap tasks complete.";
-
-        document.getElementById(
-            "dailyFocusText"
-        ).textContent =
-            "You completed the entire roadmap. Now keep shipping real projects.";
-
-        document.getElementById(
-            "focusPhase"
-        ).textContent =
-            "MISSION COMPLETE";
-
-        document.getElementById(
-            "nextTaskTitle"
-        ).textContent =
-            "Build something real.";
-
-        document.getElementById(
-            "nextTaskDescription"
-        ).textContent =
-            "Your roadmap is complete. Start another project or deepen your strongest skill.";
-
-        return;
-
-    }
-
-
-    document.getElementById(
-        "dailyFocusTitle"
-    ).textContent =
-        next.title;
-
-
-    document.getElementById(
-        "dailyFocusText"
-    ).textContent =
-        next.description;
-
-
-    document.getElementById(
-        "focusPhase"
-    ).textContent =
-        `PHASE ${next.phaseNumber}`;
-
-
-    document.getElementById(
-        "nextTaskTitle"
-    ).textContent =
-        next.title;
-
-
-    document.getElementById(
-        "nextTaskDescription"
-    ).textContent =
-        next.description;
-
-
-    document.getElementById(
-        "nextTaskBtn"
-    ).onclick = () => {
-
-        openSection("roadmap");
-
-        setTimeout(() => {
-
-            const phase =
-                document.querySelector(
-                    `[data-phase="${next.phaseId}"]`
-                );
-
-            if (!phase) return;
-
-            phase.classList.add("open");
-
-            const task =
-                phase.querySelector(
-                    `[data-task="${next.id}"]`
-                );
-
-            if (task) {
-
-                task.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-                task.style.outline =
-                    "1px solid rgba(167,139,250,.4)";
-
-                setTimeout(() => {
-
-                    task.style.outline = "";
-
-                }, 1500);
-
-            }
-
-        }, 80);
-
-    };
-
+  font-size: 18px;
+  font-weight: 950;
 }
 
 
-/* =========================================================
-   TASK MODAL
-   ========================================================= */
+.social-header span {
+  color: var(--muted-2);
 
-function openTaskModal(task) {
+  font-size: 9px;
+  font-weight: 900;
 
-    selectedTask = task;
-
-
-    document.getElementById(
-        "modalPhase"
-    ).textContent =
-        `PHASE ${task.phaseNumber} · ${task.phaseTitle}`;
-
-
-    document.getElementById(
-        "modalTitle"
-    ).textContent =
-        task.title;
-
-
-    document.getElementById(
-        "modalDescription"
-    ).textContent =
-        task.description;
-
-
-    document.getElementById(
-        "modalXP"
-    ).textContent =
-        task.xp;
-
-
-    document.getElementById(
-        "modalStatus"
-    ).textContent =
-        state.completed[task.id]
-            ? "COMPLETED"
-            : "ACTIVE";
-
-
-    const resource =
-        document.getElementById(
-            "modalResource"
-        );
-
-
-    resource.href =
-        task.resource;
-
-
-    resource.textContent =
-        `${task.resourceName} ↗`;
-
-
-    document.getElementById(
-        "taskModal"
-    ).classList.add("show");
-
+  letter-spacing: .12em;
 }
 
 
-function closeTaskModal() {
+.social-header h3 {
+  margin: 2px 0 0;
 
-    document.getElementById(
-        "taskModal"
-    ).classList.remove("show");
-
-    selectedTask = null;
-
+  font-size: 19px;
 }
 
 
-/* =========================================================
-   SPECIAL CHECKLIST
-   ========================================================= */
-
-function loadSpecialChecks() {
-
-    document
-        .querySelectorAll(
-            "[data-special]"
-        )
-        .forEach(input => {
-
-            const saved =
-                state.special[input.id];
-
-            input.checked =
-                !!saved?.checked;
-
-            input.addEventListener(
-                "change",
-                () => {
-
-                    state.special[input.id] = {
-
-                        category:
-                            input.dataset.special,
-
-                        checked:
-                            input.checked
-
-                    };
-
-                    saveState();
-
-                    updateSpecialStats();
-
-                    showToast(
-                        input.checked
-                            ? "Portfolio proof saved."
-                            : "Portfolio item unchecked."
-                    );
-
-                }
-            );
-
-        });
-
+.social-progress {
+  margin-top: 23px;
 }
 
 
-function updateSpecialStats() {
+.social-progress-top {
+  display: flex;
+  justify-content: space-between;
 
-    const github =
-        Object.values(state.special)
-            .filter(
-                item =>
-                    item.category === "github" &&
-                    item.checked
-            ).length;
+  margin-bottom: 8px;
 
+  color: var(--muted);
 
-    const linkedin =
-        Object.values(state.special)
-            .filter(
-                item =>
-                    item.category === "linkedin" &&
-                    item.checked
-            ).length;
-
-
-    document.getElementById(
-        "githubCount"
-    ).textContent = github;
-
-
-    document.getElementById(
-        "linkedinCount"
-    ).textContent = linkedin;
-
+  font-size: 10px;
 }
 
 
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-function openSection(sectionId) {
-
-    document
-        .querySelectorAll(".section")
-        .forEach(section => {
-
-            section.classList.remove(
-                "active"
-            );
-
-        });
-
-
-    document
-        .getElementById(sectionId)
-        .classList.add("active");
-
-
-    document
-        .querySelectorAll(".nav-btn")
-        .forEach(btn => {
-
-            btn.classList.toggle(
-                "active",
-                btn.dataset.section === sectionId
-            );
-
-        });
-
-
-    const names = {
-
-        overview: "Mission Control",
-
-        roadmap: "Learning Roadmap",
-
-        activity: "Activity Center",
-
-        portfolio: "Public Proof"
-
-    };
-
-
-    document.getElementById(
-        "pageTitle"
-    ).textContent =
-        names[sectionId] || "Mission Control";
-
-
-    document.getElementById(
-        "crumbCurrent"
-    ).textContent =
-        sectionId.toUpperCase();
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+.social-progress-top strong {
+  color: var(--text);
 }
 
 
-document
-    .querySelectorAll(
-        ".nav-btn[data-section]"
-    )
-    .forEach(button => {
+.progress-track {
+  height: 5px;
 
-        button.addEventListener(
-            "click",
-            () => {
+  background: rgba(255,255,255,.06);
 
-                openSection(
-                    button.dataset.section
-                );
+  border-radius: 10px;
 
-            }
-        );
-
-    });
-
-
-/* =========================================================
-   FILTERS
-   ========================================================= */
-
-document
-    .querySelectorAll(".filter")
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                document
-                    .querySelectorAll(".filter")
-                    .forEach(btn =>
-                        btn.classList.remove(
-                            "active"
-                        )
-                    );
-
-                button.classList.add(
-                    "active"
-                );
-
-                currentFilter =
-                    button.dataset.filter;
-
-                renderRoadmap();
-
-            }
-        );
-
-    });
-
-
-document.getElementById(
-    "searchInput"
-).addEventListener(
-    "input",
-    event => {
-
-        currentSearch =
-            event.target.value;
-
-        renderRoadmap();
-
-    }
-);
-
-
-/* =========================================================
-   SETTINGS
-   ========================================================= */
-
-const settingsModal =
-    document.getElementById(
-        "settingsModal"
-    );
-
-
-document.getElementById(
-    "settingsOpen"
-).addEventListener(
-    "click",
-    () => {
-
-        document.getElementById(
-            "startDateInput"
-        ).value =
-            state.startDate;
-
-        document.getElementById(
-            "animationToggle"
-        ).checked =
-            state.animations !== false;
-
-        settingsModal.classList.add(
-            "show"
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "settingsClose"
-).addEventListener(
-    "click",
-    () => {
-
-        settingsModal.classList.remove(
-            "show"
-        );
-
-    }
-);
-
-
-document.getElementById(
-    "saveSettings"
-).addEventListener(
-    "click",
-    () => {
-
-        const newDate =
-            document.getElementById(
-                "startDateInput"
-            ).value;
-
-
-        if (newDate) {
-
-            state.startDate =
-                newDate;
-
-        }
-
-
-        state.animations =
-            document.getElementById(
-                "animationToggle"
-            ).checked;
-
-
-        applyAnimationSetting();
-
-        saveState();
-
-        updateDay();
-
-        settingsModal.classList.remove(
-            "show"
-        );
-
-        showToast(
-            "Settings saved."
-        );
-
-    }
-);
-
-
-/* =========================================================
-   ANIMATION SETTING
-   ========================================================= */
-
-function applyAnimationSetting() {
-
-    document.body.classList.toggle(
-        "no-animation",
-        state.animations === false
-    );
-
+  overflow: hidden;
 }
 
 
-/* =========================================================
-   RESET
-   ========================================================= */
+.progress-track div {
+  height: 100%;
 
-document.getElementById(
-    "resetBtn"
-).addEventListener(
-    "click",
-    () => {
+  width: 0%;
 
-        const answer =
-            confirm(
-                "Reset ALL roadmap progress, XP and activity?"
-            );
+  background: var(--accent);
 
-
-        if (!answer) return;
-
-
-        state.completed = {};
-
-        state.activity = {};
-
-        state.activity = [];
-
-        state.special = {};
-
-        saveState();
-
-        loadSpecialChecks();
-
-        refreshEverything();
-
-        showToast(
-            "Progress reset."
-        );
-
-    }
-);
-
-
-/* =========================================================
-   EXPORT
-   ========================================================= */
-
-document.getElementById(
-    "exportBtn"
-).addEventListener(
-    "click",
-    () => {
-
-        const data =
-            JSON.stringify(
-                state,
-                null,
-                2
-            );
-
-
-        const blob =
-            new Blob(
-                [data],
-                {
-                    type:
-                        "application/json"
-                }
-            );
-
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        const anchor =
-            document.createElement(
-                "a"
-            );
-
-
-        anchor.href = url;
-
-        anchor.download =
-            "cse-os-progress.json";
-
-        anchor.click();
-
-
-        URL.revokeObjectURL(url);
-
-        showToast(
-            "Progress exported."
-        );
-
-    }
-);
-
-
-/* =========================================================
-   IMPORT
-   ========================================================= */
-
-document.getElementById(
-    "importInput"
-).addEventListener(
-    "change",
-    event => {
-
-        const file =
-            event.target.files[0];
-
-        if (!file) return;
-
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            () => {
-
-                try {
-
-                    const imported =
-                        JSON.parse(
-                            reader.result
-                        );
-
-
-                    state = {
-                        ...state,
-                        ...imported
-                    };
-
-
-                    saveState();
-
-                    loadSpecialChecks();
-
-                    refreshEverything();
-
-                    showToast(
-                        "Progress imported."
-                    );
-
-                } catch {
-
-                    showToast(
-                        "Invalid progress file."
-                    );
-
-                }
-
-            };
-
-
-        reader.readAsText(file);
-
-    }
-);
-
-
-/* =========================================================
-   MODAL EVENTS
-   ========================================================= */
-
-document.getElementById(
-    "modalClose"
-).addEventListener(
-    "click",
-    closeTaskModal
-);
-
-
-document.getElementById(
-    "taskModal"
-).addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target.id ===
-            "taskModal"
-        ) {
-
-            closeTaskModal();
-
-        }
-
-    }
-);
-
-
-document.getElementById(
-    "modalComplete"
-).addEventListener(
-    "click",
-    () => {
-
-        if (!selectedTask) return;
-
-
-        const completed =
-            !!state.completed[
-                selectedTask.id
-            ];
-
-
-        toggleTask(
-            selectedTask.id,
-            !completed
-        );
-
-
-        document.getElementById(
-            "modalStatus"
-        ).textContent =
-            !completed
-                ? "COMPLETED"
-                : "ACTIVE";
-
-    }
-);
-
-
-/* =========================================================
-   MAIN BUTTONS
-   ========================================================= */
-
-function goToRoadmap() {
-
-    openSection("roadmap");
-
+  transition: width .4s;
 }
 
 
-document.getElementById(
-    "heroRoadmap"
-).addEventListener(
-    "click",
-    goToRoadmap
-);
-
-
-document.getElementById(
-    "viewRoadmap"
-).addEventListener(
-    "click",
-    goToRoadmap
-);
-
-
-document.getElementById(
-    "allPhasesBtn"
-)?.addEventListener(
-    "click",
-    goToRoadmap
-);
-
-
-document.getElementById(
-    "continueBtn"
-).addEventListener(
-    "click",
-    () => {
-
-        const next =
-            allTasks().find(
-                task =>
-                    !state.completed[
-                        task.id
-                    ]
-            );
-
-
-        if (!next) {
-
-            goToRoadmap();
-
-            return;
-
-        }
-
-
-        openSection("roadmap");
-
-        setTimeout(() => {
-
-            const phase =
-                document.querySelector(
-                    `[data-phase="${next.phaseId}"]`
-                );
-
-            if (!phase) return;
-
-            phase.classList.add(
-                "open"
-            );
-
-
-            const task =
-                phase.querySelector(
-                    `[data-task="${next.id}"]`
-                );
-
-
-            if (task) {
-
-                task.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-
-            }
-
-        }, 80);
-
-    }
-);
-
-
-/* =========================================================
-   REFRESH EVERYTHING
-   ========================================================= */
-
-function refreshEverything() {
-
-    updateDay();
-
-    updateOverall();
-
-    updateXP();
-
-    updateStreak();
-
-    renderPhaseGrid();
-
-    renderRoadmap();
-
-    renderRecentActivity();
-
-    renderActivityPage();
-
-    updateDailyFocus();
-
-    updateSpecialStats();
-
-    applyAnimationSetting();
-
+.check-list {
+  margin-top: 16px;
 }
 
 
-/* =========================================================
-   TOAST
-   ========================================================= */
+.check-item {
+  display: flex;
+  align-items: flex-start;
 
-let toastTimer;
+  gap: 10px;
 
+  padding: 10px 0;
 
-function showToast(message) {
+  border-bottom: 1px solid rgba(255,255,255,.045);
 
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.querySelector(
-        "p"
-    ).textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2200
-        );
-
+  cursor: pointer;
 }
 
 
-/* =========================================================
-   INITIALIZE
-   ========================================================= */
-
-loadState();
-
-document.getElementById(
-    "startDateInput"
-).value =
-    state.startDate;
-
-loadSpecialChecks();
-
-refreshEverything();
+.check-item:last-child {
+  border-bottom: 0;
+}
 
 
-/* Refresh date/day when tab becomes visible */
+.check-box {
+  flex: 0 0 auto;
 
-setInterval(
-    updateDay,
-    60 * 1000
-);
+  width: 18px;
+  height: 18px;
+
+  border-radius: 5px;
+
+  border: 1px solid var(--line-strong);
+
+  display: grid;
+  place-items: center;
+
+  color: transparent;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+
+.check-item.done .check-box {
+  color: #071006;
+
+  background: var(--accent);
+
+  border-color: var(--accent);
+}
+
+
+.check-item.done .check-copy {
+  opacity: .5;
+
+  text-decoration: line-through;
+}
+
+
+.check-copy {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+.check-copy span {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 9px;
+
+  margin-top: 2px;
+
+  font-weight: 500;
+}
+
+
+/* SYSTEM */
+
+.system-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0,1fr));
+
+  gap: 12px;
+}
+
+
+.system-card {
+  display: grid;
+
+  grid-template-columns: 42px minmax(0,1fr) auto;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 18px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 16px;
+
+  background: rgba(255,255,255,.025);
+}
+
+
+.system-icon {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.04);
+
+  color: var(--accent);
+
+  font-weight: 900;
+}
+
+
+.system-card strong {
+  display: block;
+
+  font-size: 13px;
+}
+
+
+.system-card p {
+  margin: 3px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+.system-status {
+  color: var(--accent);
+
+  font-size: 8px;
+  font-weight: 950;
+
+  letter-spacing: .1em;
+}
+
+
+.system-btn {
+  padding: 8px 11px;
+
+  border-radius: 8px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.04);
+
+  color: var(--text);
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+
+.system-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+
+.system-btn.danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+
+.danger-card .system-icon {
+  color: var(--danger);
+}
+
+
+/* FOOTER */
+
+.footer {
+  margin-top: 80px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid var(--line);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: var(--muted);
+
+  font-size: 9px;
+
+  letter-spacing: .08em;
+}
+
+
+.footer div {
+  color: var(--text);
+
+  font-weight: 950;
+}
+
+
+.footer strong {
+  color: var(--accent);
+}
+
+
+/* MODAL */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,.72);
+
+  backdrop-filter: blur(10px);
+
+  display: none;
+
+  place-items: center;
+
+  z-index: 500;
+
+  padding: 20px;
+}
+
+
+.modal-backdrop.open {
+  display: grid;
+}
+
+
+.task-modal {
+  position: relative;
+
+  width: min(650px, 100%);
+
+  padding: 30px;
+
+  border-radius: 24px;
+
+  border: 1px solid var(--line-strong);
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(140,255,90,.08),
+      transparent 35%
+    ),
+    #0e1015;
+
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.7);
+}
+
+
+.modal-close {
+  position: absolute;
+
+  right: 16px;
+  top: 16px;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 8px;
+
+  border: 1px solid var(--line);
+
+  background: rgba(255,255,255,.03);
+
+  color: var(--muted);
+
+  font-size: 19px;
+}
+
+
+.modal-kicker {
+  color: var(--accent);
+
+  font-size: 9px;
+  font-weight: 950;
+
+  letter-spacing: .15em;
+}
+
+
+.task-modal h2 {
+  margin: 7px 45px 13px 0;
+
+  font-size: 29px;
+
+  line-height: 1.1;
+}
+
+
+.modal-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+
+.modal-meta span {
+  padding: 5px 7px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 5px;
+
+  color: var(--muted);
+
+  font-size: 8px;
+  font-weight: 900;
+}
+
+
+.task-modal > p {
+  margin: 20px 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+.notes-title {
+  color: var(--muted-2);
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: .13em;
+
+  margin-bottom: 7px;
+}
+
+
+#modalNotes {
+  width: 100%;
+
+  min-height: 130px;
+
+  resize: vertical;
+
+  padding: 13px;
+
+  border-radius: 11px;
+
+  border: 1px solid var(--line);
+
+  outline: 0;
+
+  background: rgba(255,255,255,.025);
+
+  color: var(--text);
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+#modalNotes:focus {
+  border-color: rgba(140,255,90,.4);
+}
+
+
+.modal-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 13px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1250px) {
+
+  .main {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .projects-grid {
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+  }
+
+  .metrics-grid {
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+  }
+
+  .hero-section {
+    grid-template-columns:
+      minmax(0,1fr)
+      280px;
+  }
+}
+
+
+@media (max-width: 1000px) {
+
+  :root {
+    --sidebar: 230px;
+  }
+
+  .main {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+
+  .day-card {
+    max-width: 400px;
+  }
+
+  .roadmap-controls {
+    width: 100%;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .roadmap-controls {
+    flex-wrap: wrap;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .task-row {
+    grid-template-columns:
+      32px
+      minmax(0,1fr)
+      100px
+      95px;
+  }
+
+  .task-level {
+    display: none;
+  }
+
+  .social-grid,
+  .system-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 760px) {
+
+  :root {
+    --sidebar: 0px;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+
+    width: 280px;
+
+    transition: .25s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 90;
+
+    height: 62px;
+
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--line);
+
+    background: rgba(7,8,11,.88);
+
+    backdrop-filter: blur(20px);
+  }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 11px;
+    font-weight: 950;
+
+    letter-spacing: .1em;
+  }
+
+  .brand-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--accent);
+
+    box-shadow:
+      0 0 10px var(--accent);
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+
+    border-radius: 9px;
+
+    border: 1px solid var(--line);
+
+    background: rgba(255,255,255,.03);
+
+    color: var(--text);
+
+    font-size: 18px;
+  }
+
+  .main {
+    width: 100%;
+
+    margin-left: 0;
+
+    padding:
+      0
+      15px
+      45px;
+  }
+
+  .topbar {
+    display: none;
+  }
+
+  .hero-section {
+    padding-top: 35px;
+  }
+
+  .hero-section h1 {
+    font-size: 47px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
+  .hero-meta {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .meta-divider {
+    display: none;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    min-height: 175px;
+  }
+
+  .section-block {
+    margin-top: 50px;
+  }
+
+  .section-heading h2 {
+    font-size: 26px;
+  }
+
+  .section-actions {
+    width: 100%;
+  }
+
+  .filter-btn {
+    flex: 1;
+  }
+
+  .today-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roadmap-controls {
+    display: grid;
+
+    grid-template-columns: 1fr 130px;
+
+    width: 100%;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-box kbd {
+    display: none;
+  }
+
+  .phase-header {
+    grid-template-columns:
+      45px
+      minmax(0,1fr)
+      25px;
+  }
+
+  .phase-bar,
+  .phase-percent {
+    display: none;
+  }
+
+  .task-row {
+    grid-template-columns:
+      30px
+      minmax(0,1fr)
+      85px;
+
+    gap: 8px;
+  }
+
+  .task-tag {
+    display: none;
+  }
+
+  .task-more {
+    display: none;
+  }
+
+  .task-resource {
+    font-size: 8px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .system-card {
+    grid-template-columns: 38px minmax(0,1fr);
+  }
+
+  .system-btn,
+  .system-status {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .footer {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+  }
+}
+
+
+@media (max-width: 450px) {
+
+  .hero-section h1 {
+    font-size: 40px;
+  }
+
+  .day-number {
+    font-size: 55px;
+  }
+
+  .mission-card,
+  .command-card,
+  .social-card {
+    padding: 18px;
+  }
+
+  .task-title {
+    font-size: 12px;
+  }
+
+  .task-description {
+    font-size: 9px;
+  }
+
+  .task-resource {
+    padding: 7px 5px;
+  }
+}
